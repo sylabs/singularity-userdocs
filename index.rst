@@ -1,16 +1,16 @@
-==========
-User Guide
-==========
+========================
+SingularityCE User Guide
+========================
 
 
-Welcome to the Singularity User Guide!
+Welcome to the SingularityCE User Guide!
 
-This guide aims to give an introduction to Singularity, brief
+This guide aims to give an introduction to SingularityCE, brief
 installation instructions, and cover topics relevant to users building
 and running containers.
 
 For a detailed guide to installation and configuration, please see the
-separate Admin Guide for this version of Singularity at
+separate Admin Guide for this version of SingularityCE at
 `<https://sylabs.io/guides/\{adminversion\}/admin-guide/>`__.
 
               

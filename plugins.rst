@@ -116,7 +116,7 @@ Developers interested in writing Singularity plugins can get started by reading
 the `Go documentation
 <https://godoc.org/github.com/sylabs/singularity/pkg/plugin>`_ for the plugin
 package. Furthermore, reading through the `source code
-<https://github.com/hpcng/singularity/tree/master/examples/plugins>`_
+<https://github.com/sylabs/singularity/tree/master/examples/plugins>`_
 for the example plugins will prove valuable. More detailed plugin
 development documentation is in the works and will be released at a future
 date.

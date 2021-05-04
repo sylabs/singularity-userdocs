@@ -43,9 +43,9 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Singularity User Guide'
-author = u'Singularity Project Contributors'
-copyright = u'2017-2020, Sylabs Inc'
+project = u'SingularityCE User Guide'
+author = u'SingularityCE Project Contributors'
+copyright = u'2017-2021, Sylabs Inc'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -116,7 +116,7 @@ html_theme_options = {
 
 html_context = {
     'display_github': True,
-    'github_user': 'hpcng',
+    'github_user': 'sylabs',
     'github_repo': 'singularity-userdocs',
     'github_version': 'master',
     'conf_py_path': '/',
@@ -247,7 +247,7 @@ latex_logo = 'logo.png'
 
 # The title of the document. It defaults to the html_title option
 # but can be set independently for epub creation.
-epub_title = 'Singularity ' + version + ' User Guide'
+epub_title = 'SingularityCE ' + version + ' User Guide'
 
 # The author of the document. This is put in the Dublin Core metadata.
 # It defaults to the author option.
@@ -272,7 +272,7 @@ epub_theme = 'epub'
 
 # The unique identifier of the text. This can be a ISBN number
 # or the project homepage.
-epub_identifier = 'https://github.com/hpcng/singularity-userdocs'
+epub_identifier = 'https://github.com/sylabs/singularity-userdocs'
 
 # The publication scheme for the epub_identifier. This is put in the Dublin Core metadata.
 # For published books the scheme is 'ISBN'. If you use the project homepage, 'URL' seems reasonable.

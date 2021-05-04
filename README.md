@@ -1,11 +1,11 @@
-# Singularity User Docs
+# SingularityCE User Docs
 
 This repository holds user-facing documentation for the
-[Singularity](https://github.com/hpcng/singularity) container runtime.
+[SingularityCE](https://github.com/sylabs/singularity) container runtime.
 
 This is a community project led by [Sylabs](https://sylabs.io), and
 contributions are always welcome! If you'd like to update or improve
-Singularity's documentation please follow the instructions below, and submit a
+SingularityCE's documentation please follow the instructions below, and submit a
 PR on GitHub.
 
 ## Setting up an environment to contribute
@@ -60,7 +60,7 @@ This file sets the themes, extensions, variables and naming scheme for output
 created when building the documentation with Sphinx. Some important elements
 include:
 
-- `version` : Describes the current version of `Singularity` that the
+- `version` : Describes the current version of `SingularityCE` that the
   documentation is for. We set version to the `major.minor` values, e.g. `3.5`,
   as we are not creating separate documentation for each patch release.
 - `release`: Would be used to specify the current release of the software being
@@ -178,7 +178,7 @@ This will generate a folder called `_build/html` with the output. Open
 `index.html` to browse the documentation.
 
 The `SKIPCLI=1` option tells `make` not to generate the CLI reference, which is
-created automatically from the Singularity source code. You can generate the CLI
+created automatically from the SingularityCE source code. You can generate the CLI
 documentation by running `make html` alone. This requires a Go build
 environment (see below).
 
@@ -206,26 +206,26 @@ Output is written into `_build/epub` and the final EPUB will be named
 
 ## Generating CLI docs
 
-The Singularity CLI docs are generated using the actual code from Singularity.
-To do this, we include Singularity as a git submodule, and whenever a Makefile
-target (like `make html`) is run, Singularity itself is compiled and used to
+The SingularityCE CLI docs are generated using the actual code from SingularityCE.
+To do this, we include SingularityCE as a git submodule, and whenever a Makefile
+target (like `make html`) is run, `singularity` itself is compiled and used to
 generate the CLI docs.
 
-However, you might not want to compile Singularity, either because you can't on
+However, you might not want to compile `singularity`, either because you can't on
 your machine, or because you want to test out a quick change to the docs.  If
 this is the case, you can skip the CLI doc generation using the `SKIPCLI`
 argument.  For example, to rebuild the HTML docs without including the CLI docs,
 just run `make html SKIPCLI=1`.
 
-If Singularity has been updated and you want to synchronize the CLI docs with
-the new version of Singularity, you'll have to update the submodule.  To do
+If SingularityCE has been updated and you want to synchronize the CLI docs with
+the new version of SingularityCE, you'll have to update the submodule.  To do
 this, just run:
 
 ```bash
 git submodule update --remote --merge
-git add vendor/src/github.com/hpcng/singularity
+git add vendor/src/github.com/sylabs/singularity
 git commit
 ```
 
-This will update the Singularity submodule to the latest version of the master
+This will update the submodule to the latest version of the master
 branch.

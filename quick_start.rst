@@ -110,14 +110,14 @@ Download Singularity from a release
 ===================================
 
 You can download Singularity from one of the releases. To see a full list, visit
-`the GitHub release page <https://github.com/hpcng/singularity/releases>`_.
+`the GitHub release page <https://github.com/sylabs/singularity/releases>`_.
 After deciding on a release to install, you can run the following commands to
 proceed with the installation.
 
 .. code-block:: none
 
     $ export VERSION={InstallationVersion} && # adjust this as necessary \
-        wget https://github.com/hpcng/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz && \
+        wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-${VERSION}.tar.gz && \
         tar -xzf singularity-${VERSION}.tar.gz && \
         cd singularity
 
