@@ -1,15 +1,16 @@
 version: 2.1
 
-defaults: &defaults
-  docker:
-    - image: python:3.9-buster
+executors:
+  node:
+    docker:
+      - image: node:16
+  python:
+    docker:
+      - image: python:3.9-buster
 
 jobs:
-
   lint_markdown:
-    <<: *defaults
-    docker:
-      - image: node:14
+    executor: node
     steps:
       - checkout
       - run:
@@ -20,7 +21,7 @@ jobs:
           command: markdownlint .
 
   check_rst:
-    <<: *defaults
+    executor: python
     steps:
       - checkout
       - run:
@@ -33,7 +34,7 @@ jobs:
             rstcheck --ignore-language c,c++ --report warning *.rst
 
   make_html:
-    <<: *defaults
+    executor: python
     steps:
       - checkout
       - run:
@@ -65,7 +66,7 @@ jobs:
           destination: html
 
   make_pdf_epub:
-    <<: *defaults
+    executor: python
     steps:
       - checkout
       - run:
@@ -119,4 +120,3 @@ workflows:
       - make_pdf_epub:
           requires:
             - check_rst
-
