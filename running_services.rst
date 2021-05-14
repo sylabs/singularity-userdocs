@@ -109,7 +109,7 @@ You can also filter the instance list by supplying a pattern:
 .. code-block:: none
 
     $ singularity instance list '*2'
-    
+
     INSTANCE NAME    PID      IP              IMAGE
     instance2        22443                    /home/dave/instances/alpine_latest.s
 
@@ -406,12 +406,28 @@ If you shell into the instance, you can see the running processes:
 Making it Fancy
 ===============
 
-Now that we have confirmation that the server is working, let’s make it a little
-cleaner. It’s difficult to remember the exact ``curl`` command and URL syntax
-each time you want to request a PDF, so let’s automate it. To do that, we can
-use Scientific Filesystem (SCIF) apps, that are integrated
-directly into singularity. If you haven’t already, check out the `Scientific
-Filesystem documentation <https://sci-f.github.io/>`_ to come up to speed.
+Now that we have confirmation that the server is working, let’s make
+it a little cleaner. It’s difficult to remember the exact ``curl``
+command and URL syntax each time you want to request a PDF, so let’s
+automate it. Instead of creating completely separate containers for
+the server and our streamlined client, it'd be nice to have them both
+available in the same SIF file. To do that, we can use Scientific
+Filesystem (SCIF) apps.
+
+.. note::
+
+   SCIF is a standard for encapsulating multiple apps into a container. A
+   container with SCIF apps has multiple entry points, and you can choose
+   which to run easily. Each entry point can carry out a different task
+   with it's own environment, metadata etc., without the need for a
+   collection of different containers.
+
+   Singularity implements SCIF, and you can read more about how to use it
+   :ref:`apps <in the SCIF Apps section>`.
+
+   SCIF is not specfic to Singularity. You can learn more about it at the
+   project site: <https://sci-f.github.io/>`_.
+
 
 First off, we’re going to move the installation of the url-to-pdf into an app,
 so that there is a designated spot to place output files. To do that, we want to
@@ -566,7 +582,7 @@ the PID for an instance to the specifed file, e.g.
 
     $ singularity instance start --pid-file /home/dave/alpine.pid alpine_latest.sif instanceA
 
-    $ cat /home/dave/alpine.pid 
+    $ cat /home/dave/alpine.pid
     23727
 
 

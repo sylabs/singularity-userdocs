@@ -284,7 +284,7 @@ Each line is a ``<source>`` and ``<destination>`` pair. The ``<source>`` is eith
   1. A valid path on your host system
   2. A valid path in a previous stage of the build
 
-while the ``<destination>`` is always a path into the current container. If the 
+while the ``<destination>`` is always a path into the current container. If the
 ``<destination>`` path is omitted it will be assumed to be the same as ``<source>``.
 To show how copying from your host system works, let's consider the example from
 the definition file above:
@@ -309,7 +309,7 @@ previous stage and the destination in the current container.
     /root/hello /bin/hello
 
 The only difference in behavior between copying files from your host system and copying them
-from previous stages is that in the former case symbolic links are always followed 
+from previous stages is that in the former case symbolic links are always followed
 during the copy to the container, while in the latter symbolic links are preserved.
 
 Files in the ``%files`` section are always copied before the ``%post`` section is
@@ -320,10 +320,8 @@ executed so that they are available during the build and configuration process.
 
 In some circumstances, it may be redundant to build different containers for
 each app with nearly equivalent dependencies. Singularity supports installing
-apps within internal modules based on the concept of `Standard Container
-Integration Format (SCI-F) <https://sci-f.github.io/>`_
-All the apps are handled by Singularity at this point. More information on
-Apps :ref:`here <apps>`.
+apps within internal modules based on the concept of the `Scientific Filesystem (SCIF) <https://sci-f.github.io/>`_.
+More information on defining and using SCIF Apps :ref:`here <apps>`.
 
 %post
 =====
@@ -394,7 +392,7 @@ following:
 
     $ singularity test my_container.sif
     Container base is Ubuntu as expected.
-    
+
 One common use of the ``%test`` section is to run a quick check that
 the programs you intend to install in the container are present. If
 you installed the program ``samtools``, which shows a usage screen when
@@ -633,7 +631,7 @@ After building the help can be displayed like so:
 Multi-Stage Builds
 ------------------
 
-Starting with Singularity v3.2 multi-stage builds are supported where one environment 
+Starting with Singularity v3.2 multi-stage builds are supported where one environment
 can be used for compilation, then the resulting binary can be copied into a final
 environment. This allows a slimmer final image that does not require the entire
 development stack.
@@ -681,16 +679,34 @@ E.g., the ``devel`` stage in the above definition cannot copy files from the
 
 .. _apps:
 
-----
-Apps
-----
+---------
+SCIF Apps
+---------
 
-The ``%app*`` sections can exist alongside any of the primary sections (i.e.
-``%post``, ``%runscript``, ``%environment``, etc.).  As with the other sections,
-the ordering of the ``%app*`` sections isn’t important.
+SCIF is a standard for encapsulating multiple apps into a container. A
+container with SCIF apps has multiple entry points, and you can choose
+which to run easily. Each entry point can carry out a different task
+with its own environment, metadata etc., without the need for a
+collection of different containers.
+
+Singularity implements SCIF, and you can read more about how to use it
+below.
+
+SCIF is not specfic to Singularity. You can learn more about it at the
+project's site: `<https://sci-f.github.io/>`_ which includes extended
+tutorials, the specification, and other information.
+
+SCIF %app* sections
+===================
+
+SCIF apps within a Singularity container are created using ``%app*``
+sections in a definition file. These ``%app*`` sections, which will impact the
+way the container runs a specific ``--app`` can exist alongside any of the 
+primary sections (i.e.  ``%post``,``%runscript``, ``%environment``, etc.).  As
+with the other sections, the ordering of the ``%app*`` sections isn’t important.
 
 The following runscript demonstrates how to build 2 different apps into the
-same container using SCI-F modules:
+same container using SCIF modules:
 
 .. code-block:: singularity
 
@@ -793,4 +809,3 @@ When crafting your recipe, it is best to consider the following:
 #. Build production containers from a definition file instead of a sandbox that
    has been manually changed. This ensures the greatest possibility of
    reproducibility and mitigates the "black box" effect.
-
