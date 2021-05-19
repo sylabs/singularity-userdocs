@@ -48,7 +48,7 @@ To use a persistent overlay, you must first have a container.
 File system image overlay
 =========================
 
-Since 3.8, Singularity provides a command ``singularity overlay create`` to
+Since 3.8, {Singularity} provides a command ``singularity overlay create`` to
 create persistent overlay images. You can create a single EXT3 overlay image
 or adding a EXT3 writable overlay partition to an existing SIF image.
 
@@ -178,16 +178,16 @@ The example below shows the directory overlay in action.
 
     $ sudo singularity shell --overlay my_overlay/ ubuntu.sif
 
-    Singularity ubuntu.sif:~> mkdir /data
+    {Singularity} ubuntu.sif:~> mkdir /data
 
-    Singularity ubuntu.sif:~> chown user /data
+    {Singularity} ubuntu.sif:~> chown user /data
 
-    Singularity ubuntu.sif:~> apt-get update && apt-get install -y vim
+    {Singularity} ubuntu.sif:~> apt-get update && apt-get install -y vim
 
-    Singularity ubuntu.sif:~> which vim
+    {Singularity} ubuntu.sif:~> which vim
     /usr/bin/vim
 
-    Singularity ubuntu.sif:~> exit
+    {Singularity} ubuntu.sif:~> exit
 
 .. _overlay-sif:
     
@@ -205,7 +205,7 @@ this, you must first create a file system image:
         mkfs.ext3 overlay.img
 
 Then, you can add the overlay to the SIF image using the ``sif``
-functionality of Singularity.
+functionality of {Singularity}.
 
 .. code-block:: none
 
@@ -244,13 +244,13 @@ were using a writable container.
 
     $ singularity shell --overlay my_overlay/ ubuntu.sif
 
-    Singularity ubuntu.sif:~> ls -lasd /data
+    {Singularity} ubuntu.sif:~> ls -lasd /data
     4 drwxr-xr-x 2 user root 4096 Apr  9 10:21 /data
 
-    Singularity ubuntu.sif:~> which vim
+    {Singularity} ubuntu.sif:~> which vim
     /usr/bin/vim
 
-    Singularity ubuntu.sif:~> exit
+    {Singularity} ubuntu.sif:~> exit
 
 
 If you mount your container without the ``--overlay`` directory, your changes
@@ -260,12 +260,12 @@ will be gone.
 
     $ singularity shell ubuntu.sif
 
-    Singularity ubuntu.sif:~> ls /data
+    {Singularity} ubuntu.sif:~> ls /data
     ls: cannot access 'data': No such file or directory
 
-    Singularity ubuntu.sif:~> which vim
+    {Singularity} ubuntu.sif:~> which vim
 
-    Singularity ubuntu.sif:~> exit
+    {Singularity} ubuntu.sif:~> exit
 
 To resize an overlay, standard Linux tools which manipulate ext3
 images can be used.  For instance, to resize the 500MB file created

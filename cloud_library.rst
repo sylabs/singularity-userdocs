@@ -83,7 +83,7 @@ You can download the container with that tag by replacing the
 ``:latest``, with the tagged container you want to download.
 
 To set a description against the container image as you push it, use
-the `-D` flag introduced in Singularity 3.7. This provides an
+the `-D` flag introduced in {Singularity} 3.7. This provides an
 alternative to setting the description via the web interface:
 
 .. code-block:: console
@@ -94,7 +94,7 @@ alternative to setting the description via the web interface:
     Library storage: using 13.24 MiB out of 11.00 GiB quota (0.1% used)
     Container URL: https://cloud.sylabs.io/library/myuser/examples/alpine
 
-Note that when you push to a library that supports it, Singularity 3.7
+Note that when you push to a library that supports it, {Singularity} 3.7
 and above will report your quota usage and the direct URL to view the
 container in your web browser.
                
@@ -122,7 +122,7 @@ Here's a typical pull command:
     $ singularity pull file-out.sif docker://alpine:latest
 
 .. note::
-    If there's no tag after the container name, Singularity automatically will pull the container with the ``:latest`` tag.
+    If there's no tag after the container name, {Singularity} automatically will pull the container with the ``:latest`` tag.
 
 To pull a container with a specific tag, just add the tag to the library URL:
 

@@ -20,9 +20,9 @@ Getting Started & Background Information
 .. toctree::
    :maxdepth: 2
               
-   Introduction to Singularity <introduction>
+   Introduction to {Singularity} <introduction>
    Quick Start <quick_start>
-   Security in Singularity <security>
+   Security in {Singularity} <security>
 
 Building Containers   
 ===================
@@ -33,7 +33,7 @@ Building Containers
    Build a container <build_a_container>
    The Definition File <definition_files>
    Build Environment <build_env>
-   Singularity and Docker <singularity_and_docker>
+   {Singularity} and Docker <singularity_and_docker>
    Fakeroot feature <fakeroot>
 
 Signing & Encryption
@@ -70,7 +70,7 @@ Advanced Usage
    Security Options <security_options>
    Network Options <networking>
    Cgroups Support <cgroups>
-   Singularity and MPI applications <mpi>
+   {Singularity} and MPI applications <mpi>
    GPU Support <gpu>
 
 Get Involved

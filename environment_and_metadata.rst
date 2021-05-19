@@ -16,17 +16,17 @@ variables. When running containers you may need to set or override
 environment variables.
 
 The :ref:`metadata <sec:metadata>` of a container is information that
-describes the container. Singularity automatically records important
+describes the container. {Singularity} automatically records important
 information such as the definition file used to build a
-container. Other details such as the version of Singularity used are
+container. Other details such as the version of {Singularity} used are
 present as :ref:`labels <sec:labels>` on a container. You can also
 specify your own to be recorded against your container.
 
---------------------------
-Changes in Singularity 3.6
---------------------------
+----------------------------
+Changes in {Singularity} 3.6
+----------------------------
 
-Singularity 3.6 modified the ways in which environment variables
+{Singularity} 3.6 modified the ways in which environment variables
 are handled to allow long-term stability and consistency that has
 been lacking in prior versions. It also introduced new ways of setting
 environment variables, such as the ``--env`` and ``--env-file``
@@ -34,7 +34,7 @@ options.
 
 .. warning::
 
-   If you have containers built with Singularity <3.6, and frequently
+   If you have containers built with {Singularity} <3.6, and frequently
    set and override environment variables, please review this section
    carefully. Some behavior has changed.
 
@@ -56,7 +56,7 @@ Summary of changes
 Environment Overview
 --------------------
 
-When you run a program in a container with Singularity, the
+When you run a program in a container with {Singularity}, the
 environment variables that the program sees are a combination of:
 
  - The environment variables set in the base image (e.g. Docker image)
@@ -69,7 +69,7 @@ environment variables that the program sees are a combination of:
    using the ``--env``, ``--env-file`` options, or by setting
    ``SINGULARITYENV_`` variables outside of the container.
  - The ``PATH`` variable can be manipulated to add entries.
- - Runtime variables ``SINGULARITY_xxx`` set by Singularity to provide
+ - Runtime variables ``SINGULARITY_xxx`` set by {Singularity} to provide
    information about the container.
 
 The environment variables from the base image or definition file used
@@ -91,7 +91,7 @@ environment section <build-environment>`.
 Environment from a base image
 -----------------------------
 
-When you build a container with Singularity you might *bootstrap* from
+When you build a container with {Singularity} you might *bootstrap* from
 a library or Docker image, or using Linux distribution bootstrap tools
 such as ``debootstrap``, ``yum`` etc.
 
@@ -145,10 +145,10 @@ is launched. The ``%runscript`` is set to echo the value.
    Hello
 
 .. warning::
-   Singularity 3.6 uses an embedded shell interpreter to evaluate and setup container
+   {Singularity} 3.6 uses an embedded shell interpreter to evaluate and setup container
    environments, therefore all commands executed from the ``%environment`` section have
-   an execution timeout of **5 seconds** for Singularity 3.6 and a **1 minute** timeout since
-   Singularity 3.7. While it is fine to source a script from there, it is not recommended
+   an execution timeout of **5 seconds** for {Singularity} 3.6 and a **1 minute** timeout since
+   {Singularity} 3.7. While it is fine to source a script from there, it is not recommended
    to use this section to run potentially long initialization tasks because this would
    impact users running the image and the execution could abort due to timeout.
 
@@ -200,13 +200,13 @@ environment variables for correct operation of most software.
    such as ``PYTHONPATH`` that can change the way code runs, and
    consider using ``--cleanenv``.
 
-----------------------------------------
-Environment from the Singularity runtime
-----------------------------------------
+------------------------------------------
+Environment from the {Singularity} runtime
+------------------------------------------
 
 It can be useful for a program to know when it is running in a
-Singularity container, and some basic information about the container
-environment. Singularity will automatically set a number of
+{Singularity} container, and some basic information about the container
+environment. {Singularity} will automatically set a number of
 environment variables in a container that can be inspected by any
 program running in the container.
 
@@ -233,7 +233,7 @@ your workflow.
 ``--env`` option
 ----------------
 
-*New in Singularity 3.6*
+*New in {Singularity} 3.6*
 
 The ``--env`` option on the ``run/exec/shell`` commands allows you to
 specify environment variables as ``NAME=VALUE`` pairs:
@@ -254,7 +254,7 @@ variables include special characters.
 ``--env-file`` option
 ---------------------
 
-*New in Singularity 3.6*
+*New in {Singularity} 3.6*
 
 The ``--env-file`` option lets you provide a file that contains
 environment variables as ``NAME=VALUE`` pairs, e.g.:
@@ -297,7 +297,7 @@ one, until it finds ``myprog``.
 
 To ensure containers work correctly, when a host ``PATH`` might
 contain a lot of host-specific locations that are not present in the
-container, Singularity will ensure ``PATH`` in the container is set to
+container, {Singularity} will ensure ``PATH`` in the container is set to
 a default.
 
 .. code-block::
@@ -363,13 +363,13 @@ effect as ``--env APPEND_PATH="/endpath"``.
 Environment Variable Precedence
 -------------------------------
 
-When a container is run with Singularity 3.6, the container
+When a container is run with {Singularity} 3.6, the container
 environment is constructed in the following order:
 
   - Clear the environment, keeping just ``HOME`` and ``SINGULARITY_APPNAME``.
   - Take Docker defined environment variables, where Docker was the base image source.
-  - If ``PATH`` is not defined set the Singularity default ``PATH`` *or*
-  - If ``PATH`` is defined, add any missing path parts from Singularity defaults
+  - If ``PATH`` is not defined set the {Singularity} default ``PATH`` *or*
+  - If ``PATH`` is defined, add any missing path parts from {Singularity} defaults
   - Take environment variables defined explicitly in the image
     (``%environment``). These can override any previously set values.
   - Set SCIF (``--app``) environment variables
@@ -398,7 +398,7 @@ new files.
    <https://en.wikipedia.org/wiki/Umask>`__.
 
    
-Singularity 3.7 and above set the ``umask`` in the container to match
+{Singularity} 3.7 and above set the ``umask`` in the container to match
 the value outside, unless:
 
   - The ``--fakeroot`` option is used, in which case a ``0022`` umask
@@ -410,7 +410,7 @@ the value outside, unless:
 
 .. note::
 
-   In Singularity 3.6 and below a default ``0022`` umask was always applied.
+   In {Singularity} 3.6 and below a default ``0022`` umask was always applied.
 
 
 .. _sec:metadata:
@@ -419,13 +419,13 @@ the value outside, unless:
 Container Metadata
 ------------------
 
-Each Singularity container has metadata describing the container, how
+Each {Singularity} container has metadata describing the container, how
 it was built, etc. This metadata includes the definition file used to
 build the container and labels, which are specific pieces of
 information set automatically or explicitly when the container is
 built.
 
-For containers that are generated with Singularity version 3.0 and
+For containers that are generated with {Singularity} version 3.0 and
 later, default labels are represented using the `rc1 Label Schema
 <http://label-schema.org/rc1/>`_.
 
@@ -454,7 +454,7 @@ when you are writing the definition file, but can be obtained in the
 ``%post`` section of your definition file while the container is
 building.
 
-Singularity 3.7 and above allow this, through adding labels to the
+{Singularity} 3.7 and above allow this, through adding labels to the
 file defined by the ``SINGULARITY_LABELS`` environment variable in the
 ``%post`` section:
 
@@ -504,7 +504,7 @@ Running inspect without any options, or with the ``-l`` or
     org.label-schema.usage.singularity.version: 3.7.0-rc.1
                 
 We can easily see when the container was built, the source of the base
-image, and the exact version of Singularity that was used to build it.
+image, and the exact version of {Singularity} that was used to build it.
 
 The custom label ``OWNER`` that we set in our definition file is also visible.
 
@@ -722,7 +722,7 @@ environment files that are used when a container is executed.
 
 *You should not manually modify* files under ``/.singularity.d``, from
 your definition file during builds, or directly within your container
-image. Recent 3.x versions of Singularity replace older action scripts
+image. Recent 3.x versions of {Singularity} replace older action scripts
 dynamically, at runtime, to support new features. In the longer term,
 metadata will be moved outside of the container, and stored only in
 the SIF file metadata descriptor.
@@ -754,7 +754,7 @@ the SIF file metadata descriptor.
 
 -  **actions**: This directory contains helper scripts to allow the container to
    carry out the action commands. (e.g. ``exec`` , ``run`` or ``shell``). In
-   later versions of Singularity, these files may be dynamically written at
+   later versions of {Singularity}, these files may be dynamically written at
    runtime, *and should not be modified* in the container.
 
 -  **env**: All ``*.sh`` files in this directory are sourced in
@@ -763,7 +763,7 @@ the SIF file metadata descriptor.
    points to ``/.singularity.d/env/90-environment.sh``. Whenever
    possible, avoid modifying or creating environment files manually to
    prevent potential issues building & running containers with future
-   versions of Singularity. Beginning with Singularity 3.6, additional
+   versions of {Singularity}. Beginning with {Singularity} 3.6, additional
    facilities such as ``--env`` and ``--env-file`` are available to
    allow manipulation of the container environment at runtime.
 
@@ -782,9 +782,9 @@ the SIF file metadata descriptor.
 -  **runscript.help**: Contains the description that was added in the ``%help``
    section.
 
--  **Singularity**: This is the definition file that was used to generate the
+-  **{Singularity}**: This is the definition file that was used to generate the
    container. If more than 1 definition file was used to generate the container
-   additional Singularity files will appear in numeric order in a sub-directory
+   additional {Singularity} files will appear in numeric order in a sub-directory
    called ``bootstrap_history``.
 
 -  **startscript**: The commands in this file will be executed when the

@@ -7,17 +7,17 @@ Signing and Verifying Containers
 
 .. _sec:signNverify:
 
-Singularity 3.0 introduced the ability to create and manage PGP keys and use
+{Singularity} 3.0 introduced the ability to create and manage PGP keys and use
 them to sign and verify containers. This provides a trusted method for
-Singularity users to share containers. It ensures a bit-for-bit reproduction
+{Singularity} users to share containers. It ensures a bit-for-bit reproduction
 of the original container as the author intended it.
 
 .. note::
 
-    Singularity 3.6.0 uses a new signature format. Containers signed
-    by 3.6.0 cannot be verifed by older versions of Singularity.
+    {Singularity} 3.6.0 uses a new signature format. Containers signed
+    by 3.6.0 cannot be verifed by older versions of {Singularity}.
 
-    To verify containers signed with older versions of Singularity using 3.6.0
+    To verify containers signed with older versions of {Singularity} using 3.6.0
     the ``--legacy-insecure`` flag must be provided to the ``singularity verify`` command.
 
 
@@ -71,7 +71,7 @@ Generating and managing PGP keys
 To sign your own containers you first need to generate one or more keys.
 
 If you attempt to sign a container before you have generated any keys,
-Singularity will guide you through the interactive process of creating a new
+{Singularity} will guide you through the interactive process of creating a new
 key. Or you can use the ``newpair`` subcommand in the ``key`` command group
 like so:.
 
@@ -151,7 +151,7 @@ local machine and does not restore the *private* key (used for signing).
 Searching for keys
 ==================
 
-Singularity allows you to search the keystore for public keys. You can search for names,
+{Singularity} allows you to search the keystore for public keys. You can search for names,
 emails, and fingerprints (key IDs). When searching for a fingerprint, you need to use ``0x``
 before the fingerprint, check the example:
 
