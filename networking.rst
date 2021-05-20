@@ -7,7 +7,7 @@ Network virtualization
 
 .. _sec:networking:
 
-Singularity provides full integration with `cni
+{Singularity} provides full integration with `cni
 <https://github.com/containernetworking/cni>`_ , to make network
 virtualization easy. The following options can be used with the the
 action commands (``exec``, ``run``, and ``shell``) to create and
@@ -20,7 +20,7 @@ configure a virtualized network for a container.
    containers would allow users to affect networking on the host, or
    in a cluster.
 
-   Singularity 3.8 allows the administrator to permit a list of
+   {Singularity} 3.8 allows the administrator to permit a list of
    unprivileged users and/or groups to use specified network
    configurations. This is accomplished through settings in
    ``singularity.conf``. See the administrator guide for details.
@@ -62,7 +62,7 @@ within the container.
 =========
 
 Passing the ``--net`` flag will cause the container to join a new network
-namespace when it initiates.  New in Singularity 3.0, a bridge interface will
+namespace when it initiates.  New in {Singularity} 3.0, a bridge interface will
 also be set up by default.
 
 .. code-block:: none
@@ -95,7 +95,7 @@ bring up a dedicated interface inside container.
 When invoked, the ``--network`` option searches the singularity configuration
 directory (commonly ``/usr/local/etc/singularity/network/``) for the cni
 configuration file corresponding to the requested network type(s). Several
-configuration files are installed with Singularity by default corresponding to
+configuration files are installed with {Singularity} by default corresponding to
 the following network types:
 
     - bridge
@@ -112,7 +112,7 @@ Administrators can permit certain users or groups to request other
 network configurations through options in
 ``singularity.conf``. Additional cni configuration files can be added
 to the ``network`` configuration directory as required, and
-Singularity's provided configurations may also be modified.
+{Singularity}'s provided configurations may also be modified.
 
 ``--network-args``
 ==================

@@ -21,7 +21,7 @@ related to the build environment.
 Cache Folders
 -------------
 
-Singularity will cache SIF container images generated from remote
+{Singularity} will cache SIF container images generated from remote
 sources, and any OCI/docker layers used to create them. The cache is
 created at ``$HOME/.singularity/cache`` by default. The location of
 the cache can be changed by setting the ``SINGULARITY_CACHEDIR``
@@ -48,11 +48,11 @@ a location that is:
 
    If you are not certain that your ``$HOME`` or
    ``SINGULARITY_CACHEDIR`` filesytems support atomic rename, do not
-   run Singularity in parallel using remote container URLs. Instead
+   run {Singularity} in parallel using remote container URLs. Instead
    use ``singularity pull`` to create a local SIF image, and then run
    this SIF image in a parallel step. An alternative is to use the
    ``--disable-cache`` option, but this will result in each
-   Singularity instance independently fetching the container from the
+   {Singularity} instance independently fetching the container from the
    remote source, into a temporary location.
 
 
@@ -68,7 +68,7 @@ different kinds of data that are cached:
     $HOME/.singularity/cache/shub
 
 You can safely delete these directories, or content within
-them. Singularity will re-create any directories and data that are
+them. {Singularity} will re-create any directories and data that are
 needed in future runs.
 
 You should not add any additional files, or modify files in the cache,
@@ -81,7 +81,7 @@ to reset the cache to a clean, empty state.
 Cache commands
 --------------
 
-The ``cache`` command for Singularity allows you to view and clean up
+The ``cache`` command for {Singularity} allows you to view and clean up
 your cache, without manually inspecting the cache directories.
 
 .. note::
@@ -157,7 +157,7 @@ You can limit the cache list to a specific cache type with the
 Cleaning the Cache
 ==================
 
-To reclaim space used by the Singularity cache, use ``singularity
+To reclaim space used by the {Singularity} cache, use ``singularity
 cache clean``.
 
 By default ``singularity cache clean`` will remove all cache entries,
@@ -196,15 +196,15 @@ images, use the ``type`` / ``-T`` option:
 Temporary Folders
 -----------------
 
-When building a container, or pulling/running a Singularity container
+When building a container, or pulling/running a {Singularity} container
 from a Docker/OCI source, a temporary working space is required. The
 container is constructed in this temporary space before being packaged
-into a Singularity SIF image. Temporary space is also used when
+into a {Singularity} SIF image. Temporary space is also used when
 running containers in unprivileged mode, and performing some
 operations on filesystems that do not fully support ``--fakeroot``.
 
 The location for temporary directories defaults to
-``/tmp``. Singularity will also respect the environment variable
+``/tmp``. {Singularity} will also respect the environment variable
 ``TMPDIR``, and both of these locations can be overridden by setting
 the environment variable ``SINGULARITY_TMPDIR``.
 
@@ -237,7 +237,7 @@ Remember to use ``-E`` option to pass the value of
 Encrypted Containers
 --------------------
 
-Beginning in Singularity 3.4.0 it is possible to build and run encrypted
+Beginning in {Singularity} 3.4.0 it is possible to build and run encrypted
 containers.  The containers are decrypted at runtime entirely in kernel space, 
 meaning that no intermediate decrypted data is ever present on disk or in 
 memory.  See :ref:`encrypted containers <encryption>` for more details.

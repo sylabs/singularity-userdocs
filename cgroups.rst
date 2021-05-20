@@ -4,14 +4,14 @@
 Limiting container resources with cgroups
 =========================================
 
-Starting in Singularity 3.0, users have the ability to limit container resources
+Starting in {Singularity} 3.0, users have the ability to limit container resources
 using cgroups.
 
 --------
 Overview
 --------
 
-Singularity cgroups support can be configured and utilized via a TOML file. An
+{Singularity} cgroups support can be configured and utilized via a TOML file. An
 example file is typically installed at
 ``/usr/local/etc/singularity/cgroups/cgroups.toml`` (but may also be installed 
 in other locations such as ``/etc/singularity/cgroups/cgroups.toml`` depending 

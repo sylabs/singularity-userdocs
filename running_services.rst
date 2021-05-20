@@ -4,14 +4,14 @@
 Running Services
 ================
 
-There are :ref:`different ways <runcontainer>`  in which you can run Singularity
+There are :ref:`different ways <runcontainer>`  in which you can run {Singularity}
 containers. If you use commands like ``run``, ``exec`` and ``shell`` to
-interact with processes in the container, you are running Singularity containers
-in the foreground. Singularity, also lets you run containers in a "detached" or
+interact with processes in the container, you are running {Singularity} containers
+in the foreground. {Singularity}, also lets you run containers in a "detached" or
 "daemon" mode which can run different services in the background. A "service" is
 essentially a process running in the background that multiple different clients
 can use. For example, a web server or a database. To run services in a
-Singularity container one should use *instances*. A container instance is a
+{Singularity} container one should use *instances*. A container instance is a
 persistent and isolated version of the container image that runs in the
 background.
 
@@ -21,8 +21,8 @@ Overview
 
 .. _sec:instances:
 
-Singularity v2.4 introduced the concept of *instances* allowing users to run
-services in Singularity. This page will help you understand instances using an
+{Singularity} v2.4 introduced the concept of *instances* allowing users to run
+services in {Singularity}. This page will help you understand instances using an
 elementary example followed by a more useful example running an NGINX web server
 using instances. In the end, you will find a more detailed example of running an
 instance of an API that converts URL to PDFs.
@@ -40,12 +40,12 @@ If you were to do something like this from within a container you would also see
 the service start, and the web server running. But then if you were to exit the
 container, the process would continue to run within an unreachable mount
 namespace. The process would still be running, but you couldn't easily kill or
-interface with it. This is a called an orphan process. Singularity instances
+interface with it. This is a called an orphan process. {Singularity} instances
 give you the ability to handle services properly.
 
-----------------------------------
-Container Instances in Singularity
-----------------------------------
+------------------------------------
+Container Instances in {Singularity}
+------------------------------------
 
 For demonstration, let's use an easy (though somewhat useless) example of
 `alpine_latest.sif <https://cloud.sylabs.io/library/_container/5baba5e594feb900016ea41c>`_
@@ -66,7 +66,7 @@ To start an instance, you should follow this procedure :
 
     $ singularity instance start   alpine_latest.sif     instance1
 
-This command causes Singularity to create an isolated environment for the
+This command causes {Singularity} to create an isolated environment for the
 container services to live inside. One can confirm that an instance is running
 by using the ``instance list`` command like so:
 
@@ -158,12 +158,12 @@ identical.
     Note that you must escape the wildcard with a backslash like this ``\*`` to
     pass it properly.
 
-----------------------------------
-Nginx “Hello-world” in Singularity
-----------------------------------
+------------------------------------
+Nginx “Hello-world” in {Singularity}
+------------------------------------
 
 The above example, although not very useful, should serve as a fair introduction
-to the concept of Singularity instances and running services in the background.
+to the concept of {Singularity} instances and running services in the background.
 The following illustrates a more useful example of setting up a sample NGINX web
 server using instances. First we will create a basic
 :ref:`definition file <definition-files>` (let's call it nginx.def):
@@ -178,7 +178,7 @@ server using instances. First we will create a basic
        nginx
 
 
-This downloads the official NGINX Docker container, converts it to a Singularity
+This downloads the official NGINX Docker container, converts it to a {Singularity}
 image, and tells it to run NGINX when you start the instance. Since we’re
 running a web server, we’re going to run the following commands as root.
 
@@ -193,7 +193,7 @@ running a web server, we’re going to run the following commands as root.
     server. Also, to let the instance write temporary files during execution,
     you should use ``--writable-tmpfs`` while starting the instance.
 
-Just like that we’ve downloaded, built, and run an NGINX Singularity
+Just like that we’ve downloaded, built, and run an NGINX {Singularity}
 image. And to confirm that it’s correctly running:
 
 .. code-block:: none
@@ -388,9 +388,9 @@ If you shell into the instance, you can see the running processes:
 .. code-block:: none
 
     $ sudo singularity shell instance://pdf
-    Singularity: Invoking an interactive shell within container...
+    {Singularity}: Invoking an interactive shell within container...
 
-    Singularity final.sif:/home/ysub> ps auxf
+    {Singularity} final.sif:/home/ysub> ps auxf
     USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
     root       461  0.0  0.0  18204  3188 pts/1    S    17:58   0:00 /bin/bash --norc
     root       468  0.0  0.0  36640  2880 pts/1    R+   17:59   0:00  \_ ps auxf
@@ -400,7 +400,7 @@ If you shell into the instance, you can see the running processes:
     root        27  0.0  0.5 1179476 40312 ?       Sl   15:10   0:00      \_ node /pdf_server/node_modules/.bin/nodemon --watch ./src -e js src/index.js
     root        39  0.0  0.7 936444 61220 ?        Sl   15:10   0:02          \_ /usr/local/bin/node src/index.js
 
-    Singularity final.sif:/home/ysub> exit
+    {Singularity} final.sif:/home/ysub> exit
 
 
 Making it Fancy
@@ -422,10 +422,10 @@ Filesystem (SCIF) apps.
    with it's own environment, metadata etc., without the need for a
    collection of different containers.
 
-   Singularity implements SCIF, and you can read more about how to use it
+   {Singularity} implements SCIF, and you can read more about how to use it
    :ref:`apps <in the SCIF Apps section>`.
 
-   SCIF is not specfic to Singularity. You can learn more about it at the
+   SCIF is not specfic to {Singularity}. You can learn more about it at the
    project site: <https://sci-f.github.io/>`_.
 
 

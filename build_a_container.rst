@@ -11,8 +11,8 @@ Build a Container
 download and assemble existing containers from external resources like the
 `Container Library <https://cloud.sylabs.io/library>`_ and
 `Docker Hub <https://hub.docker.com/>`_. You can use it to convert containers
-between the formats supported by Singularity. And you can use it in conjunction
-with a :ref:`Singularity definition <definition-files>` file to create a
+between the formats supported by {Singularity}. And you can use it in conjunction
+with a :ref:`{Singularity} definition <definition-files>` file to create a
 container from scratch and customized it to fit your needs.
 
 --------
@@ -37,7 +37,7 @@ can be one of the following:
 
 -  path to a **directory** to build from a sandbox
 
--  path to a :ref:`Singularity definition file <definition-files>`
+-  path to a :ref:`{Singularity} definition file <definition-files>`
 
 ``build`` can produce containers in two different formats that can be specified
 as follows.
@@ -75,7 +75,7 @@ Downloading an existing container from Docker Hub
 -------------------------------------------------
 
 You can use ``build`` to download layers from Docker Hub and assemble them into
-Singularity containers.
+{Singularity} containers.
 
 .. code-block:: none
 
@@ -120,16 +120,16 @@ you wanted to convert it to SIF container called ``production.sif`` you could:
 
 Use care when converting a sandbox directory to the default SIF format. If
 changes were made to the writable container before conversion, there is no
-record of those changes in the Singularity definition file rendering your
+record of those changes in the {Singularity} definition file rendering your
 container non-reproducible. It is a best practice to build your immutable
-production containers directly from a Singularity definition file instead.
+production containers directly from a {Singularity} definition file instead.
 
------------------------------------------------------
-Building containers from Singularity definition files
------------------------------------------------------
+-------------------------------------------------------
+Building containers from {Singularity} definition files
+-------------------------------------------------------
 
-Of course, Singularity definition files can be used as the target when building
-a container. For detailed information on writing Singularity definition files,
+Of course, {Singularity} definition files can be used as the target when building
+a container. For detailed information on writing {Singularity} definition files,
 please see the :doc:`Container Definition docs <definition_files>`. Let’s say
 you already have the following container definition file called ``lolcow.def``,
 and you want to use it to build a SIF container.
@@ -168,7 +168,7 @@ requires root privileges.
 -----------------------------
 Building encrypted containers
 -----------------------------
-Beginning in Singularity 3.4.0 it is possible to build and run encrypted
+Beginning in {Singularity} 3.4.0 it is possible to build and run encrypted
 containers.  The containers are decrypted at runtime entirely in kernel space, 
 meaning that no intermediate decrypted data is ever present on disk or in 
 memory.  See :ref:`encrypted containers <encryption>` for more details.
@@ -180,7 +180,7 @@ Build options
 ``--builder``
 =============
 
-Singularity 3.0 introduces the option to perform a remote build. The
+{Singularity} 3.0 introduces the option to perform a remote build. The
 ``--builder`` option allows you to specify a URL to a different build service.
 For instance, you may need to specify a URL to build to an on premises
 installation of the remote builder.  This option must be used in conjunction
@@ -196,7 +196,7 @@ without echoing any output to your terminal.
 ``--encrypt``
 ==============
 
-Specifies that Singularity should use a secret saved in either the 
+Specifies that {Singularity} should use a secret saved in either the 
 ``SINGULARITY_ENCRYPTION_PASSPHRASE`` or ``SINGULARITY_ENCRYPTION_PEM_PATH``
 environment variable to build an encrypted container.  See :ref:`encrypted 
 containers <encryption>` for more details.   
@@ -210,13 +210,13 @@ fakeroot feature <fakeroot>` for details.
 ``--force``
 ===========
 
-The ``--force`` option will delete and overwrite an existing Singularity image
+The ``--force`` option will delete and overwrite an existing {Singularity} image
 without presenting the normal interactive prompt.
 
 ``--json``
 ==========
 
-The ``--json`` option will force Singularity to interpret a given definition
+The ``--json`` option will force {Singularity} to interpret a given definition
 file as a json.
 
 ``--library``
@@ -252,7 +252,7 @@ container file system at build time. See :ref:`encrypted containers
 ``--remote``
 ============
 
-Singularity 3.0 introduces the ability to build a container on an external
+{Singularity} 3.0 introduces the ability to build a container on an external
 resource running a remote builder.  (The default remote builder is located at
 "https://cloud.sylabs.io/builder".)
 
@@ -270,7 +270,7 @@ sections.  Acceptable arguments include ``all``, ``none`` or any combination of
 the following: ``setup``, ``post``, ``files``, ``environment``, ``test``,
 ``labels``.
 
-Under normal build conditions, the Singularity definition file is saved into
+Under normal build conditions, the {Singularity} definition file is saved into
 a container’s meta-data so that there is a record showing how the container was
 built. Using the ``--section`` option may render this meta-data useless, so use
 care if you value reproducibility.
@@ -285,7 +285,7 @@ start from scratch).
 By default if you build into an existing sandbox container, the  ``build``
 command will prompt you to decide whether or not to overwrite the container.
 Instead of this behavior you can use the ``--update`` option to build _into_ an
-existing container. This will cause Singularity to skip the header and build
+existing container. This will cause {Singularity} to skip the header and build
 any sections that are in the definition file into the existing container.
 
 The ``--update`` option is only valid when used with sandbox containers.

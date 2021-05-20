@@ -4,7 +4,7 @@
 GPU Support (NVIDIA CUDA & AMD ROCm)
 ====================================
 
-Singularity natively supports running application containers that use NVIDIA's
+{Singularity} natively supports running application containers that use NVIDIA's
 CUDA GPU compute framework, or AMD's ROCm solution. This allows easy access to
 users of GPU-enabled machine learning frameworks such as tensorflow, regardless
 of the host operating system. As long as the host has a driver and library
@@ -54,7 +54,7 @@ problems running applications compiled for the latest versions of CUDA.
 Library Search Options
 ----------------------
 
-Singularity will find the NVIDIA/CUDA libraries on your host either using the
+{Singularity} will find the NVIDIA/CUDA libraries on your host either using the
 ``nvidia-container-cli`` tool, or, if it is not available, a list of libraries
 in the configuration file ``etc/singularity/nvbliblist``.
 
@@ -134,7 +134,7 @@ tensorflow ``list_local_devices()`` function:
 Multiple GPUs
 =============
 
-By default, Singularity makes all host devices available in the container. When
+By default, {Singularity} makes all host devices available in the container. When
 the ``--contain`` option is used a minimal ``/dev`` tree is created in the
 container, but the ``--nv`` option will ensure that all nvidia devices on the
 host are present in the container.
@@ -144,7 +144,7 @@ environment variable is used to control whether some or all host GPUs are visibl
 inside a container. The ``nvidia-container-runtime`` explicitly binds the devices
 into the container dependent on the value of ``NVIDIA_VISIBLE_DEVICES``.
 
-To control which GPUs are used in a Singularity container that is run with
+To control which GPUs are used in a {Singularity} container that is run with
 ``--nv`` you can set ``SINGULARITYENV_CUDA_VISIBLE_DEVICES`` before running the
 container, or ``CUDA_VISIBLE_DEVICES`` inside the container.  This variable will
 limit the GPU devices that CUDA programs see.
@@ -167,7 +167,7 @@ Troubleshooting
 
 If the host installation of the NVIDIA / CUDA driver and libraries is working
 and up-to-date there are rarely issues running CUDA programs inside of
-Singularity containers. The most common issue seen is:
+{Singularity} containers. The most common issue seen is:
 
 CUDA_ERROR_UNKNOWN when everything seems to be correctly configured
 -------------------------------------------------------------------
@@ -175,7 +175,7 @@ CUDA_ERROR_UNKNOWN when everything seems to be correctly configured
 CUDA depends on multiple kernel modules being loaded. Not all of the modules are
 loaded at system startup. Some portions of the NVIDA driver stack are initialized
 when first needed. This is done using a setuid root binary, so initializing can
-be triggered by any user on the host. In Singularity containers, privilege
+be triggered by any user on the host. In {Singularity} containers, privilege
 escalation is blocked, so the setuid root binary cannot initialize the driver
 stack fully.
 
@@ -189,7 +189,7 @@ driver unload.
 AMD GPUs & ROCm
 ---------------
 
-Singularity 3.5 adds a ``--rocm`` flag to support GPU compute with the ROCm
+{Singularity} 3.5 adds a ``--rocm`` flag to support GPU compute with the ROCm
 framework using AMD Radeon GPU cards.
 
 Commands that ``run``, or otherwise execute containers (``shell``, ``exec``) can
@@ -221,7 +221,7 @@ ensure that:
 These requirements can be satisfied by following the requirements on the 
 `ROCm web site <https://rocm.github.io/ROCmInstall.html>`__
 
-At time of release, Singularity was tested successfully on Debian 10 with ROCm
+At time of release, {Singularity} was tested successfully on Debian 10 with ROCm
 2.8/2.9 and the upstream kernel driver, and Ubuntu 18.04 with ROCm 2.9 and the
 DKMS driver.
 
