@@ -92,7 +92,7 @@ page). Alternatively, follow the commands here:
 
 .. code-block:: none
 
-    $ export VERSION=1.14.12 OS=linux ARCH=amd64 && \  # Replace the values as needed
+    $ export VERSION=1.16.4 OS=linux ARCH=amd64 && \  # Replace the values as needed
       wget https://dl.google.com/go/go$VERSION.$OS-$ARCH.tar.gz && \ # Downloads the required Go package
       sudo tar -C /usr/local -xzvf go$VERSION.$OS-$ARCH.tar.gz && \ # Extracts the archive
       rm go$VERSION.$OS-$ARCH.tar.gz    # Deletes the ``tar`` file
