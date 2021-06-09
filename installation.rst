@@ -571,11 +571,11 @@ Next, install Vagrant and the necessary bits.
 
 .. code-block:: none
 
-    brew cask install virtualbox
+    brew install cask virtualbox
 
-    brew cask install vagrant
+    brew install cask vagrant
 
-    brew cask install vagrant-manager
+    brew install cask vagrant-manager
 
 
 Option 1: Singularity Vagrant Box
