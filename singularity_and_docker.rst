@@ -41,41 +41,27 @@ The section closes with a brief enumeration of emerging best practices plus cons
 Running action commands on public images from Docker Hub
 --------------------------------------------------------
 
-``godlovedc/lolcow`` is a whimsical example of a publicly accessible image hosted via `Docker Hub <https://hub.docker.com/>`_. {Singularity} can execute this image as follows:
+``sylabsio/lolcow`` is a whimsical example of a publicly accessible image hosted via `Docker Hub <https://hub.docker.com/>`_. {Singularity} can execute this image as follows:
 
 .. code-block:: none
 
-    $ singularity run docker://godlovedc/lolcow
+    $ singularity run docker://sylabsio/lolcow
     INFO:    Converting OCI blobs to SIF format
     INFO:    Starting build...
     Getting image source signatures
-    Copying blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
-     45.33 MiB / 45.33 MiB [====================================================] 1s
-    Copying blob sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
-     848 B / 848 B [============================================================] 0s
-    Copying blob sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
-     621 B / 621 B [============================================================] 0s
-    Copying blob sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
-     853 B / 853 B [============================================================] 0s
-    Copying blob sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
-     169 B / 169 B [============================================================] 0s
-    Copying blob sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
-     53.75 MiB / 53.75 MiB [====================================================] 2s
-    Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
-     3.33 KiB / 3.33 KiB [======================================================] 0s
+    Copying blob 16ec32c2132b done  
+    Copying blob 5ca731fc36c2 done  
+    Copying config fd0daa4d89 done  
     Writing manifest to image destination
     Storing signatures
+    2021/08/16 13:17:01  info unpack layer: sha256:16ec32c2132b43494832a05f2b02f7a822479f8250c173d0ab27b3de78b2f058
+    2021/08/16 13:17:02  info unpack layer: sha256:5ca731fc36c28789c5ddc3216563e8bfca2ab3ea10347e07554ebba1c953242e
     INFO:    Creating SIF file...
-    INFO:    Build complete: /home/vagrant/.singularity/cache/oci-tmp/a692b57abc43035b197b10390ea2c12855d21649f2ea2cc28094d18b93360eeb/lolcow_latest.sif
-    INFO:    Image cached as SIF at /home/vagrant/.singularity/cache/oci-tmp/a692b57abc43035b197b10390ea2c12855d21649f2ea2cc28094d18b93360eeb/lolcow_latest.sif
-     ___________________________________
-    / Repartee is something we think of \
-    | twenty-four hours too late.       |
-    |                                   |
-    \ -- Mark Twain                     /
-     -----------------------------------
+    ______________________________
+    < Mon Aug 16 13:17:11 CDT 2021 >
+    ------------------------------
             \   ^__^
-             \  (oo)\_______
+            \  (oo)\_______
                 (__)\       )\/\
                     ||----w |
                     ||     ||
@@ -84,16 +70,13 @@ Here ``docker`` is prepended to ensure that the ``run`` command of {Singularity}
 
 .. code-block:: none
 
-    $ singularity run docker://godlovedc/lolcow
-     _________________________________________
-    / Soap and education are not as sudden as \
-    | a massacre, but they are more deadly in |
-    | the long run.                           |
-    |                                         |
-    \ -- Mark Twain                           /
-     -----------------------------------------
+    $ singularity run docker://sylabsio/lolcow
+    INFO:    Using cached SIF image
+    ______________________________
+    < Mon Aug 16 13:17:47 CDT 2021 >
+    ------------------------------
             \   ^__^
-             \  (oo)\_______
+            \  (oo)\_______
                 (__)\       )\/\
                     ||----w |
                     ||     ||
@@ -117,15 +100,11 @@ and then execute the SIF file directly:
 .. code-block:: none
 
     ./lolcow_latest.sif
-     _______________________________________
-    / The secret source of humor is not joy \
-    | but sorrow; there is no humor in      |
-    | Heaven.                               |
-    |                                       |
-    \ -- Mark Twain                         /
-     ---------------------------------------
+    ______________________________
+    < Mon Aug 16 13:17:47 CDT 2021 >
+    ------------------------------
             \   ^__^
-             \  (oo)\_______
+            \  (oo)\_______
                 (__)\       )\/\
                     ||----w |
                     ||     ||
@@ -134,14 +113,13 @@ and then execute the SIF file directly:
 
     SIF files abstract {Singularity} containers as a single file. As with any executable, a SIF file can be executed directly.
 
-``fortune | cowsay | lolcat`` is executed by *default* when this container is ``run`` by {Singularity}. {Singularity}'s ``exec`` command allows a different command to be executed; for example:
+``date | cowsay | lolcat`` is executed by *default* when this container is ``run`` by {Singularity}. {Singularity}'s ``exec`` command allows a different command to be executed; for example:
 
 .. code-block:: none
 
-    $ singularity exec docker://godlovedc/lolcow fortune
-    Don't go around saying the world owes you a living.  The world owes you
-    nothing.  It was here first.
-            -- Mark Twain
+    $ singularity exec docker://sylabsio/lolcow date
+    INFO:    Using cached SIF image
+    Mon Aug 16 13:20:11 CDT 2
 
 .. note::
 
@@ -155,28 +133,30 @@ In addition to non-interactive execution of an image from Docker Hub, {Singulari
 
 .. code-block:: none
 
-    $ singularity shell docker://godlovedc/lolcow
-    {Singularity} lolcow_latest.sif:~> cat /etc/os-release
+    $ singularity shell docker://sylabsio/lolcow
+    INFO:    Using cached SIF image
+    Singularity> cat /etc/os-release 
     NAME="Ubuntu"
-    VERSION="16.04.3 LTS (Xenial Xerus)"
+    VERSION="20.04.2 LTS (Focal Fossa)"
     ID=ubuntu
     ID_LIKE=debian
-    PRETTY_NAME="Ubuntu 16.04.3 LTS"
-    VERSION_ID="16.04"
-    HOME_URL="http://www.ubuntu.com/"
-    SUPPORT_URL="http://help.ubuntu.com/"
-    BUG_REPORT_URL="http://bugs.launchpad.net/ubuntu/"
-    VERSION_CODENAME=xenial
-    UBUNTU_CODENAME=xenial
-    {Singularity} lolcow_latest.sif:~>
+    PRETTY_NAME="Ubuntu 20.04.2 LTS"
+    VERSION_ID="20.04"
+    HOME_URL="https://www.ubuntu.com/"
+    SUPPORT_URL="https://help.ubuntu.com/"
+    BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+    PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+    VERSION_CODENAME=focal
+    UBUNTU_CODENAME=focal
+    Singularity>
 
-From this it is evident that use is being made of Ubuntu 16.04 *within* this container, whereas the shell *external* to the container is running a more recent release of Ubuntu (not illustrated here).
+From this it is evident that use is being made of Ubuntu 20.04 *within* this container, whereas the shell *external* to the container is running a more recent release of Ubuntu (not illustrated here).
 
 ``inspect`` reveals the metadata for a {Singularity} container encapsulated via SIF; :ref:`Container Metadata <sec:inspect_container_metadata>` is documented below.
 
 .. note::
 
-    ``singularity search [search options...] <search query>`` does *not* support Docker registries like `Docker Hub <https://hub.docker.com/>`_. Use the search box at Docker Hub to locate Docker images. Docker ``pull`` commands, e.g., ``docker pull godlovedc/lolcow``, can be easily translated into the corresponding command for {Singularity}. The Docker ``pull`` command is available under "DETAILS" for a given image on Docker Hub.
+    ``singularity search [search options...] <search query>`` does *not* support Docker registries like `Docker Hub <https://hub.docker.com/>`_. Use the search box at Docker Hub to locate Docker images. Docker ``pull`` commands, e.g., ``docker pull sylabsio/lolcow``, can be easily translated into the corresponding command for {Singularity}. The Docker ``pull`` command is available under "DETAILS" for a given image on Docker Hub.
 
 
 .. TODO-ND add content re: singularity capability - possibly a new section
@@ -194,27 +174,18 @@ Making use of public images from Docker Hub
 
 .. code-block:: none
 
-    $ singularity pull docker://godlovedc/lolcow
+    $ singularity pull docker://sylabsio/lolcow
+    INFO:    Converting OCI blobs to SIF format
     INFO:    Starting build...
     Getting image source signatures
-    Copying blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
-     45.33 MiB / 45.33 MiB [====================================================] 2s
-    Copying blob sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
-     848 B / 848 B [============================================================] 0s
-    Copying blob sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
-     621 B / 621 B [============================================================] 0s
-    Copying blob sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
-     853 B / 853 B [============================================================] 0s
-    Copying blob sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
-     169 B / 169 B [============================================================] 0s
-    Copying blob sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
-     53.75 MiB / 53.75 MiB [====================================================] 3s
-    Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
-     3.33 KiB / 3.33 KiB [======================================================] 0s
+    Copying blob 16ec32c2132b done  
+    Copying blob 5ca731fc36c2 done  
+    Copying config fd0daa4d89 done  
     Writing manifest to image destination
     Storing signatures
-    INFO:    Creating SIF file...
-    INFO:    Build complete: lolcow_latest.sif
+    2021/08/16 13:22:26  info unpack layer: sha256:16ec32c2132b43494832a05f2b02f7a822479f8250c173d0ab27b3de78b2f058
+    2021/08/16 13:22:27  info unpack layer: sha256:5ca731fc36c28789c5ddc3216563e8bfca2ab3ea10347e07554ebba1c953242e
+    INFO:    Creating SIF file
 
 This ``pull`` results in a *local* copy of the Docker image in SIF, the Singularity Image Format:
 
@@ -231,15 +202,13 @@ In converting to SIF, individual layers of the Docker image have been *combined*
 
 .. code-block:: none
 
-        $ singularity inspect lolcow_latest.sif
-
-        {
-            "org.label-schema.build-date": "Thursday_6_December_2018_17:29:48_UTC",
-            "org.label-schema.schema-version": "1.0",
-            "org.label-schema.usage.singularity.deffile.bootstrap": "docker",
-            "org.label-schema.usage.singularity.deffile.from": "godlovedc/lolcow",
-            "org.label-schema.usage.singularity.version": "3.0.1-40.g84083b4f"
-        }
+    $ singularity inspect lolcow_latest.sif 
+    org.label-schema.build-arch: amd64
+    org.label-schema.build-date: Monday_16_August_2021_13:22:28_CDT
+    org.label-schema.schema-version: 1.0
+    org.label-schema.usage.singularity.deffile.bootstrap: docker
+    org.label-schema.usage.singularity.deffile.from: sylabsio/lolcow
+    org.label-schema.usage.singularity.version: 3.8.1
 
 .. note::
 
@@ -249,9 +218,9 @@ SIF files built from Docker images are *not* crytographically signed:
 
 .. code-block:: none
 
-    $ singularity verify lolcow_latest.sif
+    $ singularity verify lolcow_latest.sif 
     Verifying image: lolcow_latest.sif
-    ERROR:   verification failed: error while searching for signature blocks: no signatures found for system partition
+    FATAL:   Failed to verify container: integrity: signature not found for object group 1
 
 The ``sign`` command allows a cryptographic signature to be added. Refer to
 :ref:`Signing and Verifying Containers <signNverify>` for details. But caution
@@ -263,7 +232,7 @@ complete contents of that image.
 
     ``pull`` is a one-time-only operation that builds a SIF file corresponding to the image retrieved from Docker Hub. Updates to the image on Docker Hub will *not* be reflected in the *local* copy.
 
-In our example ``docker://godlovedc/lolcow``, ``godlovedc`` specifies a Docker Hub user, whereas ``lolcow`` is the name of the repository. Adding the option to specifiy an image tag, the generic version of the URI is ``docker://<user>/<repo-name>[:<tag>]``. `Repositories on Docker Hub <https://docs.docker.com/docker-hub/repos/>`_ provides additional details.
+In our example ``docker://sylabsio/lolcow``, ``sylabsio`` specifies a Docker Hub user, whereas ``lolcow`` is the name of the repository. Adding the option to specifiy an image tag, the generic version of the URI is ``docker://<user>/<repo-name>[:<tag>]``. `Repositories on Docker Hub <https://docs.docker.com/docker-hub/repos/>`_ provides additional details.
 
 
 .. _sec:using_prebuilt_private_images:
@@ -276,13 +245,12 @@ After successful authentication, {Singularity} can also make use of *private* im
 
 .. code-block:: none
 
-    $ singularity pull docker://ilumb/mylolcow
-    INFO:    Starting build...
-    FATAL:   Unable to pull docker://ilumb/mylolcow: conveyor failed to get: Error reading manifest latest in docker.io/ilumb/mylolcow: errors:
+    $ singularity pull docker://sylabsio/private
+    FATAL:   While making image from oci registry: error fetching image to cache: failed to get checksum for docker://sylabsio/private: Error reading manifest latest in docker.io/sylabsio/private: errors:
     denied: requested access to the resource is denied
-    unauthorized: authentication required
+    unauthorized: authentication require
 
-In this case, the ``mylolcow`` repository of user ``ilumb`` **requires** authentication through specification of a valid username and password.
+In this case, the ``private`` repository of user ``sylabsio`` **requires** authentication through specification of a valid username and password.
 
 
 Authentication via Remote Login
@@ -306,8 +274,8 @@ Interactive login is the first of two means provided for authentication with Doc
 
 .. code-block:: none
 
-    $ singularity pull --docker-login docker://ilumb/mylolcow
-    Enter Docker Username: ilumb
+    $ singularity pull --docker-login docker://sylabsio/private
+    Enter Docker Username: sylabsio
     Enter Docker Password:
     INFO:    Starting build...
     Getting image source signatures
@@ -321,7 +289,7 @@ Interactive login is the first of two means provided for authentication with Doc
     Writing manifest to image destination
     Storing signatures
     INFO:    Creating SIF file...
-    INFO:    Build complete: mylolcow_latest.sif
+    INFO:    Build complete: private_latest.sif
 
 After successful authentication, the private Docker image is pulled and converted to SIF as described above.
 
@@ -339,12 +307,12 @@ Environment variables offer an alternative means for authentication with Docker 
 
 .. code-block:: none
 
-    export SINGULARITY_DOCKER_USERNAME=ilumb
+    export SINGULARITY_DOCKER_USERNAME=sylabsio
     export SINGULARITY_DOCKER_PASSWORD=<redacted>
 
 Of course, the ``<redacted>`` plain-text password needs to be replaced by a valid one to be of practical use.
 
-Based upon these exports, ``$ singularity pull docker://ilumb/mylolcow`` allows for the retrieval of this private image.
+Based upon these exports, ``$ singularity pull docker://sylabsio/private`` allows for the retrieval of this private image.
 
 .. note::
 
@@ -373,13 +341,13 @@ In the complete command line specification
 
 .. code-block:: none
 
-    $ singularity pull docker://godlovedc/lolcow
+    $ singularity pull docker://sylabsio/lolcow
 
 is functionally equivalent to
 
 .. code-block:: none
 
-    $ singularity pull docker://index.docker.io/godlovedc/lolcow
+    $ singularity pull docker://index.docker.io/sylabsio/lolcow
 
 From the above example, it is evident that
 
@@ -456,19 +424,16 @@ In the simplest case, ``build`` is functionally equivalent to ``pull``:
 
 .. code-block:: none
 
-    $ singularity build mylolcow_latest.sif docker://godlovedc/lolcow
+    $ singularity build mylolcow_latest.sif docker://sylabsio/lolcow
     INFO:    Starting build...
     Getting image source signatures
-    Skipping fetch of repeat blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
-    Skipping fetch of repeat blob sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
-    Skipping fetch of repeat blob sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
-    Skipping fetch of repeat blob sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
-    Skipping fetch of repeat blob sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
-    Skipping fetch of repeat blob sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
-    Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
-     3.33 KiB / 3.33 KiB [======================================================] 0s
+    Copying blob 16ec32c2132b skipped: already exists  
+    Copying blob 5ca731fc36c2 [--------------------------------------] 0.0b / 0.0b
+    Copying config fd0daa4d89 done  
     Writing manifest to image destination
     Storing signatures
+    2021/08/16 13:26:42  info unpack layer: sha256:16ec32c2132b43494832a05f2b02f7a822479f8250c173d0ab27b3de78b2f058
+    2021/08/16 13:26:43  info unpack layer: sha256:5ca731fc36c28789c5ddc3216563e8bfca2ab3ea10347e07554ebba1c953242e
     INFO:    Creating SIF file...
     INFO:    Build complete: mylolcow_latest.sif
 
@@ -476,25 +441,22 @@ This ``build`` results in a *local* copy of the Docker image in SIF, as did ``pu
 
 .. note::
 
-     ``docker://godlovedc/lolcow`` is the **target** provided as input for ``build``. Armed with this target, ``build`` applies the appropriate boostrap agent to create the container - in this case, one appropriate for Docker Hub.
+     ``docker://sylabsio/lolcow`` is the **target** provided as input for ``build``. Armed with this target, ``build`` applies the appropriate boostrap agent to create the container - in this case, one appropriate for Docker Hub.
 
 In addition to a read-only container image in SIF (**default**), ``build`` allows for the creation of a writable (ch)root *directory* called a **sandbox** for interactive development via the ``--sandbox`` option:
 
 .. code-block:: none
 
-    $ singularity build --sandbox mylolcow_latest_sandbox docker://godlovedc/lolcow
+    $ singularity build --sandbox mylolcow_latest_sandbox docker://sylabsio/lolcow
     INFO:    Starting build...
     Getting image source signatures
-    Skipping fetch of repeat blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
-    Skipping fetch of repeat blob sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
-    Skipping fetch of repeat blob sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
-    Skipping fetch of repeat blob sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
-    Skipping fetch of repeat blob sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
-    Skipping fetch of repeat blob sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
-    Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
-     3.33 KiB / 3.33 KiB [======================================================] 0s
+    Copying blob 16ec32c2132b skipped: already exists  
+    Copying blob 5ca731fc36c2 [--------------------------------------] 0.0b / 0.0b
+    Copying config fd0daa4d89 done  
     Writing manifest to image destination
     Storing signatures
+    2021/08/16 13:27:37  info unpack layer: sha256:16ec32c2132b43494832a05f2b02f7a822479f8250c173d0ab27b3de78b2f058
+    2021/08/16 13:27:38  info unpack layer: sha256:5ca731fc36c28789c5ddc3216563e8bfca2ab3ea10347e07554ebba1c953242e
     INFO:    Creating sandbox directory...
     INFO:    Build complete: mylolcow_latest_sandbox
 
@@ -510,9 +472,9 @@ Implicit in the above command-line interactions is use of public images from Doc
 
 .. code-block:: none
 
-    singularity build --docker-login mylolcow_latest_il.sif docker://ilumb/mylolcow
+    singularity build --docker-login my_private.sif docker://sylabsio/private
 
-(Recall that ``docker://ilumb/mylolcow`` is a private image available via Docker Hub.) See :ref:`Authentication via Interactive Login <sec:authentication_via_docker_login>` above regarding use of ``--docker-login``.
+(Recall that ``docker://sylabsio/private`` is a private image available via Docker Hub.) See :ref:`Authentication via Interactive Login <sec:authentication_via_docker_login>` above regarding use of ``--docker-login``.
 
 
 Building Containers Remotely
@@ -526,31 +488,37 @@ The above token provides *authenticated* use of the Sylabs Cloud Remote Builder 
 
 .. code-block:: none
 
-    $ singularity build --remote lolcow_rb.sif docker://godlovedc/lolcow
-    searching for available build agent.........INFO:    Starting build...
+    $ singularity build --remote lolcow_rb.sif docker://sylabsio/lolcow
+    INFO:    Remote "default" added.
+    INFO:    Access Token Verified!
+    INFO:    Token stored in /root/.singularity/remote.yaml
+    INFO:    Remote "default" now in use.
+    INFO:    Starting build...
     Getting image source signatures
     Copying blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
-     45.33 MiB / 45.33 MiB  0s
     Copying blob sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
-     848 B / 848 B  0s
     Copying blob sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
-     621 B / 621 B  0s
     Copying blob sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
-     853 B / 853 B  0s
     Copying blob sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
-     169 B / 169 B  0s
     Copying blob sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
-     53.75 MiB / 53.75 MiB  0s
     Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
-     3.33 KiB / 3.33 KiB  0s
     Writing manifest to image destination
     Storing signatures
+    2021/08/16 18:28:54  info unpack layer: sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
+    2021/08/16 18:28:56  info unpack layer: sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
+    2021/08/16 18:28:56  info unpack layer: sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
+    2021/08/16 18:28:56  info unpack layer: sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
+    2021/08/16 18:28:56  info unpack layer: sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
+    2021/08/16 18:28:56  info unpack layer: sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
     INFO:    Creating SIF file...
-    INFO:    Build complete: /tmp/image-341891107
-    INFO:    Now uploading /tmp/image-341891107 to the library
-     87.94 MiB / 87.94 MiB  100.00% 38.96 MiB/s 2s
-    INFO:    Setting tag latest
-     87.94 MiB / 87.94 MiB [===============================================================================] 100.00% 17.23 MiB/s 5s
+    INFO:    Build complete: /tmp/image-990604230
+    WARNING: Skipping container verification
+    88.0MiB / 88.0MiB [========================================] 100 % 65.8 MiB/s 0s
+
+    Library storage: using 136.43 MiB out of unlimited quota
+    Container URL: https://cloud.sylabs.io/library/dtrudg-sylabs-2/remote-builds/rb-611aae5f596e300e6bbdda64
+    INFO:    Build complete: lolcow_rb.sif
+
 
 .. note::
 
@@ -570,15 +538,15 @@ Locally Available Images: Cached by Docker
 
 .. code-block:: none
 
-    $ sudo docker images
+    $ docker images
     REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-    godlovedc/lolcow    latest              577c1fe8e6d8        16 months ago       241MB
+    sylabsio/lolcow     latest              5a15b484bc65        2 hours ago         188MB
 
-This indicates that ``godlovedc/lolcow:latest`` has been cached locally by Docker. Then
+This indicates that ``sylabsio/lolcow:latest`` has been cached locally by Docker. Then
 
 .. code-block:: none
 
-    $ sudo singularity build lolcow_from_docker_cache.sif docker-daemon://godlovedc/lolcow:latest
+    $ sudo singularity build lolcow_from_docker_cache.sif docker-daemon://sylabsio/lolcow:latest
     INFO:    Starting build...
     Getting image source signatures
     Copying blob sha256:a2022691bf950a72f9d2d84d557183cb9eee07c065a76485f1695784855c5193
@@ -625,47 +593,31 @@ Locally Available Images: Stored Archives
 
 The ``lolcow.tar`` file employed below in this example can be produced by making use of an environment in which Docker is available as follows:
 
-    1. Obtain a local copy of the image from Docker Hub via ``sudo docker pull godlovedc/lolcow``. Issuing the following command confirms that a copy of the desired image is available locally:
+    1. Obtain a local copy of the image from Docker Hub via ``sudo docker pull sylabsio/lolcow``. Issuing the following command confirms that a copy of the desired image is available locally:
 
     .. code-block:: none
 
         $ sudo docker images
-        REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-        godlovedc/lolcow    latest              577c1fe8e6d8        17 months ago       241MB
+        REPOSITORY                        TAG               IMAGE ID       CREATED          SIZE
+        sylabsio/lolcow                   latest            5a15b484bc65   2 hours ago      188MB
 
-    2. Noting that the image identifier above is ``577c1fe8e6d8``, the required archive can be created by ``sudo docker save 577c1fe8e6d8 -o lolcow.tar``.
+    2. Noting that the image identifier above is ``577c1fe8e6d8``, the required archive can be created by ``docker save 5a15b484bc65 -o lolcow.tar``.
 
 Thus ``lolcow.tar`` is a locally stored archive in the *current* working directory with contents:
 
 .. code-block:: none
 
-    $ sudo tar tvf lolcow.tar
-    drwxr-xr-x 0/0               0 2017-09-21 19:37 02aefa059d08482d344293d0ad27182a0a9d330ebc73abd92a1f9744844f91e9/
-    -rw-r--r-- 0/0               3 2017-09-21 19:37 02aefa059d08482d344293d0ad27182a0a9d330ebc73abd92a1f9744844f91e9/VERSION
-    -rw-r--r-- 0/0            1417 2017-09-21 19:37 02aefa059d08482d344293d0ad27182a0a9d330ebc73abd92a1f9744844f91e9/json
-    -rw-r--r-- 0/0       122219008 2017-09-21 19:37 02aefa059d08482d344293d0ad27182a0a9d330ebc73abd92a1f9744844f91e9/layer.tar
-    drwxr-xr-x 0/0               0 2017-09-21 19:37 3762e087ebbb895fd9c38981c1f7bfc76c9879fd3fdadef64df49e92721bb527/
-    -rw-r--r-- 0/0               3 2017-09-21 19:37 3762e087ebbb895fd9c38981c1f7bfc76c9879fd3fdadef64df49e92721bb527/VERSION
-    -rw-r--r-- 0/0             482 2017-09-21 19:37 3762e087ebbb895fd9c38981c1f7bfc76c9879fd3fdadef64df49e92721bb527/json
-    -rw-r--r-- 0/0           14848 2017-09-21 19:37 3762e087ebbb895fd9c38981c1f7bfc76c9879fd3fdadef64df49e92721bb527/layer.tar
-    -rw-r--r-- 0/0            4432 2017-09-21 19:37 577c1fe8e6d84360932b51767b65567550141af0801ff6d24ad10963e40472c5.json
-    drwxr-xr-x 0/0               0 2017-09-21 19:37 5bad884501c0e760bc0c9ca3ae3dca3f12c4abeb7d18194c364fec522b91b4f9/
-    -rw-r--r-- 0/0               3 2017-09-21 19:37 5bad884501c0e760bc0c9ca3ae3dca3f12c4abeb7d18194c364fec522b91b4f9/VERSION
-    -rw-r--r-- 0/0             482 2017-09-21 19:37 5bad884501c0e760bc0c9ca3ae3dca3f12c4abeb7d18194c364fec522b91b4f9/json
-    -rw-r--r-- 0/0            3072 2017-09-21 19:37 5bad884501c0e760bc0c9ca3ae3dca3f12c4abeb7d18194c364fec522b91b4f9/layer.tar
-    drwxr-xr-x 0/0               0 2017-09-21 19:37 81ce2fd011bc8241ae72eaee9146116b7c289e941467ff276397720171e6c576/
-    -rw-r--r-- 0/0               3 2017-09-21 19:37 81ce2fd011bc8241ae72eaee9146116b7c289e941467ff276397720171e6c576/VERSION
-    -rw-r--r-- 0/0             406 2017-09-21 19:37 81ce2fd011bc8241ae72eaee9146116b7c289e941467ff276397720171e6c576/json
-    -rw-r--r-- 0/0       125649920 2017-09-21 19:37 81ce2fd011bc8241ae72eaee9146116b7c289e941467ff276397720171e6c576/layer.tar
-    drwxr-xr-x 0/0               0 2017-09-21 19:37 a10239905b060fd8b17ab31f37957bd126774f52f5280767d3b2639692913499/
-    -rw-r--r-- 0/0               3 2017-09-21 19:37 a10239905b060fd8b17ab31f37957bd126774f52f5280767d3b2639692913499/VERSION
-    -rw-r--r-- 0/0             482 2017-09-21 19:37 a10239905b060fd8b17ab31f37957bd126774f52f5280767d3b2639692913499/json
-    -rw-r--r-- 0/0           15872 2017-09-21 19:37 a10239905b060fd8b17ab31f37957bd126774f52f5280767d3b2639692913499/layer.tar
-    drwxr-xr-x 0/0               0 2017-09-21 19:37 ab6e1ca3392b2f4dbb60157cf99434b6975f37a767f530e293704a7348407634/
-    -rw-r--r-- 0/0               3 2017-09-21 19:37 ab6e1ca3392b2f4dbb60157cf99434b6975f37a767f530e293704a7348407634/VERSION
-    -rw-r--r-- 0/0             482 2017-09-21 19:37 ab6e1ca3392b2f4dbb60157cf99434b6975f37a767f530e293704a7348407634/json
-    -rw-r--r-- 0/0            5632 2017-09-21 19:37 ab6e1ca3392b2f4dbb60157cf99434b6975f37a767f530e293704a7348407634/layer.tar
-    -rw-r--r-- 0/0             574 1970-01-01 01:00 manifest.json
+    $ tar tvf lolcow.tar
+    drwxr-xr-x  0 0      0           0 Aug 16 11:22 2f0514a4c044af1ff4f47a46e14b6d46143044522fcd7a9901124209d16d6171/
+    -rw-r--r--  0 0      0           3 Aug 16 11:22 2f0514a4c044af1ff4f47a46e14b6d46143044522fcd7a9901124209d16d6171/VERSION
+    -rw-r--r--  0 0      0         401 Aug 16 11:22 2f0514a4c044af1ff4f47a46e14b6d46143044522fcd7a9901124209d16d6171/json
+    -rw-r--r--  0 0      0    75156480 Aug 16 11:22 2f0514a4c044af1ff4f47a46e14b6d46143044522fcd7a9901124209d16d6171/layer.tar
+    -rw-r--r--  0 0      0        1499 Aug 16 11:22 5a15b484bc657d2b418f2c20628c29945ec19f1a0c019d004eaf0ca1db9f952b.json
+    drwxr-xr-x  0 0      0           0 Aug 16 11:22 af7e389ea6636873dbc5adc17826e8401d96d3d384135b2f9fe990865af202ab/
+    -rw-r--r--  0 0      0           3 Aug 16 11:22 af7e389ea6636873dbc5adc17826e8401d96d3d384135b2f9fe990865af202ab/VERSION
+    -rw-r--r--  0 0      0         946 Aug 16 11:22 af7e389ea6636873dbc5adc17826e8401d96d3d384135b2f9fe990865af202ab/json
+    -rw-r--r--  0 0      0   118356480 Aug 16 11:22 af7e389ea6636873dbc5adc17826e8401d96d3d384135b2f9fe990865af202ab/layer.tar
+    -rw-r--r--  0 0      0         266 Dec 31  1969 manifest.json
 
 In other words, it is evident that this 'tarball' is a Docker-format image comprised of multiple layers along with metadata in a JSON manifest.
 
@@ -676,19 +628,11 @@ Through use of the ``docker-archive`` bootstrap agent, a SIF file (``lolcow_tar.
     $ singularity build lolcow_tar.sif docker-archive://lolcow.tar
     INFO:    Starting build...
     Getting image source signatures
-    Copying blob sha256:a2022691bf950a72f9d2d84d557183cb9eee07c065a76485f1695784855c5193
+    Copying blob sha256:2f0514a4c044af1ff4f47a46e14b6d46143044522fcd7a9901124209d16d6171
      119.83 MiB / 119.83 MiB [==================================================] 6s
-    Copying blob sha256:ae620432889d2553535199dbdd8ba5a264ce85fcdcd5a430974d81fc27c02b45
+    Copying blob sha256:af7e389ea6636873dbc5adc17826e8401d96d3d384135b2f9fe990865af202ab
      15.50 KiB / 15.50 KiB [====================================================] 0s
-    Copying blob sha256:c561538251751e3685c7c6e7479d488745455ad7f84e842019dcb452c7b6fecc
-     14.50 KiB / 14.50 KiB [====================================================] 0s
-    Copying blob sha256:f96e6b25195f1b36ad02598b5d4381e41997c93ce6170cab1b81d9c68c514db0
-     5.50 KiB / 5.50 KiB [======================================================] 0s
-    Copying blob sha256:7f7a065d245a6501a782bf674f4d7e9d0a62fa6bd212edbf1f17bad0d5cd0bfc
-     3.00 KiB / 3.00 KiB [======================================================] 0s
-    Copying blob sha256:70ca7d49f8e9c44705431e3dade0636a2156300ae646ff4f09c904c138728839
-     116.56 MiB / 116.56 MiB [==================================================] 6s
-    Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
+    Copying config sha256:5a15b484bc657d2b418f2c20628c29945ec19f1a0c019d004eaf0ca1db9f952b
      3.33 KiB / 3.33 KiB [======================================================] 0s
     Writing manifest to image destination
     Storing signatures
@@ -763,7 +707,7 @@ When working with repositories such as Docker Hub, ``Bootstrap`` and ``From`` ar
 .. code-block:: singularity
 
     Bootstrap: docker
-    From: godlovedc/lolcow
+    From: sylabsio/lolcow
 
 then
 
@@ -771,7 +715,7 @@ then
 
     sudo singularity build lolcow.sif lolcow.def
 
-creates a {Singularity} container in SIF by bootstrapping from the public ``godlovedc/lolcow`` image from Docker Hub.
+creates a {Singularity} container in SIF by bootstrapping from the public ``sylabsio/lolcow`` image from Docker Hub.
 
 In the above definition file, ``docker`` is one of numerous, possible bootstrap agents; this, and other bootstrap agents receive attention :ref:`in the appendix <build-docker-module>`.
 
@@ -813,7 +757,7 @@ Consider again :ref:`the definition file used the outset of the section above <s
 .. code-block:: singularity
 
     Bootstrap: docker
-    From: godlovedc/lolcow
+    From: sylabsio/lolcow
 
 With two small adjustments to the {Singularity} ``build`` command, the Sylabs Cloud Remote Builder can be utilized:
 
@@ -821,30 +765,26 @@ With two small adjustments to the {Singularity} ``build`` command, the Sylabs Cl
 .. code-block:: none
 
     $ singularity build --remote lolcow_rb_def.sif lolcow.def
-    searching for available build agent......INFO:    Starting build...
+    INFO:    Access Token Verified!
+    INFO:    Token stored in /root/.singularity/remote.yaml
+    INFO:    Remote "default" now in use.
+    INFO:    Starting build...
     Getting image source signatures
-    Copying blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
-     45.33 MiB / 45.33 MiB  0s
-    Copying blob sha256:3b61febd4aefe982e0cb9c696d415137384d1a01052b50a85aae46439e15e49a
-     848 B / 848 B  0s
-    Copying blob sha256:9d99b9777eb02b8943c0e72d7a7baec5c782f8fd976825c9d3fb48b3101aacc2
-     621 B / 621 B  0s
-    Copying blob sha256:d010c8cf75d7eb5d2504d5ffa0d19696e8d745a457dd8d28ec6dd41d3763617e
-     853 B / 853 B  0s
-    Copying blob sha256:7fac07fb303e0589b9c23e6f49d5dc1ff9d6f3c8c88cabe768b430bdb47f03a9
-     169 B / 169 B  0s
-    Copying blob sha256:8e860504ff1ee5dc7953672d128ce1e4aa4d8e3716eb39fe710b849c64b20945
-     53.75 MiB / 53.75 MiB  0s
-    Copying config sha256:73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
-     3.33 KiB / 3.33 KiB  0s
+    Copying blob sha256:16ec32c2132b43494832a05f2b02f7a822479f8250c173d0ab27b3de78b2f058
+    Copying blob sha256:5ca731fc36c28789c5ddc3216563e8bfca2ab3ea10347e07554ebba1c953242e
+    Copying config sha256:fd0daa4d897cbb381c3bad481073f53ee667a2216cc24961ca4d661e83e56b4b
     Writing manifest to image destination
     Storing signatures
+    2021/08/16 18:34:41  info unpack layer: sha256:16ec32c2132b43494832a05f2b02f7a822479f8250c173d0ab27b3de78b2f058
+    2021/08/16 18:34:42  info unpack layer: sha256:5ca731fc36c28789c5ddc3216563e8bfca2ab3ea10347e07554ebba1c953242e
     INFO:    Creating SIF file...
-    INFO:    Build complete: /tmp/image-994007654
-    INFO:    Now uploading /tmp/image-994007654 to the library
-     87.94 MiB / 87.94 MiB  100.00% 41.76 MiB/s 2s
-    INFO:    Setting tag latest
-     87.94 MiB / 87.94 MiB [===============================================================================] 100.00% 19.08 MiB/s 4s
+    INFO:    Build complete: /tmp/image-014136319
+    WARNING: Skipping container verification
+    71.5MiB / 71.5MiB [========================================] 100 % 50.9 MiB/s 0s
+
+    Library storage: using 207.95 MiB out of unlimited quota
+    Container URL: https://cloud.sylabs.io/library/dtrudg-sylabs-2/remote-builds/rb-611aafbcd78bf1ce9c2123c4
+    INFO:    Build complete: lolcow_rb_def.sif
 
 In the above, ``--remote`` has been added as the ``build`` option that causes use of the Remote Builder service. A much more subtle change, however, is the *absence* of ``sudo`` ahead of ``singularity build``. Though subtle here, this absence is notable, as users can build containers via the Remote Builder with *escalated privileges*; in other words, steps in container creation that *require* ``root`` access *are* enabled via the Remote Builder even for (DevOps) users *without* admninistrative privileges locally.
 
@@ -875,7 +815,7 @@ When ``docker-daemon`` is the bootstrap agent in a {Singularity} definition file
 .. code-block:: singularity
 
     Bootstrap: docker-daemon
-    From: godlovedc/lolcow:latest
+    From: sylabsio/lolcow:latest
 
 .. note::
 
@@ -964,7 +904,7 @@ In the two-previous examples, the ``From`` keyword specifies *both* the ``user``
 .. code-block:: singularity
 
     Bootstrap: docker
-    Namespace: godlovedc
+    Namespace: sylabsio
     From: lolcow
 
 .. note::
@@ -1014,37 +954,33 @@ After successful authentication via interactive use of the ``--docker-login`` op
 Directing Execution
 -------------------
 
-The ``Dockerfile`` corresponding to ``godlovedc/lolcow`` (and `available here <https://hub.docker.com/r/godlovedc/lolcow/dockerfile>`_) is as follows:
+The ``Dockerfile`` corresponding to ``sylabsio/lolcow`` is as follows:
 
 .. code-block:: none
 
-    FROM ubuntu:16.04
+    FROM ubuntu:20.04
 
-    RUN apt-get update && apt-get install -y fortune cowsay lolcat
+    RUN apt-get update && apt-get install -y cowsay lolcat
 
     ENV PATH /usr/games:${PATH}
     ENV LC_ALL=C
 
-    ENTRYPOINT fortune | cowsay | lolcat
+    ENTRYPOINT date | cowsay | lolcat
 
-The execution-specific part of this ``Dockerfile`` is the ``ENTRYPOINT`` - "... an optional definition for the first part of the command to be run ..." according to `the available documentation <https://docs.docker.com/search/?q=ENTRYPOINT>`_. After conversion to SIF, execution of ``fortune | cowsay | lolcat`` *within* the container produces the output:
+The execution-specific part of this ``Dockerfile`` is the ``ENTRYPOINT`` - "... an optional definition for the first part of the command to be run ..." according to `the available documentation <https://docs.docker.com/search/?q=ENTRYPOINT>`_. After conversion to SIF, execution of ``date | cowsay | lolcat`` *within* the container produces the output:
 
 .. code-block:: none
 
     $ ./mylolcow.sif
-     ______________________________________
-    / Q: How did you get into artificial   \
-    | intelligence? A: Seemed logical -- I |
-    \ didn't have any real intelligence.   /
-     --------------------------------------
+    ______________________________
+    < Mon Aug 16 13:38:45 CDT 2021 >
+     ------------------------------
             \   ^__^
              \  (oo)\_______
                 (__)\       )\/\
                     ||----w |
                     ||     ||
-
-
-
+  
 In addition, ``CMD`` allows an arbitrary string to be *appended* to the ``ENTRYPOINT``. Thus, multiple commands or flags can be passed together through combined use.
 
 Suppose now that a {Singularity} ``%runscript`` **section** is added to the definition file as follows:
@@ -1052,20 +988,19 @@ Suppose now that a {Singularity} ``%runscript`` **section** is added to the defi
 .. code-block:: singularity
 
     Bootstrap: docker
-    Namespace: godlovedc
+    Namespace: sylabsio
     From: lolcow
 
     %runscript
 
-        fortune
+        date
 
 After conversion to SIF via the {Singularity} ``build`` command, exection of the resulting container produces the output:
 
 .. code-block:: none
 
     $ ./lolcow.sif
-    This was the most unkindest cut of all.
-            -- William Shakespeare, "Julius Caesar"
+    Mon Aug 16 13:39:20 CDT 2021
 
 In other words, introduction of a ``%runscript`` section into the {Singularity} definition file causes the ``ENTRYPOINT`` of the ``Dockerfile`` to be *bypassed*. The presence of the ``%runscript`` section would also bypass a ``CMD`` entry in the ``Dockerfile``.
 
@@ -1074,7 +1009,7 @@ To *preserve* use of ``ENTRYPOINT`` and/or ``CMD`` as defined in the ``Dockerfil
 .. code-block:: singularity
 
     Bootstrap: docker
-    Namespace: godlovedc
+    Namespace: sylabsio
     From: lolcow
     IncludeCmd: yes
 
@@ -1113,7 +1048,7 @@ When the ``%runscript`` section is *removed* from the {Singularity} definition f
 
     from: lolcow
     bootstrap: docker
-    namespace: godlovedc
+    namespace: sylabsio
 
 .. TODO-ND below ... Need to add a CMD to lolcow ...
 
@@ -1121,20 +1056,28 @@ The runscript 'inherited' from the ``Dockerfile`` is:
 
 .. code-block:: none
 
-    $ singularity inspect --runscript lolcow.sif
-
     #!/bin/sh
-    OCI_ENTRYPOINT='"/bin/sh" "-c" "fortune | cowsay | lolcat"'
+    OCI_ENTRYPOINT='"/bin/sh" "-c" "date | cowsay | lolcat"'
     OCI_CMD=''
+    CMDLINE_ARGS=""
+    # prepare command line arguments for evaluation
+    for arg in "$@"; do
+        CMDLINE_ARGS="${CMDLINE_ARGS} \"$arg\""
+    done
+
     # ENTRYPOINT only - run entrypoint plus args
     if [ -z "$OCI_CMD" ] && [ -n "$OCI_ENTRYPOINT" ]; then
-        SINGULARITY_OCI_RUN="${OCI_ENTRYPOINT} $@"
+        if [ $# -gt 0 ]; then
+            SINGULARITY_OCI_RUN="${OCI_ENTRYPOINT} ${CMDLINE_ARGS}"
+        else
+            SINGULARITY_OCI_RUN="${OCI_ENTRYPOINT}"
+        fi
     fi
 
     # CMD only - run CMD or override with args
     if [ -n "$OCI_CMD" ] && [ -z "$OCI_ENTRYPOINT" ]; then
         if [ $# -gt 0 ]; then
-            SINGULARITY_OCI_RUN="$@"
+            SINGULARITY_OCI_RUN="${CMDLINE_ARGS}"
         else
             SINGULARITY_OCI_RUN="${OCI_CMD}"
         fi
@@ -1143,12 +1086,15 @@ The runscript 'inherited' from the ``Dockerfile`` is:
     # ENTRYPOINT and CMD - run ENTRYPOINT with CMD as default args
     # override with user provided args
     if [ $# -gt 0 ]; then
-        SINGULARITY_OCI_RUN="${OCI_ENTRYPOINT} $@"
+        SINGULARITY_OCI_RUN="${OCI_ENTRYPOINT} ${CMDLINE_ARGS}"
     else
         SINGULARITY_OCI_RUN="${OCI_ENTRYPOINT} ${OCI_CMD}"
     fi
 
-    eval ${SINGULARITY_OCI_RUN}
+    # Evaluate shell expressions first and set arguments accordingly,
+    # then execute final command as first container process
+    eval "set ${SINGULARITY_OCI_RUN}"
+    exec "$@"
 
 From this Bourne shell script, it is evident that only an ``ENTRYPOINT`` is detailed in the ``Dockerfile``; thus the ``ENTRYPOINT only - run entrypoint plus args`` conditional block is executed. In this case then, :ref:`the third case of execution precedence <sec:def_files_execution_SUB_execution_precedence>` has been illustrated.
 
@@ -1185,7 +1131,7 @@ After describing various :ref:`action commands that could be applied to images h
 
 .. code-block:: none
 
-    $ singularity pull docker://godlovedc/lolcow
+    $ singularity pull docker://sylabsio/lolcow
     INFO:    Starting build...
     Getting image source signatures
     Copying blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
@@ -1219,7 +1165,7 @@ If the *same* ``pull`` command is issued a *second* time, the output is differen
 
 .. code-block:: none
 
-    $ singularity pull docker://godlovedc/lolcow
+    $ singularity pull docker://sylabsio/lolcow
     INFO:    Starting build...
     Getting image source signatures
     Skipping fetch of repeat blob sha256:9fb6c798fa41e509b58bccc5c29654c3ff4648b608f5daa67c1aab6a7d02c118
@@ -1330,7 +1276,7 @@ The index of images in this case is:
       ]
     }
 
-The ``digest`` blob in this index file includes the details for all of the blobs that collectively comprise the ``godlovedc/lolcow`` image:
+The ``digest`` blob in this index file includes the details for all of the blobs that collectively comprise the ``sylabsio/lolcow`` image:
 
 .. code-block:: javascript
 
@@ -1526,11 +1472,11 @@ Working Locally from the {Singularity} Command Line: ``oci-archive`` Boostrap Ag
 
 OCI archives, i.e., ``tar`` files obeying the OCI Image Layout Specification :ref:`as discussed previously <misc:OCI_Image_Layout_Specification>`, can seed creation of a container for {Singularity}. In this case, use is made of the ``oci-archive`` bootstrap agent.
 
-To illustrate this agent, it is convenient to build the archive from the {Singularity} cache. After a single ``pull`` of the ``godlovedc/lolcow`` image from Docker Hub, a ``tar`` format archive can be generated from the ``$HOME/.singularity/cache/oci`` directory as follows:
+To illustrate this agent, it is convenient to build the archive from the {Singularity} cache. After a single ``pull`` of the ``sylabsio/lolcow`` image from Docker Hub, a ``tar`` format archive can be generated from the ``$HOME/.singularity/cache/oci`` directory as follows:
 
 .. code-block:: none
 
-    $ tar cvf $HOME/godlovedc_lolcow.tar *
+    $ tar cvf $HOME/sylabsio.tar *
     blobs/
     blobs/sha256/
     blobs/sha256/73d5b1025fbfa138f2cacf45bbf3f61f7de891559fa25b28ab365c7d9c3cbd82
@@ -1548,7 +1494,7 @@ The native container ``lolcow_oci_tarfile.sif`` for use by {Singularity} can be 
 
 .. code-block:: none
 
-    $ singularity build lolcow_oci_tarfile.sif oci-archive://godlovedc_lolcow.tar
+    $ singularity build lolcow_oci_tarfile.sif oci-archive://sylabsio.tar
     Build target already exists. Do you want to overwrite? [N/y] y
     INFO:    Starting build...
     Getting image source signatures
@@ -1696,7 +1642,7 @@ When it comes to OCI archives, the definition file, ``lolcow-ocia.def`` correspo
 .. code-block:: singularity
 
     Bootstrap: oci-archive
-    From: godlovedc_lolcow.tar
+    From: sylabsio.tar
 
 Applying ``build`` as follows
 
@@ -1742,7 +1688,7 @@ In working with definition files, the following additional considerations arise:
       "org.label-schema.build-date": "Sunday_27_January_2019_0:5:29_UTC",
       "org.label-schema.schema-version": "1.0",
       "org.label-schema.usage.singularity.deffile.bootstrap": "oci-archive",
-      "org.label-schema.usage.singularity.deffile.from": "godlovedc_lolcow.tar",
+      "org.label-schema.usage.singularity.deffile.from": "sylabsio.tar",
       "org.label-schema.usage.singularity.version": "3.0.3-1"
     }
 
@@ -1819,7 +1765,7 @@ Best Practices
 
     5. Read-only ``/`` filesystem
 
-    {Singularity} mounts a container's ``/`` filesystem in read-only mode. To ensure a Docker container meets {Singularity}'s requirements, it may prove useful to execute ``docker run --read-only --tmpfs /run --tmpfs /tmp godlovedc/lolcow``. The best practioce here is:
+    {Singularity} mounts a container's ``/`` filesystem in read-only mode. To ensure a Docker container meets {Singularity}'s requirements, it may prove useful to execute ``docker run --read-only --tmpfs /run --tmpfs /tmp sylabsio/lolcow``. The best practioce here is:
 
         "Ensure Docker containers meet {Singularity}'s read-only ``/`` filesystem requirement"
 
@@ -1849,7 +1795,7 @@ Best Practices
 
         "Employ {Singularity}'s ``%runscript`` by default to avoid execution ambiguity"
 
-    Note that the ``ENTRYPOINT`` can be bypassed completely, e.g., ``docker run -i -t --entrypoint /bin/bash godlovedc/lolcow``. This allows for an interactive session within the container, that may prove useful in validating the built runtime.
+    Note that the ``ENTRYPOINT`` can be bypassed completely, e.g., ``docker run -i -t --entrypoint /bin/bash sylabsio/lolcow``. This allows for an interactive session within the container, that may prove useful in validating the built runtime.
 
 Best practices emerge from experience. Contributions that allow additional experiences to be shared as best practices are always encouraged. Please refer to :ref:`Contributing <contributing>` for additional details.
 
