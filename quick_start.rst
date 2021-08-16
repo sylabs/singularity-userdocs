@@ -253,14 +253,14 @@ and run {Singularity} with debugging messages on:
 
 .. code-block:: none
 
-    $ singularity --debug run library://sylabsed/examples/lolcow
+    $ singularity --debug run library://lolcow
 
 To pass the ``--containall`` option to the ``run`` command and run a
 {Singularity} image in an isolated manner:
 
 .. code-block:: none
 
-    $ singularity run --containall library://sylabsed/examples/lolcow
+    $ singularity run --containall library://lolcow
 
 {Singularity} 2.4 introduced the concept of command groups. For instance, to list
 Linux capabilities for a particular user, you would use the  ``list`` command in
@@ -335,7 +335,7 @@ layers into a usable {Singularity} file.
 
 .. code-block:: none
 
-    $ singularity pull docker://godlovedc/lolcow
+    $ singularity pull docker://sylabsio/lolcow
 
 Pulling Docker images reduces reproducibility. If you were to pull a Docker
 image today and then wait six months and pull again, you are not guaranteed to
@@ -351,7 +351,7 @@ container like so:
 
     $ singularity build ubuntu.sif library://ubuntu
 
-    $ singularity build lolcow.sif docker://godlovedc/lolcow
+    $ singularity build lolcow.sif docker://sylabsio/lolcow
 
 Unlike ``pull``, ``build`` will convert your image to the latest {Singularity}
 image format after downloading it.
@@ -376,7 +376,7 @@ from the Container Library:
 
 .. code-block:: none
 
-    $ singularity pull library://sylabsed/examples/lolcow
+    $ singularity pull library://lolcow
 
 Shell
 =====
@@ -412,7 +412,7 @@ exited.
 
 .. code-block:: none
 
-    $ singularity shell library://sylabsed/examples/lolcow
+    $ singularity shell library://lolcow
 
 Executing Commands
 ==================
@@ -440,7 +440,7 @@ disappears.
 
 .. code-block:: none
 
-    $ singularity exec library://sylabsed/examples/lolcow cowsay "Fresh from the library!"
+    $ singularity exec library://lolcow cowsay "Fresh from the library!"
      _________________________
     < Fresh from the library! >
      -------------------------
@@ -463,26 +463,25 @@ command, or simply by calling the container as though it were an executable.
 .. code-block:: none
 
     $ singularity run lolcow_latest.sif
-     _____________________________________
-    / You have been selected for a secret \
-    \ mission.                            /
-     -------------------------------------
+    ______________________________
+    < Mon Aug 16 13:01:55 CDT 2021 >
+     ------------------------------
             \   ^__^
              \  (oo)\_______
                 (__)\       )\/\
                     ||----w |
                     ||     ||
-
+    
     $ ./lolcow_latest.sif
-     ____________________________________
-    / Q: What is orange and goes "click, \
-    \ click?" A: A ball point carrot.    /
-     ------------------------------------
+    ______________________________
+    < Mon Aug 16 13:12:50 CDT 2021 >
+     ------------------------------
             \   ^__^
              \  (oo)\_______
                 (__)\       )\/\
                     ||----w |
                     ||     ||
+    
 
 
 ``run`` also works with the ``library://``, ``docker://``, and ``shub://`` URIs.
@@ -490,11 +489,10 @@ This creates an ephemeral container that runs and then disappears.
 
 .. code-block:: none
 
-    $ singularity run library://sylabsed/examples/lolcow
-     ____________________________________
-    / Is that really YOU that is reading \
-    \ this?                              /
-     ------------------------------------
+    $ singularity run library://lolcow
+    ______________________________
+    < Mon Aug 16 13:12:33 CDT 2021 >
+     ------------------------------
             \   ^__^
              \  (oo)\_______
                 (__)\       )\/\
@@ -627,17 +625,17 @@ Here is an example of a definition file:
 
     %post
         apt-get -y update
-        apt-get -y install fortune cowsay lolcat
+        apt-get -y install date cowsay lolcat
 
     %environment
         export LC_ALL=C
         export PATH=/usr/games:$PATH
 
     %runscript
-        fortune | cowsay | lolcat
+        date | cowsay | lolcat
 
     %labels
-        Author GodloveD
+        Author Sylabs
 
 
 To build a container from this definition file (assuming it is a file
