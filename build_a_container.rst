@@ -62,10 +62,10 @@ Library.
 
 .. code-block:: none
 
-    $ sudo singularity build lolcow.sif library://sylabs-jms/testing/lolcow
+    $ sudo singularity build lolcow.sif library://lolcow
 
 The first argument (``lolcow.sif``) specifies a path and name for your
-container. The second argument (``library://sylabs-jms/testing/lolcow``) gives
+container. The second argument (``library://lolcow``) gives
 the Container Library URI from which to download. By default the container will
 be converted to a compressed, read-only SIF. If you want your container in a
 writable format use the ``--sandbox`` option.
@@ -79,7 +79,7 @@ You can use ``build`` to download layers from Docker Hub and assemble them into
 
 .. code-block:: none
 
-    $ sudo singularity build lolcow.sif docker://godlovedc/lolcow
+    $ sudo singularity build lolcow.sif docker://sylabsio/lolcow
 
 .. _create_a_writable_container:
 
@@ -94,7 +94,7 @@ recommended to do so as root.
 
 .. code-block:: none
 
-    $ sudo singularity build --sandbox lolcow/ library://sylabs-jms/testing/lolcow
+    $ sudo singularity build --sandbox lolcow/ library://lolcow
 
 The resulting directory operates just like a container in a SIF file. To make
 changes within the container, use the ``--writable`` flag when you invoke your
@@ -141,14 +141,14 @@ and you want to use it to build a SIF container.
 
     %post
         apt-get -y update
-        apt-get -y install fortune cowsay lolcat
+        apt-get -y install cowsay lolcat
 
     %environment
         export LC_ALL=C
         export PATH=/usr/games:$PATH
 
     %runscript
-        fortune | cowsay | lolcat
+        date | cowsay | lolcat
 
 You can do so with the following command.
 

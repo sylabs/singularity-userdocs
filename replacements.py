@@ -12,7 +12,7 @@ def variableReplace(app, docname, source):
 # Add the needed variables to be replaced either on code or on text on the next
 # dictionary structure.
 variable_replacements = {
-    "{InstallationVersion}": "3.8.0",
+    "{InstallationVersion}": "3.8.1",
     "\{version\}": "3.8",
     "\{adminversion\}": "3.8",
     # The 'Singularity' noun is now a replacement so we can have
