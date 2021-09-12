@@ -203,10 +203,3 @@ will need to follow the next steps:
         git push origin master && # to update your fork \
         git checkout new-feature && \
         git merge master 
-
-
-
-
-
-
-

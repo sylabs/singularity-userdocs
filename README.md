@@ -31,7 +31,7 @@ pip3 install --user Sphinx sphinx-rtd-theme
 
 If your version of python 3 does not come with `pip` / `pip3`, you may need to
 install a `python3-pip`package with `apt` or `yum`, or you can install pip
-follwing [the instructions here](https://pip.pypa.io/en/stable/installing/).
+following [the instructions here](https://pip.pypa.io/en/stable/installing/).
 
 You're all set! After this you will only need to use your favorite editor to
 work with the RST files.

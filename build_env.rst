@@ -47,7 +47,7 @@ a location that is:
 .. warning::
 
    If you are not certain that your ``$HOME`` or
-   ``SINGULARITY_CACHEDIR`` filesytems support atomic rename, do not
+   ``SINGULARITY_CACHEDIR`` filesystems support atomic rename, do not
    run {Singularity} in parallel using remote container URLs. Instead
    use ``singularity pull`` to create a local SIF image, and then run
    this SIF image in a parallel step. An alternative is to use the
@@ -294,4 +294,3 @@ Encryption
 **SINGULARITY_ENCRYPTION_PASSPHRASE** Used to pass a plaintext passphrase to encrypt a container file system (with the ``--encrypt`` flag). The default is empty.
 
 **SINGULARITY_ENCRYPTION_PEM_PATH** Used to specify the location of a public key to use for container encryption (with the ``--encrypt`` flag). The default is empty.
-

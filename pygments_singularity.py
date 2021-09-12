@@ -31,4 +31,3 @@ class SingularityLexer(RegexLexer):
             (r'(.+?(?=^\s*%))|(.*)', using(BashLexer), '#pop'),
         ],
     }
-

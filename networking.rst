@@ -118,7 +118,7 @@ to the ``network`` configuration directory as required, and
 ==================
 
 The ``--network-args`` option provides a convenient way to specify arguments to
-pass directly to the cni plugins.  It must be used in conjuction with the
+pass directly to the cni plugins.  It must be used in conjunction with the
 ``--net`` flag.
 
 For instance, let's say you want to start an `NGINX <https://www.nginx.com/>`_

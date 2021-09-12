@@ -68,7 +68,7 @@ The ``:latest`` is the container tag. Tags are used to have different
 version of the same container.
 
 .. note::
-    When pushing your container, theres no need to add a ``.sif`` (Singularity Image Format) to the end of the container name, (like
+    When pushing your container, there's no need to add a ``.sif`` (Singularity Image Format) to the end of the container name, (like
     on your local machine), because all containers on the library are SIF containers.
 
 Let's assume you have your container (v1.0.1), and you want to push
@@ -307,4 +307,3 @@ After building, you can test your container like so:
 You can also use the web GUI to build containers remotely. First, go to https://cloud.sylabs.io/builder (make sure you are signed in).
 Then you can copy and paste, upload, or type your definition file. When you are finished, click build. Then you can download the container
 with the URL.
-
