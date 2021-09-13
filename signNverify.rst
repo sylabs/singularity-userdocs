@@ -342,4 +342,3 @@ container is signed, and the default ``verify`` behavior without specifying
     2   |1       |NONE    |JSON.Generic
     3   |1       |NONE    |FS
     Container verified: my_container.sif
-

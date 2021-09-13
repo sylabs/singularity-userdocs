@@ -692,7 +692,7 @@ collection of different containers.
 {Singularity} implements SCIF, and you can read more about how to use it
 below.
 
-SCIF is not specfic to {Singularity}. You can learn more about it at the
+SCIF is not specific to {Singularity}. You can learn more about it at the
 project's site: `<https://sci-f.github.io/>`_ which includes extended
 tutorials, the specification, and other information.
 

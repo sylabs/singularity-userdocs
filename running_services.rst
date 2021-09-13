@@ -425,7 +425,7 @@ Filesystem (SCIF) apps.
    {Singularity} implements SCIF, and you can read more about how to use it
    :ref:`apps <in the SCIF Apps section>`.
 
-   SCIF is not specfic to {Singularity}. You can learn more about it at the
+   SCIF is not specific to {Singularity}. You can learn more about it at the
    project site: <https://sci-f.github.io/>`_.
 
 
@@ -576,7 +576,7 @@ or another supervisor daemon installed on your host. Many init and supervisor
 daemons support managing processes via pid files.
 
 You can specify a `--pid-file` option to `singularity instance start` to write
-the PID for an instance to the specifed file, e.g.
+the PID for an instance to the specified file, e.g.
 
 .. code-block:: none
 

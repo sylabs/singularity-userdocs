@@ -136,7 +136,7 @@ within the container.  {Singularity} can often carry out this operation even in
 the absence of the "overlay fs" feature.
 
 However, binding paths to non-existent points within the container can result in
-unexpected behavior when used in conjuction with the ``--writable`` flag, and is
+unexpected behavior when used in conjunction with the ``--writable`` flag, and is
 therefore disallowed. If you need to specify bind paths in combination with the
 ``--writable`` flag, please ensure that the appropriate bind points exist within
 the container. If they do not already exist, it will be necessary to modify the

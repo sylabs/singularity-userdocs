@@ -154,4 +154,3 @@ Consolidating a work-flow into a {Singularity} container simplifies
 distribution and replication of scientific results. Making containers
 available along with published work enables other scientists to build
 upon (and verify) previous scientific work.
-

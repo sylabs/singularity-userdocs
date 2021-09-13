@@ -46,7 +46,7 @@ ensure that:
 * The application inside your container was compiled for a CUDA version, and
   device capability level, that is supported by the host card and driver.
 
-These requirements are usually satisified by installing the NVIDIA drivers and
+These requirements are usually satisfied by installing the NVIDIA drivers and
 CUDA packages directly from the NVIDIA website. Linux distributions may provide
 NVIDIA drivers and CUDA libraries, but they are often outdated which can lead to
 problems running applications compiled for the latest versions of CUDA.

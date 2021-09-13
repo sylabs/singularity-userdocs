@@ -291,7 +291,7 @@ Manipulating ``PATH``
 
 ``PATH`` is a special environment variable that tells a system where
 to look for programs that can be run. ``PATH`` contains multiple
-filesytem locations (paths) separated by colons. When you ask to run a
+filesystem locations (paths) separated by colons. When you ask to run a
 program ``myprog``, the system looks through these locations one by
 one, until it finds ``myprog``.
 
@@ -758,7 +758,7 @@ the SIF file metadata descriptor.
    runtime, *and should not be modified* in the container.
 
 -  **env**: All ``*.sh`` files in this directory are sourced in
-   alpha-numeric order when the container is started. For legacy
+   alphanumeric order when the container is started. For legacy
    purposes there is a symbolic link called ``/environment`` that
    points to ``/.singularity.d/env/90-environment.sh``. Whenever
    possible, avoid modifying or creating environment files manually to

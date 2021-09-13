@@ -66,7 +66,7 @@ Running action commands on public images from Docker Hub
                     ||----w |
                     ||     ||
 
-Here ``docker`` is prepended to ensure that the ``run`` command of {Singularity} is instructed to boostrap container creation based upon this Docker image, thus creating a complete URI for {Singularity}. {Singularity} subsequently downloads :ref:`all the OCI blobs that comprise this image <sec:oci_overview>`, and converts them into a *single* SIF file - the native format for {Singularity} containers. Because this image from Docker Hub is cached locally in the ``$HOME/.singularity/cache/oci-tmp/<org.opencontainers.image.ref.name>/lolcow_latest.sif`` directory, where ``<org.opencontainers.image.ref.name>`` will be replaced by the appropriate hash for the container, the image does not need to be downloaded again (from Docker Hub) the next time a {Singularity} ``run`` is executed. In other words, the cached copy is sensibly reused:
+Here ``docker`` is prepended to ensure that the ``run`` command of {Singularity} is instructed to bootstrap container creation based upon this Docker image, thus creating a complete URI for {Singularity}. {Singularity} subsequently downloads :ref:`all the OCI blobs that comprise this image <sec:oci_overview>`, and converts them into a *single* SIF file - the native format for {Singularity} containers. Because this image from Docker Hub is cached locally in the ``$HOME/.singularity/cache/oci-tmp/<org.opencontainers.image.ref.name>/lolcow_latest.sif`` directory, where ``<org.opencontainers.image.ref.name>`` will be replaced by the appropriate hash for the container, the image does not need to be downloaded again (from Docker Hub) the next time a {Singularity} ``run`` is executed. In other words, the cached copy is sensibly reused:
 
 .. code-block:: none
 
@@ -232,7 +232,7 @@ complete contents of that image.
 
     ``pull`` is a one-time-only operation that builds a SIF file corresponding to the image retrieved from Docker Hub. Updates to the image on Docker Hub will *not* be reflected in the *local* copy.
 
-In our example ``docker://sylabsio/lolcow``, ``sylabsio`` specifies a Docker Hub user, whereas ``lolcow`` is the name of the repository. Adding the option to specifiy an image tag, the generic version of the URI is ``docker://<user>/<repo-name>[:<tag>]``. `Repositories on Docker Hub <https://docs.docker.com/docker-hub/repos/>`_ provides additional details.
+In our example ``docker://sylabsio/lolcow``, ``sylabsio`` specifies a Docker Hub user, whereas ``lolcow`` is the name of the repository. Adding the option to specify an image tag, the generic version of the URI is ``docker://<user>/<repo-name>[:<tag>]``. `Repositories on Docker Hub <https://docs.docker.com/docker-hub/repos/>`_ provides additional details.
 
 
 .. _sec:using_prebuilt_private_images:
@@ -316,7 +316,7 @@ Based upon these exports, ``$ singularity pull docker://sylabsio/private`` allow
 
 .. note::
 
-    This approach for authentication supports both interactive and non-interactive sessions. However, the requirement for a plain-text password assigned to an envrionment variable, is the security compromise for this flexibility.
+    This approach for authentication supports both interactive and non-interactive sessions. However, the requirement for a plain-text password assigned to an environment variable, is the security compromise for this flexibility.
 
 .. note::
 
@@ -402,7 +402,7 @@ Alternatively, for purely interactive use, ``--docker-login`` is recommended:
     INFO:    Creating SIF file...
     INFO:    Build complete: pytorch_18.11-py3.sif
 
-Authentication aside, the outcome of the ``pull`` command is the {Singularity} container ``pytorch_18.11-py3.sif`` - i.e., a locally stored copy, that has been coverted to SIF.
+Authentication aside, the outcome of the ``pull`` command is the {Singularity} container ``pytorch_18.11-py3.sif`` - i.e., a locally stored copy, that has been converted to SIF.
 
 
 --------------------------------------------------------
@@ -441,7 +441,7 @@ This ``build`` results in a *local* copy of the Docker image in SIF, as did ``pu
 
 .. note::
 
-     ``docker://sylabsio/lolcow`` is the **target** provided as input for ``build``. Armed with this target, ``build`` applies the appropriate boostrap agent to create the container - in this case, one appropriate for Docker Hub.
+     ``docker://sylabsio/lolcow`` is the **target** provided as input for ``build``. Armed with this target, ``build`` applies the appropriate bootstrap agent to create the container - in this case, one appropriate for Docker Hub.
 
 In addition to a read-only container image in SIF (**default**), ``build`` allows for the creation of a writable (ch)root *directory* called a **sandbox** for interactive development via the ``--sandbox`` option:
 
@@ -529,7 +529,7 @@ During the build process, progress can be monitored in the Sylabs Cloud portal o
 .. image:: lolcow_sylabsrb.png
 
 
-.. _sec:mandatory_headers_docker_locally_boostrapped_cli:
+.. _sec:mandatory_headers_docker_locally_bootstrapped_cli:
 
 Locally Available Images: Cached by Docker
 ------------------------------------------
@@ -570,7 +570,7 @@ This indicates that ``sylabsio/lolcow:latest`` has been cached locally by Docker
 
 results in ``lolcow_from_docker_cache.sif`` for native use by {Singularity}. There are two important differences in syntax evident in the above ``build`` command:
 
-    1. The ``docker`` part of the URI has been appended by ``daemon``. This ensures {Singularity} seek an image locally cached by Docker to boostrap the conversion process to SIF, as opposed to attempting to retrieve an image remotely hosted via Docker Hub.
+    1. The ``docker`` part of the URI has been appended by ``daemon``. This ensures {Singularity} seek an image locally cached by Docker to bootstrap the conversion process to SIF, as opposed to attempting to retrieve an image remotely hosted via Docker Hub.
 
     2. ``sudo`` is prepended to the ``build`` command for {Singularity}; this is required as the Docker daemon executes as ``root``. However, if the user issuing the ``build`` command is a member of the ``docker`` Linux group, then ``sudo`` need not be prepended.
 
@@ -641,7 +641,7 @@ Through use of the ``docker-archive`` bootstrap agent, a SIF file (``lolcow_tar.
 
 There are two important differences in syntax evident in the above ``build`` command:
 
-    1. The ``docker`` part of the URI has been appended by ``archive``. This ensures {Singularity} seek a Docker-format image archive stored locally as ``lolcow.tar`` to boostrap the conversion process to SIF, as opposed to attempting to retrieve an image remotely hosted via Docker Hub.
+    1. The ``docker`` part of the URI has been appended by ``archive``. This ensures {Singularity} seek a Docker-format image archive stored locally as ``lolcow.tar`` to bootstrap the conversion process to SIF, as opposed to attempting to retrieve an image remotely hosted via Docker Hub.
 
     2. ``sudo`` is *not* prepended to the ``build`` command for {Singularity}. This is *not* required if the executing user has the appropriate access privileges to the stored file.
 
@@ -693,10 +693,10 @@ Finally, from the perspective of the Library, the *hosted* version of the SIF fi
 Working with Definition Files
 =============================
 
-.. _sec:def_file_mandatory_headers_remotely_boostrapped:
+.. _sec:def_file_mandatory_headers_remotely_bootstrapped:
 
-Mandatory Header Keywords: Remotely Boostrapped
------------------------------------------------
+Mandatory Header Keywords: Remotely Bootstrapped
+------------------------------------------------
 
 Akin to a set of blueprints that explain how to build a custom container, {Singularity} definition files (or "def files") are considered in detail :ref:`elsewhere in this manual <definition-files>`. Therefore, only def file nuances specific to interoperability with Docker receive consideration here.
 
@@ -746,13 +746,13 @@ enables authenticated use of the private image.
 
 .. note::
 
-    The ``-E`` option is required to preserve the user's existing environment variables upon ``sudo`` invocation - a priviledge escalation *required* to create {Singularity} containers via the ``build`` command.
+    The ``-E`` option is required to preserve the user's existing environment variables upon ``sudo`` invocation - a privilege escalation *required* to create {Singularity} containers via the ``build`` command.
 
 
 Remotely Bootstrapped and Built Containers
 ------------------------------------------
 
-Consider again :ref:`the definition file used the outset of the section above <sec:def_file_mandatory_headers_remotely_boostrapped>`:
+Consider again :ref:`the definition file used the outset of the section above <sec:def_file_mandatory_headers_remotely_bootstrapped>`:
 
 .. code-block:: singularity
 
@@ -802,13 +802,13 @@ A copy of the SIF file created by the service remains in the Sylabs Cloud {Singu
 
 .. note::
 
-    The Sylabs Cloud is currently available as an Alpha Preview. In addition to the {Singularity} Library and Remote Builder, a Keystore service is also available. All three services make use of a *freemium* pricing model in supporting {Singularity} Community Edition. In contrast, all three services are included in SingularityPRO - an enterprise grade subscription for {Singularity} that is offered for a fee from Sylabs. For addtional details regarding the different offerings available for {Singularity}, please `consult the Sylabs website <https://www.sylabs.io/singularity/>`_.
+    The Sylabs Cloud is currently available as an Alpha Preview. In addition to the {Singularity} Library and Remote Builder, a Keystore service is also available. All three services make use of a *freemium* pricing model in supporting {Singularity} Community Edition. In contrast, all three services are included in SingularityPRO - an enterprise grade subscription for {Singularity} that is offered for a fee from Sylabs. For additional details regarding the different offerings available for {Singularity}, please `consult the Sylabs website <https://www.sylabs.io/singularity/>`_.
 
 
-.. _sec:mandatory_headers_docker_locally_boostrapped_def_file:
+.. _sec:mandatory_headers_docker_locally_bootstrapped_def_file:
 
-Mandatory Header Keywords: Locally Boostrapped
-----------------------------------------------
+Mandatory Header Keywords: Locally Bootstrapped
+-----------------------------------------------
 
 When ``docker-daemon`` is the bootstrap agent in a {Singularity} definition file, SIF containers can be created from images cached locally by Docker. Suppose the definition file ``lolcow-d.def`` has contents:
 
@@ -848,7 +848,7 @@ Then,
     INFO:    Creating SIF file...
     INFO:    Build complete: lolcow_from_docker_cache.sif
 
-In other words, this is the definition-file counterpart to :ref:`the command-line invocation provided above <sec:mandatory_headers_docker_locally_boostrapped_cli>`.
+In other words, this is the definition-file counterpart to :ref:`the command-line invocation provided above <sec:mandatory_headers_docker_locally_bootstrapped_cli>`.
 
 .. note::
 
@@ -995,7 +995,7 @@ Suppose now that a {Singularity} ``%runscript`` **section** is added to the defi
 
         date
 
-After conversion to SIF via the {Singularity} ``build`` command, exection of the resulting container produces the output:
+After conversion to SIF via the {Singularity} ``build`` command, execution of the resulting container produces the output:
 
 .. code-block:: none
 
@@ -1411,8 +1411,8 @@ Building Containers for {Singularity} from OCI Images
 
 .. _cli-oci-bootstrap-agent:
 
-Working Locally from the {Singularity} Command Line: ``oci`` Boostrap Agent
----------------------------------------------------------------------------
+Working Locally from the {Singularity} Command Line: ``oci`` Bootstrap Agent
+----------------------------------------------------------------------------
 
 The example detailed in the previous section can be used to illustrate how a SIF file for use by {Singularity} can be created from the local cache - an albeit contrived example, that works because the {Singularity} cache is compliant with the OCI Image Layout Specification.
 
@@ -1420,7 +1420,7 @@ The example detailed in the previous section can be used to illustrate how a SIF
 
     Of course, the ``oci`` bootstrap agent can be applied to *any* **bundle** that is compliant with the OCI Image Layout Specification - not *just* the {Singularity} cache, as created by executing a {Singularity} ``pull`` command.
 
-In this local case, the ``build`` command of {Singularity} makes use of the ``oci`` boostrap agent as follows:
+In this local case, the ``build`` command of {Singularity} makes use of the ``oci`` bootstrap agent as follows:
 
 .. code-block:: none
 
@@ -1442,7 +1442,7 @@ In this local case, the ``build`` command of {Singularity} makes use of the ``oc
 
 As can be seen, this results in the SIF file ``lolcow_oci_cache.sif`` in the user's home directory.
 
-The syntax for the ``oci`` boostrap agent requires some elaboration, however. In this case, and as illustrated above, ``$HOME/.singularity/cache/oci`` has content:
+The syntax for the ``oci`` bootstrap agent requires some elaboration, however. In this case, and as illustrated above, ``$HOME/.singularity/cache/oci`` has content:
 
 .. code-block:: none
 
@@ -1450,7 +1450,7 @@ The syntax for the ``oci`` boostrap agent requires some elaboration, however. In
     blobs  index.json  oci-layout
 
 
-In other words, it is the ``$OCI_BUNDLE_DIR`` containing the data and metadata that collectively comprise the image layed out in accordance with the OCI Image Layout Specification :ref:`as discussed previously <misc:OCI_Image_Layout_Specification>` - the same data and metadata that are assembled into a single SIF file through the ``build`` process. However,
+In other words, it is the ``$OCI_BUNDLE_DIR`` containing the data and metadata that collectively comprise the image laid out in accordance with the OCI Image Layout Specification :ref:`as discussed previously <misc:OCI_Image_Layout_Specification>` - the same data and metadata that are assembled into a single SIF file through the ``build`` process. However,
 
 .. code-block:: none
 
@@ -1462,13 +1462,13 @@ does not *uniquely* specify an image from which to bootstrap the ``build`` proce
 
 .. note::
 
-    Executing the {Singularity} ``pull`` command multiple times on the same image produces multiple ``org.opencontainers.image.ref.name`` entries in the ``index.json`` file. Appending the value of the unique ``org.opencontainers.image.ref.name`` allows for use of the ``oci`` boostrap agent.
+    Executing the {Singularity} ``pull`` command multiple times on the same image produces multiple ``org.opencontainers.image.ref.name`` entries in the ``index.json`` file. Appending the value of the unique ``org.opencontainers.image.ref.name`` allows for use of the ``oci`` bootstrap agent.
 
 
 .. _cli-oci-archive-bootstrap-agent:
 
-Working Locally from the {Singularity} Command Line: ``oci-archive`` Boostrap Agent
------------------------------------------------------------------------------------
+Working Locally from the {Singularity} Command Line: ``oci-archive`` Bootstrap Agent
+------------------------------------------------------------------------------------
 
 OCI archives, i.e., ``tar`` files obeying the OCI Image Layout Specification :ref:`as discussed previously <misc:OCI_Image_Layout_Specification>`, can seed creation of a container for {Singularity}. In this case, use is made of the ``oci-archive`` bootstrap agent.
 
@@ -1521,7 +1521,7 @@ This assumes that the ``tar`` file exists in the current working directory.
 
 .. note::
 
-    Because the layers of a Docker image as well as the blobs of an OCI image are already ``gzip`` compressed, there is a minimal advantage to having compressed archives representing OCI images. For this reason, the ``build`` detailed above boostraps a SIF file for use by {Singularity} from only a ``tar`` file, and not a ``tar.gz`` file.
+    Because the layers of a Docker image as well as the blobs of an OCI image are already ``gzip`` compressed, there is a minimal advantage to having compressed archives representing OCI images. For this reason, the ``build`` detailed above bootstraps a SIF file for use by {Singularity} from only a ``tar`` file, and not a ``tar.gz`` file.
 
 
 Working from the {Singularity} Command Line with Remotely Hosted Images
@@ -1536,7 +1536,7 @@ In the previous section, an OCI archive was created from locally available OCI b
 
 Thus ``https`` (and ``http``) are additional bootstrap agents available to seed development of containers for {Singularity}.
 
-It is worth noting that the OCI image specfication compliant contents of this archive are:
+It is worth noting that the OCI image specification compliant contents of this archive are:
 
 .. code-block:: none
 
@@ -1668,8 +1668,8 @@ Applying ``build`` as follows
 results in the SIF container ``lolcow_oci_tarfile.sif``.
 
 
-Working with Definition Files: Additonal Considerations
--------------------------------------------------------
+Working with Definition Files: Additional Considerations
+--------------------------------------------------------
 
 In working with definition files, the following additional considerations arise:
 
@@ -1737,14 +1737,14 @@ Best Practices
 
     Docker containers *allow for* privilege escalation. In a ``Dockerfile``, for example, the ``USER`` instruction allows for user and/or group settings to be made in the Linux operating environment. The trust model in {Singularity} is completely different: {Singularity} allows untrusted users to run untrusted containers in a trusted way. Because {Singularity} containers embodied as SIF files execute in *user* space, there is no possibility for privilege escalation. In other words, those familiar with Docker, should *not* expect access to elevated user permissions; and as a corollary, use of the ``USER`` instruction must be *avoided*.
 
-    {Singularity} does, however, allow for fine-grained control over the permissions that containers require for execution. Given that Singularilty executes in user space, it is not surprising that permissions need to be externally established *for* the container through use of the ``capability`` command. :ref:`Detailed elsewhere in this documentation <security-options>`, {Singularity} allows users and/or groups to be granted/revoked authorized capabilties. Owing to {Singularity}'s trust model, this fundamental best practice can be stated as follows:
+    {Singularity} does, however, allow for fine-grained control over the permissions that containers require for execution. Given that Singularilty executes in user space, it is not surprising that permissions need to be externally established *for* the container through use of the ``capability`` command. :ref:`Detailed elsewhere in this documentation <security-options>`, {Singularity} allows users and/or groups to be granted/revoked authorized capabilities. Owing to {Singularity}'s trust model, this fundamental best practice can be stated as follows:
 
         "Employ ``singularity capability`` to manage execution privileges for containers"
 
 
     2. Maintaining containers built from Docker and OCI images
 
-    SIF files created by boostrapping from Docker or OCI images are, of course, only as current as the most recent {Singularity} ``pull``. Subsequent retrievals *may* result in containers that are built and/or behave differently, owing to changes in the corresponding ``Dockerfile``. A prudent practice then, for maintaining containers of value, is based upon use of {Singularity} definition files. Styled and implemented after a ``Dockerfile`` retrieved at some point in time, use of ``diff`` on subsequent versions of this same file, can be employed to inform maintenance of the corresponding {Singularity} definition file. Understanding build specifications at this level of detail places container creators in a much more sensible position prior to signing with an encrypted key. Thus the best practice is:
+    SIF files created by bootstrapping from Docker or OCI images are, of course, only as current as the most recent {Singularity} ``pull``. Subsequent retrievals *may* result in containers that are built and/or behave differently, owing to changes in the corresponding ``Dockerfile``. A prudent practice then, for maintaining containers of value, is based upon use of {Singularity} definition files. Styled and implemented after a ``Dockerfile`` retrieved at some point in time, use of ``diff`` on subsequent versions of this same file, can be employed to inform maintenance of the corresponding {Singularity} definition file. Understanding build specifications at this level of detail places container creators in a much more sensible position prior to signing with an encrypted key. Thus the best practice is:
 
         "Maintain detailed build specifications for containers, rather than opaque runtimes"
 
@@ -1785,7 +1785,7 @@ Best Practices
 
     8. Use of plain-text passwords for authentication
 
-    For obvious reasons, it is desireable to completely *avoid* use of plain-text passwords. Therefore, for interactive sessions requiring authentication, use of the ``--docker-login`` option for {Singularity}'s ``pull`` and ``build`` commands is *recommended*. At the present time, the *only* option available for non-interactive use is to :ref:`embed plain-text passwords into environment variables <sec:authentication_via_environment_variables>`. Because the Sylabs Cloud {Singularity} Library employs `time-limited API tokens for authentication <https://cloud.sylabs.io/auth>`_, use of SIF containers hosted through this service provides a more secure means for both interactive *and* non-interactive use. This best practice is:
+    For obvious reasons, it is desirable to completely *avoid* use of plain-text passwords. Therefore, for interactive sessions requiring authentication, use of the ``--docker-login`` option for {Singularity}'s ``pull`` and ``build`` commands is *recommended*. At the present time, the *only* option available for non-interactive use is to :ref:`embed plain-text passwords into environment variables <sec:authentication_via_environment_variables>`. Because the Sylabs Cloud {Singularity} Library employs `time-limited API tokens for authentication <https://cloud.sylabs.io/auth>`_, use of SIF containers hosted through this service provides a more secure means for both interactive *and* non-interactive use. This best practice is:
 
         "Avoid use of plain-text passwords"
 
@@ -1824,9 +1824,9 @@ In making use of Docker and OCI images through {Singularity} the need to trouble
 
     Maintenance of the {Singularity} cache (i.e., ``$HOME/.singularity/cache``) requires manual intervention at this time. By **carefully** issuing the command ``rm -rf $HOME/.singularity/cache``, its local cache will be cleared of all downloaded images.
 
-    5. The ``http`` and ``https`` are ``pull`` only boostrap agents
+    5. The ``http`` and ``https`` are ``pull`` only bootstrap agents
 
-    ``http`` and ``https`` are the only examples of ``pull`` only boostrap agents. In other words, when used with {Singularity}'s ``pull`` command, the result is a local copy of, for example, an OCI archive image. This means that a subsequent step is necessary to actually create a SIF container for use by {Singularity} - a step involving the ``oci-archive`` bootstrap agent in the case of an OCI image archive.
+    ``http`` and ``https`` are the only examples of ``pull`` only bootstrap agents. In other words, when used with {Singularity}'s ``pull`` command, the result is a local copy of, for example, an OCI archive image. This means that a subsequent step is necessary to actually create a SIF container for use by {Singularity} - a step involving the ``oci-archive`` bootstrap agent in the case of an OCI image archive.
 
 Like :ref:`best practices <sec:best_practices>`, troubleshooting scenarios and solutions emerge from experience. Contributions that allow additional experiences to be shared  are always encouraged. Please refer to :ref:`Contributing <contributing>` for additional details.
 

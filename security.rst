@@ -43,7 +43,7 @@ SingularityPRO - Long Term Support & Security Patches
 
 Security patches for {Singularity} are applied to the latest open-source
 version, so it is important to follow new releases and upgrade when
-neccessary.
+necessary.
 
 SingularityPRO is a professionally curated and licensed version of
 {Singularity} that provides added security, stability, and support
@@ -72,7 +72,7 @@ privileges once they are inside of a container. The container file
 system is mounted using the ``nosuid`` option, and processes are
 started with the ``PR_NO_NEW_PRIVS`` flag set. This means that even if
 you run `sudo` inside your container, you won't be able to change to
-another user, or gain root priveleges by other means. This approach
+another user, or gain root privileges by other means. This approach
 provides a secure way for users to run containers and greatly
 simplifies things like reading and writing data to the host system
 with appropriate ownership.
@@ -95,7 +95,7 @@ Singularity Image Format (SIF)
 ##############################
 
 Ensuring container security as a continuous process. {Singularity}
-provides ways to ensure integrity throughout the lifecyle of a
+provides ways to ensure integrity throughout the lifecycle of a
 container, i.e. at rest, in transit and while running. The SIF
 Singularity Image Format has been designed to achieve these goals.
 
@@ -171,7 +171,7 @@ Security in the Sylabs Cloud
 ############################
 
 `Sylabs Cloud <https://cloud.sylabs.io/home>`_ consists of a Remote
-Builder, a Container Library, and a Keystore. Together, theses
+Builder, a Container Library, and a Keystore. Together, these
 services provide an end-to-end solution for packaging and distributing
 applications in secure and trusted containers.
 
@@ -244,7 +244,3 @@ Authentication and encryption
    request between the services is authenticated using the
    authentication token supplied by the user in the associated
    request.
-
-
-
-

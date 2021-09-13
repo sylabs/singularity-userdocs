@@ -62,7 +62,7 @@ Suppose the Singularity Image Format (SIF) file ``busybox_latest.sif`` exists lo
 
 This is one way to bootstrap creation of this image in SIF that *retains* a local copy - i.e., a local copy of the SIF file *and* a cached copy of the OCI blobs. Additional approaches and details can be found in the section :ref:`Support for Docker and OCI <singularity-and-docker>`). 
 
-For the purpose of boostrapping the creation of an OCI compliant container, this SIF file can be mounted as follows: 
+For the purpose of bootstrapping the creation of an OCI compliant container, this SIF file can be mounted as follows: 
 
 .. code-block:: none 
 
