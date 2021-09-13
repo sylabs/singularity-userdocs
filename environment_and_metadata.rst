@@ -659,10 +659,10 @@ And the output would look like:
 
 
 ^^^^^^^^^^^^^^^^^^^^^^^
-``-h`` / ``--helpfile``
+``-H`` / ``--helpfile``
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``-h`` or ``-helpfile`` flag will show the container's description
+The ``-H`` or ``-helpfile`` flag will show the container's description
 in the ``%help`` section of its definition file.
 
 You can call it this way:
