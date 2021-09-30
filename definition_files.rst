@@ -245,8 +245,11 @@ environment variable in the ``%setup`` section.
 
     Be careful with the ``%setup`` section! This scriptlet is executed outside
     of the container on the host system itself, and is executed with elevated
-    privileges. Commands in ``%setup`` can alter and potentially damage the
-    host.
+    privileges when you run the build as ``root`` or with ``sudo``. Commands in
+    ``%setup`` can alter and potentially damage the host.
+
+    You should avoid ``%setup`` wherever possible, and work inside the container
+    in the ``%post`` block instead.
 
 Consider the example from the definition file above:
 
@@ -281,10 +284,11 @@ safety than using the ``%setup`` section. Its general form is:
 
 Each line is a ``<source>`` and ``<destination>`` pair. The ``<source>`` is either:
 
-  1. A valid path on your host system
-  2. A valid path in a previous stage of the build
+  1. A valid path to a file or directory on your host system
+  2. A valid glob pattern matching one or more files or directories on your host system
+  3. A valid path in a previous stage of the build
 
-while the ``<destination>`` is always a path into the current container. If the
+The ``<destination>`` is a path inside the current container. If the
 ``<destination>`` path is omitted it will be assumed to be the same as ``<source>``.
 To show how copying from your host system works, let's consider the example from
 the definition file above:
@@ -295,13 +299,50 @@ the definition file above:
         /file1
         /file1 /opt
 
-``file1`` was created in the root of the host file system during the ``%setup``
-section (see above).  The ``%files`` scriptlet will copy ``file1`` to the root
-of the container file system and then make a second copy of ``file1`` within the
-container in ``/opt``.
+This ``%files`` scriptlet will copy ``/file1`` to the root of the container file
+system and then make a second copy of ``file1`` within the container, inside
+``/opt``, at ``/opt/file1``.
 
-Files can also be copied from other stages by providing the source location in the
-previous stage and the destination in the current container.
+Copying Multiple Files with Patterns
+------------------------------------
+
+To copy multiple files or directories at a time you can specify a pattern as the
+``<source>`` for a ``%files`` line. {Singularity} matches patterns to filenames
+using the Go ``file.Match`` syntax:
+
+.. code-block:: none
+
+    '*'         matches any sequence of non-Separator characters
+    '?'         matches any single non-Separator character
+    '[' [ '^' ] { character-range } ']'
+                character class (must be non-empty)
+    c           matches character c (c != '*', '?', '\\', '[')
+    '\\' c      matches character c
+
+    character-range:
+    c           matches character c (c != '\\', '-', ']')
+    '\\' c      matches character c
+    lo '-' hi   matches character c for lo <= c <= hi
+
+(See: https://pkg.go.dev/path/filepath#Match)
+
+Some simple examples:
+
+* ``myfile*`` will match all files that have a name beginning with ``myfile``.
+  E.g. ``myfile-blue`` and ``myfile-red``. 
+
+* ``experiment???`` will match all files that have a name beginning with
+  ``experiment`` and followed by any three characters. It will match
+  ``experiment001``,``experiment002``, and ``experimentABC``, but not ``experimentA``.
+
+* ``document[0-9]`` will match ``document1``, but not ``documentA`` nor ``document01``.
+
+Copying Files Between stages
+----------------------------
+
+Files can also be copied from other stages, in a multi stage build, by providing
+the source location in the previous stage and the destination in the current
+container.
 
 .. code-block:: singularity
 
