@@ -27,12 +27,20 @@ created at ``$HOME/.singularity/cache`` by default. The location of
 the cache can be changed by setting the ``SINGULARITY_CACHEDIR``
 environment variable.
 
-.. note::
+When you run builds as root, using ``sudo``, images will be cached
+in root’s home at ``/root`` and not your user’s home. Use the
+``-E`` option to sudo to pass through the ``SINGULARITY_CACHEDIR``
+environment variable, if you set it.
 
-   When you run builds as root, using ``sudo``, images will be cached
-   in root’s home at ``/root`` and not your user’s home. Use the
-   ``-E`` option to sudo to pass through a ``SINGULARITY_CACHEDIR``
-   environment variable.
+.. code-block:: none
+
+    $ export SINGULARITY_CACHEDIR=/tmp/user/temporary-cache
+
+    # Running a build under your user account
+    $ singularity build --fakeroot myimage.sif mydef.def
+
+    # Running a build with sudo, must use -E to pass env var
+    $ sudo -E singularity build myimage.sif mydef.def
 
 If you change the value of ``SINGULARITY_CACHEDIR`` be sure to choose
 a location that is:
