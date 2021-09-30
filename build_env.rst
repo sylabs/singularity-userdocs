@@ -27,12 +27,20 @@ created at ``$HOME/.singularity/cache`` by default. The location of
 the cache can be changed by setting the ``SINGULARITY_CACHEDIR``
 environment variable.
 
-.. note::
+When you run builds as root, using ``sudo``, images will be cached
+in root’s home at ``/root`` and not your user’s home. Use the
+``-E`` option to sudo to pass through the ``SINGULARITY_CACHEDIR``
+environment variable, if you set it.
 
-   When you run builds as root, using ``sudo``, images will be cached
-   in root’s home at ``/root`` and not your user’s home. Use the
-   ``-E`` option to sudo to pass through a ``SINGULARITY_CACHEDIR``
-   environment variable.
+.. code-block:: none
+
+    $ export SINGULARITY_CACHEDIR=/tmp/user/temporary-cache
+
+    # Running a build under your user account
+    $ singularity build --fakeroot myimage.sif mydef.def
+
+    # Running a build with sudo, must use -E to pass env var
+    $ sudo -E singularity build myimage.sif mydef.def
 
 If you change the value of ``SINGULARITY_CACHEDIR`` be sure to choose
 a location that is:
@@ -76,6 +84,20 @@ as this may cause checksum / integrity errors when you run or build
 containers. If you experience problems use ``singularity cache clean``
 to reset the cache to a clean, empty state.
     
+BoltDB Corruption Errors
+========================
+
+The library that {Singularity} uses to retrieve and cache Docker/OCI layers
+keeps track of them using a single file database. If your home directory is on a
+network filesystem which experiences interruptions, or you run out of storage,
+it is possible for this database to become inconsistent.
+
+If you observe error messages when trying to run {Singularity} that mention
+`github.com/etcd-io/bbolt` then you should remove the database file:
+
+.. code::
+
+    rm ~/.local/share/containers/cache/blob-info-cache-v1.boltdb
 
 --------------
 Cache commands
