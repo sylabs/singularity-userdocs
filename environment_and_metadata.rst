@@ -431,6 +431,34 @@ later, default labels are represented using the `rc1 Label Schema
 
 .. _sec:labels:
 
+Inherited Labels
+----------------
+
+When building a container from an existing image, either directly from a URI or
+with a definition file, your container will inherit the labels that are set in
+that base image. For example the ``LABEL`` a Docker container sets in its
+``Dockerfile``, or a SIF container that sets labels in its definition file as
+described below.
+
+Inherited labels can only be overwritten during a build when the build is
+performed using the ``--force`` option. {Singularity} will warn that it is not
+modifying an existing label when ``--force`` is not used:
+
+.. code-block::
+
+  $ singularity build test2.sif test2.def
+  ...
+  INFO:    Adding labels
+  WARNING: Label: OWNER already exists and force option is false, not overwriting
+
+
+.. note::
+
+  {Singularity} 3.0 through 3.8 did not inherit labels from Docker/OCI images
+  during a build. {Singularity} 3.8 restores the behavior of 2.x, and inherits
+  these labels.
+
+
 Custom Labels
 -------------
 
