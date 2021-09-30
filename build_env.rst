@@ -84,6 +84,20 @@ as this may cause checksum / integrity errors when you run or build
 containers. If you experience problems use ``singularity cache clean``
 to reset the cache to a clean, empty state.
     
+BoltDB Corruption Errors
+========================
+
+The library that {Singularity} uses to retrieve and cache Docker/OCI layers
+keeps track of them using a single file database. If your home directory is on a
+network filesystem which experiences interruptions, or you run out of storage,
+it is possible for this database to become inconsistent.
+
+If you observe error messages when trying to run {Singularity} that mention
+`github.com/etcd-io/bbolt` then you should remove the database file:
+
+.. code::
+
+    rm ~/.local/share/containers/cache/blob-info-cache-v1.boltdb
 
 --------------
 Cache commands
