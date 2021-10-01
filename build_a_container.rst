@@ -169,8 +169,8 @@ requires root privileges.
 Building encrypted containers
 -----------------------------
 Beginning in {Singularity} 3.4.0 it is possible to build and run encrypted
-containers.  The containers are decrypted at runtime entirely in kernel space, 
-meaning that no intermediate decrypted data is ever present on disk or in 
+containers.  The containers are decrypted at runtime entirely in kernel space,
+meaning that no intermediate decrypted data is ever present on disk or in
 memory.  See :ref:`encrypted containers <encryption>` for more details.
 
 -------------
@@ -196,16 +196,16 @@ without echoing any output to your terminal.
 ``--encrypt``
 ==============
 
-Specifies that {Singularity} should use a secret saved in either the 
+Specifies that {Singularity} should use a secret saved in either the
 ``SINGULARITY_ENCRYPTION_PASSPHRASE`` or ``SINGULARITY_ENCRYPTION_PEM_PATH``
-environment variable to build an encrypted container.  See :ref:`encrypted 
-containers <encryption>` for more details.   
+environment variable to build an encrypted container.  See :ref:`encrypted
+containers <encryption>` for more details.
 
 ``--fakeroot``
 ==============
 
-Gives users a way to build containers completely unprivileged.  See :ref:`the 
-fakeroot feature <fakeroot>` for details. 
+Gives users a way to build containers completely unprivileged.  See :ref:`the
+fakeroot feature <fakeroot>` for details.
 
 ``--force``
 ===========
@@ -228,26 +228,26 @@ This command allows you to set a different library.  (The default library is
 ``--notest``
 ============
 
-If you don’t want to run the ``%test`` section during the container build, you 
+If you don’t want to run the ``%test`` section during the container build, you
 can skip it with the ``--notest`` option. For instance, maybe you are building a
-container intended to run in a production environment with GPUs. But perhaps 
-your local build resource does not have GPUs. You want to include a ``%test`` 
-section that runs a short validation but you don’t want your build to exit with 
+container intended to run in a production environment with GPUs. But perhaps
+your local build resource does not have GPUs. You want to include a ``%test``
+section that runs a short validation but you don’t want your build to exit with
 an error because it cannot find a GPU on your system.
 
 ``--passphrase``
 ================
 
-This flag allows you to pass a plaintext passphrase to encrypt the container 
-file system at build time. See :ref:`encrypted containers <encryption>` for more 
-details.   
+This flag allows you to pass a plaintext passphrase to encrypt the container
+file system at build time. See :ref:`encrypted containers <encryption>` for more
+details.
 
 ``--pem-path``
 ==============
 
-This flag allows you to pass the location of a public key to encrypt the 
-container file system at build time. See :ref:`encrypted containers 
-<encryption>` for more details.  
+This flag allows you to pass the location of a public key to encrypt the
+container file system at build time. See :ref:`encrypted containers
+<encryption>` for more details.
 
 ``--remote``
 ============
@@ -310,6 +310,14 @@ the same way as ``--bind`` for ``shell``, ``exec`` and ``run`` and can be specif
 multiple times, see :ref:`user defined bind paths <user-defined-bind-paths>`.
 Bind mount occurs during the execution of ``post`` and ``test`` sections.
 
+``--writable-tmpfs``
+====================
+
+This flag will run the ``%test`` section of the build with a writable
+tmpfs overlay filesystem in place. This allows the tests to create
+files, which will be discarded at the end of the build. Other portions
+of the build do not use this temporary filesystem.
+
 -----------------
 More Build topics
 -----------------
@@ -325,5 +333,5 @@ More Build topics
    don’t have root access on a Linux machine or want to host your container on
    the cloud) check out `this site <https://cloud.sylabs.io/builder>`_
 
--  If you want to **build a container with an encrypted file system** look 
+-  If you want to **build a container with an encrypted file system** look
    :ref:`here <encryption>`.
