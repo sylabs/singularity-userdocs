@@ -8,7 +8,8 @@ Bind Paths and Mounts
 
 .. _sec:bindpaths:
 
-If `enabled by the system administrator <https://singularity-admindoc.readthedocs.io/en/latest/the_singularity_config_file.html#user-bind-control-boolean-default-yes>`_,
+Unless `disabled by the system administrator
+<https://singularity-admindoc.readthedocs.io/en/latest/the_singularity_config_file.html#user-bind-control-boolean-default-yes>`_,
 {Singularity} allows you to map directories on your host system to directories
 within your container using bind mounts. This allows you to read and write data
 on the host system with ease.
@@ -18,11 +19,13 @@ on the host system with ease.
 Overview
 --------
 
-When {Singularity} ‘swaps’ the host operating system for the one inside your
-container, the host file systems becomes inaccessible. But you may want to read
-and write files on the host system from within the container. To enable this
-functionality, {Singularity} will bind directories back into the container via two
-primary methods: system-defined bind paths and user-defined bind paths.
+When {Singularity} ‘swaps’ the host operating system for the one
+inside your container, the host file systems becomes
+inaccessible. However, you may want to read and write files on the
+host system from within the container. To enable this functionality,
+{Singularity} will bind directories back into the container via two
+primary methods: system-defined bind paths and user-defined bind
+paths.
 
 -------------------------
 System-defined bind paths
@@ -54,7 +57,7 @@ running, you can disable the ``hostfs`` binds:
 
     $ singularity run --no-mount hostfs mycontainer.sif
 
-    
+
 Multiple mounts can be disabled by specifying them separated by
 commas:
 
@@ -68,7 +71,8 @@ commas:
 User-defined bind paths
 -----------------------
 
-If the system administrator has `enabled user control of binds <https://singularity-admindoc.readthedocs.io/en/latest/the_singularity_config_file.html#user-bind-control-boolean-default-yes>`_,
+Unless the system administrator has `disabled user control of binds
+<https://singularity-admindoc.readthedocs.io/en/latest/the_singularity_config_file.html#user-bind-control-boolean-default-yes>`_,
 you will be able to request your own bind paths within your container.
 
 The {Singularity} action commands (``run``, ``exec``, ``shell``, and
@@ -83,8 +87,14 @@ of the container respectively. If ``dest`` is not given, it is set equal to
 specified multiple times, or a comma-delimited string of bind path
 specifications can be used.
 
-Specifying bind paths
-=====================
+{Singularity} 3.9 adds an additional ``--mount`` flag, which provides
+a longer-form method of specifying binds in ``--mount
+type=bind,src=<source>,dst=<destination>[,<option>]...`` format. This is
+compatible with the ``--mount`` syntax for binds in Docker and other
+OCI runtimes.
+
+``--bind`` Examples
+===================
 
 Here’s an example of using the ``--bind`` option and binding ``/data`` on the
 host to ``/mnt`` in the container (``/mnt`` does not need to already exist in
@@ -122,9 +132,73 @@ you bind many directories into your {Singularity} containers and they don’t
 change, you could even benefit by setting this variable in your ``.bashrc``
 file.
 
+``--mount`` Examples
+====================
 
-A note on using ``--bind`` with the ``--writable`` flag
-=======================================================
+The ``--mount`` flag takes a mount specification in the format
+``type=bind,src=<source>,dst=<dest>``. Additional options can be
+specified, comma delimited.
+
+{Singularity} only supports the ``bind`` type for ``--mount``, and
+will infer ``type=bind`` if it is not provided.
+
+``src`` or ``source`` can be used interchangeably. ``dst``,
+``destination``, or ``target`` are also equivalent.
+
+To mount ``data`` on the host to ``/mnt`` inside the container:
+
+.. code-block:: none
+
+    $ singularity exec \
+        --mount type=bind,src=/data,dst=/mnt \
+	my_container.sif ls /mnt
+    bar  foo
+
+To mount the same directory read-only in the container, add the ``ro`` option:
+
+.. code-block:: none
+
+    $ singularity exec \
+        --mount type=bind,source=/data,dest=/mnt,ro \
+	my_container.sif touch /mnt/test
+    touch: cannot touch '/mnt/test': Permission denied
+
+You can bind multiple directories in a single command with multiple
+``--mount`` flags:
+
+.. code-block:: none
+
+    $ singularity shell --mount type=bind,src=/opt,dst=/opt \
+                        --mount type=bind,src=/data,dst=/data \
+                        my_container.sif
+
+This will bind ``/opt`` on the host to ``/opt`` in the container and ``/data``
+on the host to ``/mnt`` in the container.
+
+The mount string can be quoted and escaped according to CSV rules,
+wrapping each field in double quotes if necessary
+characters. ``--mount`` allows bind mounting paths that are not
+possible with the ``--bind`` flag. For example:
+
+.. code-block:: none
+
+    # Mount a path containing ':' (not possible with --bind)
+    $ singularity run \
+        --mount type=bind,src=/my:path,dst=/mnt \
+	mycontainer.sif
+
+    # Mount a path containing a ','
+    $ singularity run \
+        --mount type=bind,"src=/comma,dir",dst=/mnt \
+	mycontainer.sif
+
+Mount specifications are also read from then environment variable
+``$SINGULARITY_MOUNT``. Multiple bind mounts set via this environment
+variable should be separated by newlines (``\n``).
+
+
+Using ``--bind`` or ``-mount`` with the ``--writable`` flag
+===========================================================
 
 To mount a bind path inside the container, a *bind point* must be defined
 within the container. The bind point is a directory within the container that
@@ -212,7 +286,7 @@ container.
    supported version introduced in {Singularity} 3.6.
 
 
-   
+
 FUSE mount definitions
 ======================
 
@@ -224,7 +298,7 @@ A fusemount definition for {Singularity} consists of 3 parts:
 
 
 - **type** specifies how and where the FUSE mount will be run. The options are:
-  
+
   - ``container`` - use a FUSE command on the host, to mount a
     filesystem into the container, with the fuse process attached.
   - ``host`` - use a FUSE command inside the container, to mount a
@@ -243,8 +317,8 @@ A fusemount definition for {Singularity} consists of 3 parts:
 
 - **container mountpoint** is an *absolute path* at which the FUSE
   filesystem will be mounted in the container.
-  
-    
+
+
 FUSE mount with a host executable
 =================================
 
@@ -254,7 +328,7 @@ been installed on my host, I run with the ``host`` mount type:
 .. code-block:: none
 
     $ singularity run --fusemount "host:sshfs server:/ /server" docker://ubuntu
-    Singularity> cat /etc/hostname 
+    Singularity> cat /etc/hostname
     localhost.localdomain
     Singularity> cat /server/etc/hostname
     server
@@ -269,7 +343,7 @@ type:
 .. code-block:: none
 
     $ singularity run --fusemount "container:sshfs server:/ /server" sshfs.sif
-    Singularity> cat /etc/hostname 
+    Singularity> cat /etc/hostname
     localhost.localdomain
     Singularity> cat /server/etc/hostname
     server
@@ -299,12 +373,19 @@ and specify the bind in the format:
 
     -B <image-file>:<dest>:image-src=<source>
 
-This will bind the ``<source>`` inside ``<image-file>`` to ``<dest>``
-in the container.
+Alternatively use the ``--mount`` option, and specify the bind in the
+format:
+
+.. code-block:: none
+
+    --mount type=bind,src=<image-file>,dst=<dest>,image-src=<source>
+
+This will bind the ``<source>`` path inside ``<image-file>`` to
+``<dest>`` in the container.
 
 If you do not add ``:image-src=<source>`` to your bind specification,
 then the ``<image-file>`` itself will be bound to ``<dest>`` instead.
-    
+
 
 Ext3 Image Files
 ================
@@ -321,14 +402,14 @@ to distribute in an image file that allows read/write:
     Creating regular file inputs.img
     Creating filesystem with 102400 1k blocks and 25688 inodes
     Filesystem UUID: e23c29c9-7a49-4b82-89bf-2faf36b5a781
-    Superblock backups stored on blocks: 
+    Superblock backups stored on blocks:
    	8193, 24577, 40961, 57345, 73729
 
-    Allocating group tables: done                            
-    Writing inode tables: done                            
+    Allocating group tables: done
+    Writing inode tables: done
     Creating journal (4096 blocks): done
     Copying files into the device: done
-    Writing superblocks and filesystem accounting information: done 
+    Writing superblocks and filesystem accounting information: done
 
     # Run {Singularity}, mounting my input data to '/input-data' in
     # the container.
@@ -337,7 +418,12 @@ to distribute in an image file that allows read/write:
     1           3           5           7           9
     2           4           6           8           lost+found
 
-    
+    # Or with --mount instead of -B
+    $ singularity run \
+        --mount type=bind,src=inputs.img,dst=/input-data,image-src=/ \
+	mycontainer.sif
+
+
 SquashFS Image Files
 ====================
 
@@ -360,7 +446,11 @@ the squashfs format is appropriate:
     Singularity> ls /input-data/
     1  2  3  4  5  6  7  8  9
 
-    
+    # Or with --mount instead of -B
+    $ singularity run \
+        --mount type=bind,src=src-inputs.squashfs,dst=/input-data,image-src=/ \
+	mycontainer.sif
+
 SIF Image Files
 ===============
 
@@ -382,7 +472,12 @@ overlays instructions<overlay-sif>`:
     Singularity> ls /input-data
     1  2  3  4  5  6  7  8  9
 
-If your bind source is a SIF then {Singularity} will bind from
-the first data partition in the SIF, or you may specify an
-alternative descriptor by ID with the additional bind option
-``:id=n``, where n is the descriptor ID.
+    # Or with --mount instead of -B
+    $ singularity run \
+        --mount type=bind,src=inputs.sif,dst=/input-data,image-src=/ \
+	mycontainer.sif
+
+If your bind source is a SIF then {Singularity} will bind from the
+first data partition in the SIF, or you may specify an alternative
+descriptor by ID with the additional option ``id=n``, where n is the
+descriptor ID.
