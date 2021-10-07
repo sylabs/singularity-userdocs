@@ -348,20 +348,6 @@ The Registry keyword is optional. It will default to ``index.docker.io``.
 
 The Namespace keyword is optional. It will default to ``library``.
 
-.. code-block:: singularity
-
-    IncludeCmd: yes
-
-The IncludeCmd keyword is optional. If included, and if a ``%runscript`` is not
-specified, a Docker ``CMD`` will take precedence over ``ENTRYPOINT`` and will be
-used as a runscript. Note that the ``IncludeCmd`` keyword is considered valid if
-it is not empty! This means that ``IncludeCmd: yes`` and ``IncludeCmd: no`` are
-identical. In both cases the ``IncludeCmd`` keyword is not empty, so the Docker
-``CMD`` will take precedence over an ``ENTRYPOINT``.
-
- See :ref:`{Singularity} and Docker <singularity-and-docker>` for more info on
- order of operations for determining a runscript.
-
 Notes
 """""
 
@@ -433,13 +419,13 @@ image and the new image during bootstrap.
 Overview
 """"""""
 
-Using, this module, a container from supporting OCI Registries - Eg: ACR (Azure Container 
-Registry), local container registries, etc can be used as your “base” image and later 
-customized. This allows you to build multiple images from the same starting point. For 
-example, you may want to build several containers with the same custom python installation, 
-the same custom compiler toolchain, or the same base MPI installation. Instead of 
-building these from scratch each time, you could make use of ``oras`` to pull an 
-appropriate base container and then build new containers by adding customizations in 
+Using, this module, a container from supporting OCI Registries - Eg: ACR (Azure Container
+Registry), local container registries, etc can be used as your “base” image and later
+customized. This allows you to build multiple images from the same starting point. For
+example, you may want to build several containers with the same custom python installation,
+the same custom compiler toolchain, or the same base MPI installation. Instead of
+building these from scratch each time, you could make use of ``oras`` to pull an
+appropriate base container and then build new containers by adding customizations in
 ``%post`` , ``%environment``, ``%runscript``, etc.
 
 Keywords
@@ -799,15 +785,15 @@ zypper build module is ``zypper`` itself.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you are using docker locally there are two options for creating {Singularity}
-images without the need for a repository. You can either build a SIF from a 
-``docker-save`` tar file or you can convert any docker image present in 
+images without the need for a repository. You can either build a SIF from a
+``docker-save`` tar file or you can convert any docker image present in
 docker's daemon internal storage.
 
 
 Overview
 """"""""
 
-``docker-daemon`` allows you to build a SIF from any docker image currently 
+``docker-daemon`` allows you to build a SIF from any docker image currently
 residing in docker's daemon internal storage:
 
 .. code-block:: console
@@ -826,7 +812,7 @@ residing in docker's daemon internal storage:
     Storing signatures
     2019/12/11 14:53:24  info unpack layer: sha256:eb7c47c7f0fd0054242f35366d166e6b041dfb0b89e5f93a82ad3a3206222502
     INFO:    Creating SIF file...
-    Singularity> 
+    Singularity>
 
 while ``docker-archive`` permits you to do the same thing starting from a docker
 image stored in a ``docker-save`` formatted tar file:
@@ -845,12 +831,12 @@ image stored in a ``docker-save`` formatted tar file:
     Storing signatures
     2019/12/11 15:25:09  info unpack layer: sha256:eb7c47c7f0fd0054242f35366d166e6b041dfb0b89e5f93a82ad3a3206222502
     INFO:    Creating SIF file...
-    Singularity> 
+    Singularity>
 
 Keywords
 """"""""
 
-The ``docker-daemon`` bootstrap agent can be used in a {Singularity} definition file 
+The ``docker-daemon`` bootstrap agent can be used in a {Singularity} definition file
 as follows:
 
 .. code-block:: singularity
@@ -858,14 +844,14 @@ as follows:
     From: docker-daemon:<image>:<tag>
 
 where both ``<image>`` and ``<tag>`` are mandatory fields that must be written explicitly.
-The ``docker-archive`` bootstrap agent requires instead the path to the tar file 
+The ``docker-archive`` bootstrap agent requires instead the path to the tar file
 containing the image:
 
 .. code-block:: singularity
 
     From: docker-archive:<path-to-tar-file>
 
-Note that differently from the ``docker://`` bootstrap agent both ``docker-daemon`` and 
+Note that differently from the ``docker://`` bootstrap agent both ``docker-daemon`` and
 ``docker-archive`` don't require a double slash ``//`` after the colon in the agent name.
 
 .. _scratch-agent:

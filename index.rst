@@ -101,7 +101,7 @@ applications.
 .. toctree::
    :maxdepth: 1
 
-   Singularity and Docker <singularity_and_docker>
+   Support for Docker / OCI Containers <singularity_and_docker>
    OCI Runtime Support <oci_runtime>
    Singularity and MPI applications <mpi>
    GPU Support <gpu>
