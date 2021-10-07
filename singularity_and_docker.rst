@@ -43,7 +43,7 @@ Public Containers
 It's easy to run a public Docker Hub container with
 {Singularity}. Just put ``docker://`` in front of the container
 repository and tag. To run the container that's called
-``sylabs/lolcow:latest``:
+``sylabsio/lolcow:latest``:
 
 .. code-block:: none
 
@@ -571,7 +571,7 @@ file use ``Bootstrap: docker-daemon``, and a ``From:
 .. code-block:: singularity
 
     Bootstrap: docker-daemon
-    From: sylabs/lolcow:latest
+    From: sylabsio/lolcow:latest
 
 
 Containers in Docker Archive Files
