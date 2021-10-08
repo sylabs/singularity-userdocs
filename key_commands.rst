@@ -39,7 +39,7 @@ keystore.
 First we will check what's the status of the local keystore (which keys
 are stored by the moment before importing a new key).
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key list --secret
 
@@ -50,7 +50,7 @@ are stored by the moment before importing a new key).
 
 The output will look as it follows:
 
-.. code:: Singularity
+.. code:: singularity
 
    Private key listing (/home/joana/.singularity/sypgp/pgp-secret):
 
@@ -76,7 +76,7 @@ location to the file, let's say you own a gpg key file named
 ``pinkie-pie.asc`` which is a secret GPG key you want to import. Then
 you will just need to run the following command to import your key:
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key import $HOME/pinkie-pie.asc
 
@@ -89,7 +89,7 @@ Since you're importing a private (secret) key, you will need to specify
 the passphrase related to it and then a new passphrase to be added on
 your local keystore.
 
-.. code:: Singularity
+.. code:: singularity
 
    Enter your old password :
    Enter a new password for this key :
@@ -99,7 +99,7 @@ your local keystore.
 After this you can see if that key was correctly added to your local
 keystore by running ``singularity key list -s`` command:
 
-.. code:: Singularity
+.. code:: singularity
 
    Private key listing (/home/joana/.singularity/sypgp/pgp-secret):
 
@@ -143,7 +143,7 @@ import`` command.
 
 For example to export a public key in binary format you can run:
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key export 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
@@ -152,7 +152,7 @@ it under the home folder. If you would like to export the same public
 key but in an ``ASCII`` armored format, you would need to run the
 following command:
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key export --armor 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
@@ -160,13 +160,13 @@ And in the case in which you may need to export a secret key on
 ``ASCII`` armored format, you would need to specify from where to find
 the key, since the fingerprint is the same.
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key export --armor --secret 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
 and on binary format instead:
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key export --secret 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
@@ -185,7 +185,7 @@ and on binary format instead:
 In case you would want to remove a public key from your public local
 keystore, you can do so by running the following command:
 
-.. code:: Singularity
+.. code:: singularity
 
    $ singularity key remove 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
 
