@@ -543,7 +543,7 @@ The custom label ``OWNER`` that we set in our definition file is also visible.
 The ``-d`` or ``-deffile`` flag shows the definition file(s) that were
 used to build the container.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity inspect --deffile jupyter.sif
 
@@ -615,7 +615,7 @@ Which is the definition file for the ``jupyter.sif`` container.
 
 The ``-r`` or ``--runscript`` option shows the runscript for the image.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity inspect --runscript jupyter.sif
 
@@ -656,7 +656,7 @@ And the output would look like:
 
 The ``-t`` or ``--test`` flag shows the test script for the image.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity inspect --test jupyter.sif
 
@@ -670,7 +670,7 @@ The ``-e`` or ``--environment`` flag shows the environment variables
 that are defined in the container image. These may be set from
 one or more environment files, depending on how the container was built.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity inspect --environment jupyter.sif
 
@@ -695,13 +695,13 @@ in the ``%help`` section of its definition file.
 
 You can call it this way:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity inspect --helpfile jupyter.sif
 
 And the output would look like:
 
-.. code-block:: none
+.. code-block::
 
     Container with Anaconda 2 (Conda 4.5.11 Canary) and Jupyter Notebook 5.6.0 for Debian 9.x (Stretch).
     This installation is based on Python 2.7.15
@@ -755,7 +755,7 @@ dynamically, at runtime, to support new features. In the longer term,
 metadata will be moved outside of the container, and stored only in
 the SIF file metadata descriptor.
 
-.. code-block:: none
+.. code-block::
 
     /.singularity.d/
 

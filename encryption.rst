@@ -84,7 +84,7 @@ the following methods.
 Encrypting with a passphrase interactively
 ------------------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ sudo singularity build --passphrase encrypted.sif encrypted.def
         Enter encryption passphrase: <secret>
@@ -93,7 +93,7 @@ Encrypting with a passphrase interactively
 Using an environment variable
 -----------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ sudo SINGULARITY_ENCRYPTION_PASSPHRASE=<secret> singularity build --encrypt encrypted.sif encrypted.def
         Starting build...
@@ -106,7 +106,7 @@ passphrase, you should set the environment variable in a way that will not
 record your passphrase on the command line.  For instance, you could save a 
 plain text passphrase in a file (e.g. ``secret.txt``) and use it like so.
 
-.. code-block:: none
+.. code-block::
 
         $ export SINGULARITY_ENCRYPTION_PASSPHRASE=$(cat secret.txt)
 
@@ -124,7 +124,7 @@ You can create a pair of RSA keys suitable for encrypting your container with
 the ``ssh-keygen`` command, and then create a PEM file with a few specific flags 
 like so:
 
-.. code-block:: none
+.. code-block::
 
         # Generate a key pair
         $ ssh-keygen -t rsa -b 2048
@@ -146,7 +146,7 @@ file to run it.
 Encrypting with a command line option
 --------------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ sudo singularity build --pem-path=rsa_pub.pem encrypted.sif encrypted.def
         Starting build...
@@ -154,7 +154,7 @@ Encrypting with a command line option
 Encrypting with an environment variable
 ---------------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ sudo SINGULARITY_ENCRYPTION_PEM_PATH=rsa_pub.pem singularity build --encrypt encrypted.sif encrypted.def
         Starting build...
@@ -179,7 +179,7 @@ sections above.
 Running with a passphrase interactively
 ---------------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ singularity run --passphrase encrypted.sif
         Enter passphrase for encrypted container: <secret>
@@ -187,7 +187,7 @@ Running with a passphrase interactively
 Running with a passphrase in an environment variable
 ----------------------------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ SINGULARITY_ENCRYPTION_PASSPHRASE="secret" singularity run encrypted.sif
 
@@ -196,7 +196,7 @@ passphrase, you should set the environment variable in a way that will not
 record your passphrase on the command line.  For instance, you could save a 
 plain text passphrase in a file (e.g. ``secret.txt``) and use it like so.
 
-.. code-block:: none
+.. code-block::
 
         $ export SINGULARITY_ENCRYPTION_PASSPHRASE=$(cat secret.txt)
 
@@ -211,13 +211,13 @@ section above.
 Running using a command line option
 -----------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ singularity run --pem-path=rsa_pri.pem encrypted.sif
 
 Running using an environment variable
 -------------------------------------
 
-.. code-block:: none
+.. code-block::
 
         $ SINGULARITY_ENCRYPTION_PEM_PATH=rsa_pri.pem singularity run encrypted.sif

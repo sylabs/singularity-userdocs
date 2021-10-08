@@ -100,7 +100,7 @@ List and Login to Remotes
 
 To ``list`` existing remote endpoints, run this:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote list
 
@@ -166,14 +166,14 @@ Add & Remove Remotes
 
 To ``add`` a remote endpoint (for the current user only):
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote add <remote_name> <remote_uri>
 
 For example, if you have an installation of {Singularity} enterprise
 hosted at enterprise.example.com:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote add myremote https://enterprise.example.com
 
@@ -188,7 +188,7 @@ web address needed to do this will always be given.
 To ``add`` a global remote endpoint (available to all users on the
 system) an administrative user should run:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity remote add --global <remote_name> <remote_uri>
 
@@ -204,14 +204,14 @@ system) an administrative user should run:
 
 Conversely, to ``remove`` an endpoint:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote remove <remote_name>
 
 Use the ``--global`` option as the root user to remove a global
 endpoint:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity remote remove --global <remote_name>
 
@@ -239,13 +239,13 @@ Set the Default Remote
 A remote endpoint can be set as the default to use with commands such
 as ``push``, ``pull`` etc. via ``remote use``:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote use <remote_name>
 
 The default remote shows up with a ``YES`` under the ``ACTIVE`` column in the output of ``remote list``:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote list
     Cloud Services Endpoints
@@ -288,7 +288,7 @@ The default remote shows up with a ``YES`` under the ``ACTIVE`` column in the ou
 {Singularity} 3.7 introduces the ability for an administrator to make a remote
 the only usable remote for the system by using the ``--exclusive`` flag:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity remote use --exclusive company-remote
     INFO:    Remote "company-remote" now in use.
@@ -311,7 +311,7 @@ the only usable remote for the system by using the ``--exclusive`` flag:
 
 This, in turn, prevents users from changing the remote they use:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote use myremote
     FATAL:   could not use myremote: remote company-remote has been set exclusive by the system administrator
@@ -342,7 +342,7 @@ it is the keyserver associated to the current remote endpoint. We can also see
 the ``INSECURE`` column indicating that {Singularity} will use TLS when
 communicating with the keyserver.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote list
     Cloud Services Endpoints
@@ -361,7 +361,7 @@ communicating with the keyserver.
 
 We can add a key server to list of keyservers with:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity remote add-keyserver https://pgp.example.com
     $ singularity remote list
@@ -384,7 +384,7 @@ Here we can see that the ``https://pgp.example.com`` keyserver was appended to
 our list. If we would like to specify the order in the list that this key is
 placed, we can use the ``--order`` flag:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity remote add-keyserver --order 1 https://pgp.example.com
     $ singularity remote list
@@ -413,7 +413,7 @@ searching for public keys.
 If a keyserver requires authentication before usage, users can login before
 using it:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote login --username ian https://pgp.example.com
     Password (or token when username is empty):
@@ -421,7 +421,7 @@ using it:
 
 Now we can see that ``https://pgp.example.com`` is logged in:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote list
     Cloud Services Endpoints
@@ -469,7 +469,7 @@ registry basis with the ``remote`` command group.
 Users can login to an oci registry with the ``remote login`` command by
 specifying a ``docker://`` prefix to the registry hostname:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote login --username ian docker://docker.io
     Password (or token when username is empty):
@@ -504,7 +504,7 @@ communicating with the registry.
 
 We can login to multiple OCI registries at the same time:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity remote login --username ian docker://registry.example.com
     Password (or token when username is empty):

@@ -41,7 +41,7 @@ Usage
 
 To use a persistent overlay, you must first have a container.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build ubuntu.sif library://ubuntu
 
@@ -60,13 +60,13 @@ or adding a EXT3 writable overlay partition to an existing SIF image.
 
 For example, to create a 1 GiB overlay image:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity overlay create --size 1024 /tmp/ext3_overlay.img
 
 To add a 1 GiB writable overlay partition to an existing SIF image:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity overlay create --size 1024 ubuntu.sif
 
@@ -82,7 +82,7 @@ need to make a directory writable by your user.
 
 So for example:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity build /tmp/nginx.sif docker://nginx
     $ singularity overlay create --size 1024 --create-dir /var/cache/nginx /tmp/nginx.sif
@@ -105,7 +105,7 @@ operations on the parallel filesystem.
 
 To create an overlay image file with 500MBs of empty space:
 
-.. code-block:: none
+.. code-block::
 
     $ dd if=/dev/zero of=overlay.img bs=1M count=500 && \
         mkfs.ext3 overlay.img
@@ -115,7 +115,7 @@ permissions still control where you can write, so ``sudo`` is needed
 to run the container as ``root`` if you need to write to ``/`` inside
 the container.
 
-.. code-block:: none
+.. code-block::
 
    $ sudo singularity shell --overlay overlay.img ubuntu.sif
 
@@ -124,7 +124,7 @@ unprivileged users you can create a directory structure on your host,
 set permissions on it as needed, and include it in the overlay with
 the ``-d`` option to ``mkfs.ext3``:
 
-.. code-block:: none
+.. code-block::
 
    $ mkdir -p overlay/upper overlay/work
    $ dd if=/dev/zero of=overlay.img bs=1M count=500 && \
@@ -134,7 +134,7 @@ Now the container will be writable as the unprivileged user who
 created the ``overlay/upper`` and ``overlay/work`` directories
 that were placed into ``overlay.img``.
 
-.. code-block:: none
+.. code-block::
 
    $ singularity shell --overlay overlay.img ubuntu.sif
    Singularity> echo $USER
@@ -167,14 +167,14 @@ transported or shared as easily as a single overlay file.
 
 Create a directory as usual:
 
-.. code-block:: none
+.. code-block::
 
     $ mkdir my_overlay
 
 
 The example below shows the directory overlay in action.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity shell --overlay my_overlay/ ubuntu.sif
 
@@ -199,7 +199,7 @@ container. This allows the read-only container image and your
 modifications to it to be managed as a single file.  In order to do
 this, you must first create a file system image:
 
-.. code-block:: none
+.. code-block::
 
     $ dd if=/dev/zero of=overlay.img bs=1M count=500 && \
         mkfs.ext3 overlay.img
@@ -207,7 +207,7 @@ this, you must first create a file system image:
 Then, you can add the overlay to the SIF image using the ``sif``
 functionality of {Singularity}.
 
-.. code-block:: none
+.. code-block::
 
    $ singularity sif add --datatype 4 --partfs 2 --parttype 4 --partarch 2 --groupid 1 ubuntu_latest.sif overlay.img
 
@@ -230,7 +230,7 @@ running ``singularity sif add --help``.
 After you've completed the steps above, you can shell into your
 container with the ``--writable`` option.
 
-.. code-block:: none
+.. code-block::
 
         $ sudo singularity shell --writable ubuntu_latest.sif
 
@@ -240,7 +240,7 @@ Final note
 You will find that your changes persist across sessions as though you
 were using a writable container.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity shell --overlay my_overlay/ ubuntu.sif
 
@@ -256,7 +256,7 @@ were using a writable container.
 If you mount your container without the ``--overlay`` directory, your changes
 will be gone.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity shell ubuntu.sif
 
@@ -272,7 +272,7 @@ images can be used.  For instance, to resize the 500MB file created
 above to 700MB one could use the ``e2fsck`` and ``resize2fs``
 utilities like so:
 
-.. code-block:: none
+.. code-block::
 
     $ e2fsck -f my_overlay && \
         resize2fs my_overlay 700M

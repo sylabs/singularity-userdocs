@@ -32,7 +32,7 @@ configure a virtualized network for a container.
 The ``--dns`` option allows you to specify a comma separated list of DNS servers
 to add to the ``/etc/resolv.conf`` file.
 
-.. code-block:: none
+.. code-block::
 
     $ nslookup sylabs.io | grep Server
     Server:		127.0.0.53
@@ -50,7 +50,7 @@ to add to the ``/etc/resolv.conf`` file.
 The ``--hostname`` option accepts a string argument to change the hostname
 within the container.
 
-.. code-block:: none
+.. code-block::
 
     $ hostname
     ubuntu-bionic
@@ -65,7 +65,7 @@ Passing the ``--net`` flag will cause the container to join a new network
 namespace when it initiates.  New in {Singularity} 3.0, a bridge interface will
 also be set up by default.
 
-.. code-block:: none
+.. code-block::
 
     $ hostname -I
     10.0.2.15
@@ -81,7 +81,7 @@ The ``--network`` option can only be invoked in combination with the ``--net``
 flag.  It accepts a comma delimited string of network types. Each entry will
 bring up a dedicated interface inside container.
 
-.. code-block:: none
+.. code-block::
 
     $ hostname -I
     172.16.107.251 10.22.0.1
@@ -125,7 +125,7 @@ For instance, let's say you want to start an `NGINX <https://www.nginx.com/>`_
 server on port 80 inside of the container, but you want to map it to port 8080
 outside of the container:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity instance start --writable-tmpfs \
         --net --network-args "portmap=8080:80/tcp" docker://nginx web2
@@ -139,14 +139,14 @@ which will map port 80 inside of the container to 8080 on the host.
 
 Now we can start NGINX inside of the container:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity exec instance://web2 nginx
 
 And the ``curl`` command can be used to verify that NGINX is running on the host
 port 8080 as expected.
 
-.. code-block:: none
+.. code-block::
 
     $ curl localhost:8080
     10.22.0.1 - - [16/Oct/2018:09:34:25 -0400] "GET / HTTP/1.1" 200 612 "-" "curl/7.58.0" "-"

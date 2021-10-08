@@ -32,7 +32,7 @@ in root’s home at ``/root`` and not your user’s home. Use the
 ``-E`` option to sudo to pass through the ``SINGULARITY_CACHEDIR``
 environment variable, if you set it.
 
-.. code-block:: none
+.. code-block::
 
     $ export SINGULARITY_CACHEDIR=/tmp/user/temporary-cache
 
@@ -67,7 +67,7 @@ a location that is:
 Inside the cache location you will find separate directories for the
 different kinds of data that are cached:
 
-.. code-block:: none
+.. code-block::
 
     $HOME/.singularity/cache/blob
     $HOME/.singularity/cache/library
@@ -120,7 +120,7 @@ Listing Cache
 
 To view a summary of cache usage, use ``singularity cache list``:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity cache list
     There are 4 container file(s) using 59.45 MB and 23 oci blob file(s) using 379.10 MB of space
@@ -128,7 +128,7 @@ To view a summary of cache usage, use ``singularity cache list``:
 
 To view detailed information, use ``singularity cache list -v``:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity cache list -v
     NAME                     DATE CREATED           SIZE             TYPE
@@ -185,7 +185,7 @@ cache clean``.
 By default ``singularity cache clean`` will remove all cache entries,
 after asking you to confirm:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity cache clean
     This will delete everything in your cache (containers from all sources and OCI blobs). 
@@ -200,14 +200,14 @@ If you want to leave your most recent cached images in place, but
 remove images that were cached longer ago, you can use the ``--days``
 / ``-d`` option. E.g. to clean cache entries older than 30 days:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity cache clean --days 30
 
 To remove only a specific kind of cache entry, e.g. only library
 images, use the ``type`` / ``-T`` option:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity cache clean --type library
 

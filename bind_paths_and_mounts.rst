@@ -100,7 +100,7 @@ Here’s an example of using the ``--bind`` option and binding ``/data`` on the
 host to ``/mnt`` in the container (``/mnt`` does not need to already exist in
 the container):
 
-.. code-block:: none
+.. code-block::
 
     $ ls /data
     bar  foo
@@ -110,7 +110,7 @@ the container):
 
 You can bind multiple directories in a single command with this syntax:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity shell --bind /opt,/data:/mnt my_container.sif
 
@@ -120,7 +120,7 @@ on the host to ``/mnt`` in the container.
 Using the environment variable instead of the command line argument, this would
 be:
 
-.. code-block:: none
+.. code-block::
 
     $ export SINGULARITY_BIND="/opt,/data:/mnt"
 
@@ -147,7 +147,7 @@ will infer ``type=bind`` if it is not provided.
 
 To mount ``data`` on the host to ``/mnt`` inside the container:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity exec \
         --mount type=bind,src=/data,dst=/mnt \
@@ -156,7 +156,7 @@ To mount ``data`` on the host to ``/mnt`` inside the container:
 
 To mount the same directory read-only in the container, add the ``ro`` option:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity exec \
         --mount type=bind,source=/data,dest=/mnt,ro \
@@ -166,7 +166,7 @@ To mount the same directory read-only in the container, add the ``ro`` option:
 You can bind multiple directories in a single command with multiple
 ``--mount`` flags:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity shell --mount type=bind,src=/opt,dst=/opt \
                         --mount type=bind,src=/data,dst=/data \
@@ -180,7 +180,7 @@ wrapping each field in double quotes if necessary
 characters. ``--mount`` allows bind mounting paths that are not
 possible with the ``--bind`` flag. For example:
 
-.. code-block:: none
+.. code-block::
 
     # Mount a path containing ':' (not possible with --bind)
     $ singularity run \
@@ -227,7 +227,7 @@ Using ``--no-home`` and ``--containall`` flags
 When shelling into your container image, {Singularity} allows you to mount your current working directory (``CWD``)
 without mounting your host ``$HOME`` directory with the ``--no-home`` flag.
 
-.. code-block:: none
+.. code-block::
 
       $ singularity shell --no-home my_container.sif
 
@@ -244,7 +244,7 @@ without mounting your host ``$HOME`` directory with the ``--no-home`` flag.
     You cannot use ``-B``` (or ``--bind``) to bind your ``$HOME`` directory because it creates an empty mount. So if you have files located in
     the image at ``/home/user``, the ``--containall`` flag will hide them all.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity shell --containall my_container.sif
 
@@ -259,7 +259,7 @@ Kernel. Unprivileged (non-root) users can mount filesystems that have
 FUSE drivers. For example, the ``fuse-sshfs`` package allows you to
 mount a remote computer's filesystem to your local host, over ssh:
 
-.. code-block:: none
+.. code-block::
 
     $ mount.fuse sshfs#ythel:/home/dave other_host/
 
@@ -292,7 +292,7 @@ FUSE mount definitions
 
 A fusemount definition for {Singularity} consists of 3 parts:
 
-.. code-block:: none
+.. code-block::
 
     --fusemount <type>:<fuse command> <container mountpoint>
 
@@ -325,7 +325,7 @@ FUSE mount with a host executable
 To use a FUSE ``sshfs`` mount in a container, where the ``fuse-sshfs`` package has
 been installed on my host, I run with the ``host`` mount type:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --fusemount "host:sshfs server:/ /server" docker://ubuntu
     Singularity> cat /etc/hostname
@@ -340,7 +340,7 @@ If the FUSE driver / command that you want to use for the mount has
 been added to your container, you can use the ``container`` mount
 type:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --fusemount "container:sshfs server:/ /server" sshfs.sif
     Singularity> cat /etc/hostname
@@ -369,14 +369,14 @@ time.
 To mount a directory from an image file, use the ``-B/--bind`` option
 and specify the bind in the format:
 
-.. code-block:: none
+.. code-block::
 
     -B <image-file>:<dest>:image-src=<source>
 
 Alternatively use the ``--mount`` option, and specify the bind in the
 format:
 
-.. code-block:: none
+.. code-block::
 
     --mount type=bind,src=<image-file>,dst=<dest>,image-src=<source>
 

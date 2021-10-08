@@ -78,7 +78,7 @@ versions on the `tags page on Docker Hub <https://hub.docker.com/r/tensorflow/te
 The container is large, so it's best to build or pull the docker image to a SIF
 before you start working with it:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull docker://tensorflow/tensorflow:latest-gpu
     ...
@@ -88,7 +88,7 @@ before you start working with it:
 
 Then run the container with GPU support:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --nv tensorflow_latest-gpu.sif
 
@@ -107,7 +107,7 @@ Then run the container with GPU support:
 You can verify the GPU is available within the container by using the
 tensorflow ``list_local_devices()`` function:
 
-.. code-block:: none
+.. code-block::
 
     Singularity> python
     Python 2.7.15+ (default, Jul  9 2019, 16:51:35)
@@ -150,7 +150,7 @@ limit the GPU devices that CUDA programs see.
 E.g. to run the tensorflow container, but using only the first GPU in the host,
 we could do:
 
-.. code-block:: none
+.. code-block::
 
     $ SINGULARITYENV_CUDA_VISIBLE_DEVICES=0 singularity run --nv tensorflow_latest-gpu.sif
 
@@ -244,7 +244,7 @@ Tensorflow can be run using ``--nvccli`` in the same manner as the
 legacy ``--nv`` binding approach. Pull the large container to a SIF
 file:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull docker://tensorflow/tensorflow:latest-gpu
     ...
@@ -254,7 +254,7 @@ file:
 
 Then run the container with ``nvidia-container-cli`` GPU support:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --nv --nvccli tensorflow_latest-gpu.sif
     INFO:    Setting --writable-tmpfs (required by nvidia-container-cli)
@@ -279,7 +279,7 @@ will be discarded on exit. This is required for the
 You can verify the GPU is available within the container by using the
 tensorflow ``list_local_devices()`` function:
 
-.. code-block:: none
+.. code-block::
 
     Singularity> python
     Python 2.7.15+ (default, Jul  9 2019, 16:51:35)
@@ -318,7 +318,7 @@ the ``/dev`` tree in the container.
 For example, to pass only the 2nd and 3rd GPU into a container running
 on a system with 4 GPUs, run the following:
 
-.. code-block:: none
+.. code-block::
 
     $ export NVIDIA_VISIBLE_DEVICES=1,2
     $ singularity run --contain --nv --nvccli mycontainer.sif
@@ -341,7 +341,7 @@ Note that:
 If you use ``--contain`` without setting ``NVIDIA_VISIBLE_DEVICES``,
 no GPUs will be available in the container, and a warning will be shown:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --contain --nv --nvccli mycontainer.sif
     WARNING: When using nvidia-container-cli with --contain NVIDIA_VISIBLE_DEVICES
@@ -353,7 +353,7 @@ To restore the behaviour of the legacy GPU handling, set
 If your system contains Ampere or newer GPUs that support virtual MIG
 devices, you can specify MIG identifiers / UUIDs.
 
-.. code-block:: none
+.. code-block::
 
     $ export NVIDIA_VISIBLE_DEVICES=MIG-GPU-5c89852c-d268-c3f3-1b07-005d5ae1dc3f/7/0
 
@@ -450,7 +450,7 @@ versions on the `tags page on Docker Hub <https://hub.docker.com/r/rocm/tensorfl
 The container is large, so it's best to build or pull the docker image to a SIF
 before you start working with it:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull docker://rocm/tensorflow:latest
     ...
@@ -460,7 +460,7 @@ before you start working with it:
 
 Then run the container with GPU support:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --rocm tensorflow_latest.sif
 
@@ -468,7 +468,7 @@ Then run the container with GPU support:
 You can verify the GPU is available within the container by using the
 tensorflow ``list_local_devices()`` function:
 
-.. code-block:: none
+.. code-block::
 
     Singularity> ipython
     Python 3.5.2 (default, Jul 10 2019, 11:58:48)
@@ -508,7 +508,7 @@ The latest versions of Blender supports OpenCL rendering. You can run Blender
 as a graphical application that will make use of a local Radeon GPU for OpenCL
 compute using the container that has been published to the Sylabs library:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity exec --rocm --bind /etc/OpenCL library://sylabs/examples/blender blender
 

@@ -60,7 +60,7 @@ You can use the build command to download a container from the Container
 Library.
 
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build lolcow.sif library://lolcow
 
@@ -77,7 +77,7 @@ Downloading an existing container from Docker Hub
 You can use ``build`` to download layers from Docker Hub and assemble them into
 {Singularity} containers.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build lolcow.sif docker://sylabsio/lolcow
 
@@ -92,7 +92,7 @@ sandbox) you can do so with the ``--sandbox`` option. It’s possible to create 
 sandbox without root privileges, but to ensure proper file permissions it is
 recommended to do so as root.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build --sandbox lolcow/ library://lolcow
 
@@ -101,7 +101,7 @@ changes within the container, use the ``--writable`` flag when you invoke your
 container.  It’s a good idea to do this as root to ensure you have permission to
 access the files and directories that you want to change.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity shell --writable lolcow/
 
@@ -114,7 +114,7 @@ build a new container. This allows you convert containers from one format to
 another. For example if you had a sandbox container called ``development/`` and
 you wanted to convert it to SIF container called ``production.sif`` you could:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build production.sif development/
 
@@ -152,7 +152,7 @@ and you want to use it to build a SIF container.
 
 You can do so with the following command.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build lolcow.sif lolcow.def
 

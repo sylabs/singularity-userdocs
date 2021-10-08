@@ -20,7 +20,7 @@ Using Plugins
 
 The ``list`` command prints the currently installed plugins.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity plugin list
     There are no plugins installed.
@@ -31,14 +31,14 @@ source code of their plugins. A plugin can be compiled from its source code
 with the ``compile`` command. A sample plugin ``test-plugin`` is included with
 the {Singularity} source code.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity plugin compile examples/plugins/test-plugin/
 
 Upon successful compilation, a SIF file will appear in the directory of the
 plugin's source code.
 
-.. code-block:: none
+.. code-block::
 
     $ ls examples/plugins/test-plugin/ | grep sif
     test-plugin.sif
@@ -65,7 +65,7 @@ Every plugin encapsulates various information such as the plugin's author, the
 plugin's version, etc. To view this information about a plugin, use the
 ``inspect`` command.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity plugin inspect examples/plugins/test-plugin/test-plugin.sif
     Name: sylabs.io/test-plugin
@@ -76,7 +76,7 @@ plugin's version, etc. To view this information about a plugin, use the
 To install a plugin, use the ``install`` command. This operation requires root
 privilege.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity plugin install examples/plugins/test-plugin/test-plugin.sif
     $ singularity plugin list
@@ -87,7 +87,7 @@ After successful installation, the plugin will automatically be enabled. Any
 plugin can be disabled with the ``disable`` command and re-enabled with the
 ``enable`` command. Both of these operations require root privilege.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity plugin disable sylabs.io/test-plugin
     $ singularity plugin list
@@ -101,7 +101,7 @@ plugin can be disabled with the ``disable`` command and re-enabled with the
 Finally, to uninstall a plugin, use the ``uninstall`` command. This operation
 requires root privilege.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity plugin uninstall sylabs.io/test-plugin
     Uninstalled plugin "sylabs.io/test-plugin".

@@ -60,7 +60,7 @@ The ``singularity push`` command will push a container to the
 container library with the given URL. Here's an example of a typical
 push command:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity push my-container.sif library://your-name/project-dir/my-container:latest
 
@@ -75,7 +75,7 @@ Let's assume you have your container (v1.0.1), and you want to push
 that container without deleting your ``:latest`` container, then you
 can add a version tag to that container, like so:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity push my-container.sif library://your-name/project-dir/my-container:1.0.1
 
@@ -113,7 +113,7 @@ The ``singularity pull`` command will download a container from the `Library <ht
 
 Here's a typical pull command:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull file-out.sif library://alpine:latest
 
@@ -126,7 +126,7 @@ Here's a typical pull command:
 
 To pull a container with a specific tag, just add the tag to the library URL:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull file-out.sif library://alpine:3.8
 
@@ -137,7 +137,7 @@ Pulling your own container
 
 Pulling your own container is just like pulling from Github, Docker, etc...
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull out-file.sif library://your-name/project-dir/my-container:latest
 
@@ -270,7 +270,7 @@ The remote builder service can build your container in the cloud removing the re
 
 Here's a typical remote build command:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity build --remote file-out.sif docker://ubuntu:18.04
 
@@ -290,7 +290,7 @@ This is our definition file. Let's call it ``ubuntu.def``:
 
 Now, to build the container, use the ``--remote`` flag, and without ``sudo``:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity build --remote ubuntu.sif ubuntu.def
 
@@ -299,7 +299,7 @@ Now, to build the container, use the ``--remote`` flag, and without ``sudo``:
 
 After building, you can test your container like so:
 
-.. code-block:: none
+.. code-block::
 
     $ ./ubuntu.sif
     hello world from ubuntu container!

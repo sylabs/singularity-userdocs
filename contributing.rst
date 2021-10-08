@@ -105,7 +105,7 @@ To contribute to {Singularity}, you should obtain a GitHub account and fork the
 clone your fork of the repo to your computer. (Obviously, you should replace 
 ``your-username`` with your GitHub username.)
 
-.. code-block:: none
+.. code-block::
 
     $ git clone https://github.com/your-username/singularity.git && \
         cd singularity/
@@ -118,7 +118,7 @@ isolating your features from the main branch. Given that we’ve just cloned the
 repo, we will probably want to make a new branch from master in which to work on
 our new feature. Lets call that branch ``new-feature``:
 
-.. code-block:: none
+.. code-block::
 
     $ git checkout master && \
         git checkout -b new-feature
@@ -133,7 +133,7 @@ Step 3. Make your changes
 On your new branch, go nuts! Make changes, test them, and when you are happy 
 commit the changes to the branch:
 
-.. code-block:: none
+.. code-block::
 
     $ git add file-changed1 file-changed2...
 
@@ -142,7 +142,7 @@ commit the changes to the branch:
 This commit message is important - it should describe exactly the changes that 
 you have made. Good commit messages read like so:
 
-.. code-block:: none
+.. code-block::
 
     $ git commit -m "changed function getConfig in functions.go to output csv to fix #2"
 
@@ -161,7 +161,7 @@ Step 4. Push your branch to your fork
 When you are done with your commits, you should push your branch to your fork 
 (and you can also continuously push commits here as you work):
 
-.. code-block:: none
+.. code-block::
 
     $ git push origin new-feature
 
@@ -169,7 +169,7 @@ When you are done with your commits, you should push your branch to your fork
 Note that you should always check the status of your branches to see what has 
 been pushed (or not):
 
-.. code-block:: none
+.. code-block::
 
     $ git status
 
@@ -195,7 +195,7 @@ moment. As you work, your branch may become out of date as others merge changes
 into the upstream master. In the event that you need to update a branch, you 
 will need to follow the next steps:
 
-.. code-block:: none
+.. code-block::
 
     $ git remote add upstream https://github.com/sylabs/singularity.git && # to add a new remote named "upstream" \
         git checkout master && # or another branch to be updated \

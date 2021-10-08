@@ -44,7 +44,7 @@ If you don't already have a valid access token, follow these steps:
 Now you can verify containers that you pull from the library, ensuring they are
 bit-for-bit reproductions of the original image.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity verify alpine_latest.sif 
 
@@ -75,7 +75,7 @@ If you attempt to sign a container before you have generated any keys,
 key. Or you can use the ``newpair`` subcommand in the ``key`` command group
 like so:.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity key newpair
     
@@ -99,7 +99,7 @@ process.
 The ``list`` subcommand will show you all of the keys you have created or saved
 locally.`
 
-.. code-block:: none
+.. code-block::
 
     $ singularity key list
 
@@ -121,7 +121,7 @@ for the following:
 
 If you chose not to push your key to the keystore during the ``newpair`` process, but later wish to, you can push it to a keystore configured using ``singularity remote`` like so:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity key push E5F780B2C22F59DF748524B435C3844412EE233B
     
@@ -130,7 +130,7 @@ If you chose not to push your key to the keystore during the ``newpair`` process
 If you delete your local public PGP key, you can always locate and download it
 again like so.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity key search Trudgian
 
@@ -155,7 +155,7 @@ Searching for keys
 emails, and fingerprints (key IDs). When searching for a fingerprint, you need to use ``0x``
 before the fingerprint, check the example:
 
-.. code-block:: none
+.. code-block::
 
     # search for key ID:
     $ singularity key search 0x8883491F4268F173C6E5DC49EDECE4F3F38D871E
@@ -174,7 +174,7 @@ Signing and validating your own containers
 
 Now that you have a key generated, you can use it to sign images like so:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity sign my_container.sif 
 
@@ -185,7 +185,7 @@ Now that you have a key generated, you can use it to sign images like so:
 Because your public PGP key is saved locally you can verify the image without
 needing to contact the Keystore.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity verify my_container.sif
     Verifying image: my_container.sif
@@ -205,7 +205,7 @@ image in the absence of a local public key.  To demonstrate this,
 first ``remove`` your local public key, and then try to use the
 ``verify`` command again.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity key remove E5F780B2C22F59DF748524B435C3844412EE233B
 
@@ -227,7 +227,7 @@ was obtained from the keystore, and is not present on your local
 computer. You can retrieve it, so that you can verify even if you are
 offline with ``singularity key pull``
 
-.. code-block:: none
+.. code-block::
 
     $ singularity key pull E5F780B2C22F59DF748524B435C3844412EE233B
 
@@ -244,7 +244,7 @@ If you ``sif list`` a SIF file you will see it is comprised of a
 number of objects. Each object has an ``ID``, and belongs to a
 ``GROUP``.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity sif list my_container.sif 
 
@@ -263,7 +263,7 @@ number of objects. Each object has an ``ID``, and belongs to a
 I can choose to sign and verify a specific object with the ``--sif-id`` option
 to ``sign`` and ``verify``.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity sign --sif-id 1 my_container.sif 
     Signing image: my_container.sif
@@ -285,7 +285,7 @@ Note that running the ``verify`` command without specifying the specific sif-id
 gives a fatal error. The container is not considered verified as whole because
 other objects could have been changed without my knowledge.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity verify my_container.sif
     Verifying image: my_container.sif
@@ -298,7 +298,7 @@ other objects could have been changed without my knowledge.
 
 I can sign a group of objects with the ``--group-id`` option to ``sign``.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity sign --groupid 1 my_container.sif 
     Signing image: my_container.sif
@@ -310,7 +310,7 @@ This creates one signature over all objects in the
 group. I can verify that nothing in the group has been modified by
 running ``verify`` with the same ``--group-id`` option.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity verify --group-id 1 my_container.sif 
     Verifying image: my_container.sif
@@ -329,7 +329,7 @@ Because every object in the SIF file is within the signed group 1 the entire
 container is signed, and the default ``verify`` behavior without specifying
 ``--group-id`` can also verify the container:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity verify my_container.sif
     Verifying image: my_container.sif

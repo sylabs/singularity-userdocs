@@ -41,7 +41,7 @@ For example, assuming your system is configured correctly for unprivileged
 cgroup creation via systemd, you can limit the number of CPUs a container run is
 allowed to use:
 
-.. code-block:: none
+.. code-block::
 
     $ systemd-run --user --scope -p AllowedCPUs=1,2 -- singularity run mycontainer.sif
 
@@ -93,7 +93,7 @@ Examples
 To apply resource limits to a container, use the ``--apply-cgroups`` flag, which
 takes a path to a TOML file specifying the cgroups configuration to be applied:
 
-.. code-block:: none
+.. code-block::
 
   $ sudo singularity shell --apply-cgroups /path/to/cgroups.toml my_container.sif
 
@@ -108,14 +108,14 @@ To limit the amount of memory that your container uses to 500MB (524288000
 bytes), set a ``limit`` value inside the ``[memory]`` section of your cgroups
 TOML file:
 
-.. code-block:: none
+.. code-block::
 
   [memory]
       limit = 524288000
 
 Start your container, applying the toml file, e.g.:
 
-.. code-block:: none
+.. code-block::
 
   $ sudo singularity run --apply-cgroups path/to/cgroups.toml library://alpine
 
@@ -124,7 +124,7 @@ This example assumes that there is only one running container. If you are
 running multiple containers you will find multiple cgroups trees under the
 ``singularity`` directory.
 
-.. code-block:: none
+.. code-block::
 
   # cgroups v1
   $ cat /sys/fs/cgroup/memory/singularity/*/memory.limit_in_bytes
@@ -147,7 +147,7 @@ This corresponds to a ratio versus other cgroups with cpu shares. Usually the
 default value is ``1024``. That means if you want to allow to use 50% of a
 single CPU, you will set ``512`` as value.
 
-.. code-block:: none
+.. code-block::
 
   [cpu]
       shares = 512
@@ -166,7 +166,7 @@ processes can't use more than the amount of CPU time set for the cgroup.
 per period. The default is 100ms (100000us). So if you want to limit amount of
 CPU time to 20ms during period of 100ms:
 
-.. code-block:: none
+.. code-block::
 
   [cpu]
       period = 100000
@@ -177,7 +177,7 @@ CPU time to 20ms during period of 100ms:
 You can also restrict access to specific CPUs (cores) and associated memory
 nodes by using ``cpus/mems`` fields:
 
-.. code-block:: none
+.. code-block::
 
   [cpu]
       cpus = "0-1"
@@ -196,7 +196,7 @@ Limiting IO
 To control block device I/O, applying limits to competing container, use the
 ``[blockIO]`` section of the TOML file:
 
-.. code-block:: none
+.. code-block::
 
   [blockIO]
       weight = 1000
@@ -216,7 +216,7 @@ specific device major/minor numbers. For example, to override
 ``weight/leafWeight`` for ``/dev/loop0`` and ``/dev/loop1`` block devices, set
 limits for device major 7, minor 0 and 1:
 
-.. code-block:: none
+.. code-block::
 
   [blockIO]
       [[blockIO.weightDevice]]
@@ -234,7 +234,7 @@ You can also limit the IO read/write rate to a specific absolute value, e.g.
 16MB per second for the ``/dev/loop0`` block device. The ``rate`` is specified
 in bytes per second.
 
-.. code-block:: none
+.. code-block::
 
   [blockIO]
       [[blockIO.throttleReadBpsDevice]]
@@ -256,7 +256,7 @@ and minor numbers to create rules for specific devices or classes of device.
 In this example, a container is configured to only be able to read from or write
 to ``/dev/null``:
 
-.. code-block:: none
+.. code-block::
 
     [[devices]]
         access = "rwm"

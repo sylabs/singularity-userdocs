@@ -28,7 +28,7 @@ To give a quick view on how it works, we will first consider the case in which a
 
 First we will check what's the status of the local keystore (which keys are stored by the moment before importing a new key).
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
   $ singularity key list --secret
 
@@ -38,7 +38,7 @@ First we will check what's the status of the local keystore (which keys are stor
 
 The output will look as it follows:
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     Private key listing (/home/joana/.singularity/sypgp/pgp-secret):
 
@@ -60,7 +60,7 @@ The output will look as it follows:
 After this, you can simply import the key you need by adding the exact location to the file, let's say you own a gpg key file named ``pinkie-pie.asc`` which is a secret GPG key you want to import.
 Then you will just need to run the following command to import your key:
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
   $ singularity key import $HOME/pinkie-pie.asc
 
@@ -69,7 +69,7 @@ Then you will just need to run the following command to import your key:
 
 Since you're importing a private (secret) key, you will need to specify the passphrase related to it and then a new passphrase to be added on your local keystore.
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     Enter your old password :
     Enter a new password for this key :
@@ -79,7 +79,7 @@ Since you're importing a private (secret) key, you will need to specify the pass
 After this you can see if that key was correctly added to your local keystore by running ``singularity key list -s`` command:
 
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     Private key listing (/home/joana/.singularity/sypgp/pgp-secret):
 
@@ -116,25 +116,25 @@ Of course to identify the keystore and the format the syntax varies from the ``k
 
 For example to export a public key in binary format you can run:
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     $ singularity key export 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
 This will export a public binary key named ``mykey.asc`` and will save it under the home folder. If you would like to export the same public key but in an ``ASCII`` armored format, you would need to run the following command:
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     $ singularity key export --armor 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
 And in the case in which you may need to export a secret key on ``ASCII`` armored format, you would need to specify from where to find the key, since the fingerprint is the same.
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     $ singularity key export --armor --secret 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
 and on binary format instead:
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     $ singularity key export --secret 8C10B902F438E4D504C3ACF689FCFFAED5F34A77 $HOME/mykey.asc
 
@@ -150,7 +150,7 @@ Key remove command
 
 In case you would want to remove a public key from your public local keystore, you can do so by running the following command:
 
-.. code-block:: {Singularity}
+.. code-block:: Singularity
 
     $ singularity key remove 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
 

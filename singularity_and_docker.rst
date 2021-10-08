@@ -45,7 +45,7 @@ It's easy to run a public Docker Hub container with
 repository and tag. To run the container that's called
 ``sylabsio/lolcow:latest``:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run docker://sylabsio/lolcow:latest
     INFO:    Converting OCI blobs to SIF format
@@ -80,7 +80,7 @@ To obtain the Docker container as a SIF file in a specific location,
 which you can move, share, and keep for later, ``singularity pull``
 it:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull docker://sylabsio/lolcow
     INFO:    Using cached SIF image
@@ -346,7 +346,7 @@ uses the AWS CLI to request a password, which can then be used to
 authenticate to an ECR private registry in the specified region. The
 username used in conjunction with this password is always ``AWS``.
 
-.. code-block:: none
+.. code-block::
 
     $ aws ecr get-login-password --region region
 
@@ -515,7 +515,7 @@ If you have pulled or run a container on your machine under
 ``docker``, it will be cached locally by the Docker daemon. The
 ``docker images`` command will list containers that are available:
 
-.. code-block:: none
+.. code-block::
 
     $ docker images
     REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
@@ -526,7 +526,7 @@ by Docker. You can directly build it into a SIF file using a
 ``docker-daemon://`` URI specifying the ``REPOSITORY:TAG`` container
 name:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity build lolcow_from_docker_cache.sif docker-daemon://sylabsio/lolcow:latest
     INFO:    Starting build...
@@ -586,7 +586,7 @@ by extracting them as part of the build process.
 If an image is listed by the ``docker images`` command, then we can
 create a tar archive file using ``docker save`` and the image ID:
 
-.. code-block:: none
+.. code-block::
 
         $ sudo docker images
         REPOSITORY                        TAG               IMAGE ID       CREATED          SIZE
@@ -597,7 +597,7 @@ create a tar archive file using ``docker save`` and the image ID:
 If we examine the contents of the tar file we can see that it contains
 the layers and metadata that make up a Docker container:
 
-.. code-block:: none
+.. code-block::
 
     $ tar tvf lolcow.tar
     drwxr-xr-x  0 0      0           0 Aug 16 11:22 2f0514a4c044af1ff4f47a46e14b6d46143044522fcd7a9901124209d16d6171/
@@ -618,7 +618,7 @@ rather than an object hosted by a service, it uses ``:<filename>``,
 not ``://<location>``. To build a tar archive directly to a SIF
 container:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity build lolcow_tar.sif docker-archive:lolcow.tar
     INFO:    Starting build...
@@ -789,7 +789,7 @@ To disable automatic propagation of environment variables, the
 used, only variables on the host that are prefixed with
 ``SINGULARITYENV_`` are set in the container:
 
-.. code-block:: none
+.. code-block::
 
     # Set a host variable
     $ export HOST_VAR=123
@@ -934,7 +934,7 @@ this script mirrors Docker as closely as possible.
 If the Docker container only has an ``ENTRYPOINT`` - that
 ``ENTRYPOINT`` is run, with any arguments appended:
 
-.. code-block:: none
+.. code-block::
 
    # ENTRYPOINT="date"
 
@@ -949,7 +949,7 @@ If the Docker container only has an ``ENTRYPOINT`` - that
 If the Docker container only has a ``CMD`` - the ``CMD`` is run, or is
 *replaced* with any arguments:
 
-.. code-block:: none
+.. code-block::
 
    # CMD="date"
 
@@ -965,7 +965,7 @@ If the Docker container has a ``CMD`` *and* ``ENTRYPOINT``, then we
 run ``ENTRYPOINT`` with either ``CMD`` as default arguments, or
 replaced with any user supplied arguments:
 
-.. code-block:: none
+.. code-block::
 
    # ENTRYPOINT="date"
    # CMD="--utc"

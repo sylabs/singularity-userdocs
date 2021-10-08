@@ -30,7 +30,7 @@ instance of an API that converts URL to PDFs.
 To begin with, suppose you want to run an NGINX web server outside of a
 container. On Ubuntu, you can simply install NGINX and start the service by:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo apt-get update && sudo apt-get install -y nginx
 
@@ -51,7 +51,7 @@ For demonstration, let's use an easy (though somewhat useless) example of
 `alpine_latest.sif <https://cloud.sylabs.io/library/_container/5baba5e594feb900016ea41c>`_
 image from the `container library <https://cloud.sylabs.io/library/>`_:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull library://alpine
 
@@ -60,7 +60,7 @@ The above command will save the alpine image from the Container Library as
 
 To start an instance, you should follow this procedure :
 
-.. code-block:: none
+.. code-block::
 
     [command]                      [image]              [name of instance]
 
@@ -70,7 +70,7 @@ This command causes {Singularity} to create an isolated environment for the
 container services to live inside. One can confirm that an instance is running
 by using the ``instance list`` command like so:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance list
 
@@ -87,7 +87,7 @@ If you want to run multiple instances from the same image, it’s as simple as
 running the command multiple times with different instance names. The instance
 name uniquely identify instances, so they cannot be repeated.
 
-.. code-block:: none
+.. code-block::
 
       $ singularity instance start alpine_latest.sif instance2
 
@@ -95,7 +95,7 @@ name uniquely identify instances, so they cannot be repeated.
 
 And again to confirm that the instances are running as we expected:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance list
 
@@ -106,7 +106,7 @@ And again to confirm that the instances are running as we expected:
 
 You can also filter the instance list by supplying a pattern:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance list '*2'
 
@@ -116,7 +116,7 @@ You can also filter the instance list by supplying a pattern:
 
 You can use the ``singularity run/exec`` commands on instances:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run instance://instance1
 
@@ -129,7 +129,7 @@ command in the instance.
 If you want to poke around inside of your instance, you can do a normal
 ``singularity shell`` command, but give it the instance URI:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity shell instance://instance3
 
@@ -138,7 +138,7 @@ If you want to poke around inside of your instance, you can do a normal
 When you are finished with your instance you can clean it up with the
 ``instance stop`` command as follows:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance stop instance1
 
@@ -146,7 +146,7 @@ If you have multiple instances running and you want to stop all of them, you can
 do so with a wildcard or the --all flag. The following three commands are all
 identical.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance stop \*
 
@@ -182,7 +182,7 @@ This downloads the official NGINX Docker container, converts it to a {Singularit
 image, and tells it to run NGINX when you start the instance. Since we’re
 running a web server, we’re going to run the following commands as root.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build nginx.sif nginx.def
 
@@ -196,7 +196,7 @@ running a web server, we’re going to run the following commands as root.
 Just like that we’ve downloaded, built, and run an NGINX {Singularity}
 image. And to confirm that it’s correctly running:
 
-.. code-block:: none
+.. code-block::
 
     $ curl localhost
 
@@ -240,7 +240,7 @@ converts a web page into a PDF, and can be found `here
 following the steps described below or you can just download the final image
 directly from Container Library, simply run:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity pull url-to-pdf.sif library://sylabs/doc-examples/url-to-pdf:latest
 
@@ -345,7 +345,7 @@ The complete definition file will look like this:
 
 The container can be built like so:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build url-to-pdf.sif url-to-pdf.def
 
@@ -355,7 +355,7 @@ Running the Service
 
 We can now start an instance and run the service:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity instance start url-to-pdf.sif pdf
 
@@ -368,7 +368,7 @@ We can now start an instance and run the service:
 We can confirm it’s working by sending the server an http request using
 curl:
 
-.. code-block:: none
+.. code-block::
 
     $ curl -o sylabs.pdf localhost:9000/api/render?url=http://sylabs.io/docs
 
@@ -385,7 +385,7 @@ You should see a PDF file being generated like the one shown below:
 
 If you shell into the instance, you can see the running processes:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity shell instance://pdf
     {Singularity}: Invoking an interactive shell within container...
@@ -516,7 +516,7 @@ The full def file will look like this:
 Create the container as before. The ``--force`` option will overwrite the old
 container:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity build --force url-to-pdf.sif url-to-pdf.def
 
@@ -524,26 +524,26 @@ Now that we have an output directory in the container, we need to expose it to
 the host using a bind mount. Once we’ve rebuilt the container, make a new
 directory called ``/tmp/out`` for the generated PDFs to go.
 
-.. code-block:: none
+.. code-block::
 
     $ mkdir /tmp/out
 
 After building the image from the edited definition file we simply start the
 instance:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance start --bind /tmp/out/:/output url-to-pdf.sif pdf
 
 To request a pdf simply do:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity run --app pdf_client instance://pdf http://sylabs.io/docs sylabs.pdf
 
 To confirm that it worked:
 
-.. code-block:: none
+.. code-block::
 
     $ ls /tmp/out/
     sylabs.pdf
@@ -551,7 +551,7 @@ To confirm that it worked:
 When you are finished, use the instance stop command to close all running
 instances.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance stop --all
 
@@ -561,7 +561,7 @@ instances.
     For example, if you wish to capture the output of the ``web`` container
     instance which is placed at ``/output/`` inside the container you could do:
 
-    .. code-block:: none
+    .. code-block::
 
         $ singularity instance start --bind output/dir/outside/:/output/ nginx.sif  web
 
@@ -578,7 +578,7 @@ daemons support managing processes via pid files.
 You can specify a `--pid-file` option to `singularity instance start` to write
 the PID for an instance to the specified file, e.g.
 
-.. code-block:: none
+.. code-block::
 
     $ singularity instance start --pid-file /home/dave/alpine.pid alpine_latest.sif instanceA
 
@@ -589,7 +589,7 @@ the PID for an instance to the specified file, e.g.
 An example service file for an instance controlled by systemd is below. This can be used as a
 template to setup containerized services under systemd.
 
-.. code-block:: none
+.. code-block::
 
     [Unit]
     Description=Web Instance

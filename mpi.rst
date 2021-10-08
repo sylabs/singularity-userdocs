@@ -131,7 +131,7 @@ MPICH Hybrid Container
 
 If the host MPI is MPICH, a definition file such as the following example can be used:
 
-.. code-block:: none
+.. code-block::
 
     Bootstrap: docker
     From: ubuntu:18.04
@@ -188,7 +188,7 @@ Open MPI Hybrid Container
 
 If the host MPI is Open MPI, the definition file looks like:
 
-.. code-block:: none
+.. code-block::
 
     Bootstrap: docker
     From: ubuntu:18.04
@@ -248,7 +248,7 @@ Assuming your container with MPI and your application is already built,
 the ``mpirun`` command to start your application looks like when your container
 has been built based on the hybrid model:
 
-.. code-block:: none
+.. code-block::
 
     $ mpirun -n <NUMBER_OF_RANKS> singularity exec <PATH/TO/MY/IMAGE> </PATH/TO/BINARY/WITHIN/CONTAINER>
 
@@ -256,7 +256,7 @@ Practically, this command will first start a process instantiating ``mpirun``
 and then {Singularity} containers on compute nodes. Finally, when the containers
 start, the MPI binary is executed:
 
-.. code-block:: none
+.. code-block::
 
     $ mpirun -n 8 singularity run hybrid-mpich.sif /opt/mpitest
     Hello, I am rank 3/8
@@ -319,7 +319,7 @@ forward. The following example shows the definition file for the test
 program, which in this case has been compiled on the host to
 ``/tmp/mpitest``:
 
-.. code-block:: none
+.. code-block::
 
   Bootstrap: docker
   From: ubuntu:18.04
@@ -354,7 +354,7 @@ different installation paths. You can also hard code the MPI path in
 the definition file if you wish.
 
 
-.. code-block:: none
+.. code-block::
 
     $ export MPI_DIR="<PATH/TO/HOST/MPI/DIRECTORY>"            
     $ mpirun -n <NUMBER_OF_RANKS> singularity exec --bind "$MPI_DIR" <PATH/TO/MY/IMAGE> </PATH/TO/BINARY/WITHIN/CONTAINER>
@@ -364,7 +364,7 @@ On an example system we may be using an Open MPI installation at
 commands to run the container in bind mode are:
 
     
-.. code-block:: none
+.. code-block::
 
     $ export MPI_DIR="/cm/shared/apps/openmpi/gcc/64/4.0.5"
     $ mpirun -n 8 singularity exec --bind "$MPI_DIR" bind.sif /opt/mpitest
@@ -388,7 +388,7 @@ example illustrates the context of a batch script for Slurm that aims at
 starting a {Singularity} container on each node allocated to the execution of
 the job. It can easily be adapted for all major batch systems available.
 
-.. code-block:: none
+.. code-block::
 
     $ cat my_job.sh
     #!/bin/bash
@@ -406,7 +406,7 @@ appropriate bind options.
 
 A user can then submit a job by executing the following SLURM command:
 
-.. code-block:: none
+.. code-block::
 
     $ sbatch my_job.sh
 

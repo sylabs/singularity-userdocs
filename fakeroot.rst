@@ -118,20 +118,20 @@ Examples
 Build from a definition file:
 -----------------------------
 
-.. code-block:: none
+.. code-block::
 
     singularity build --fakeroot /tmp/test.sif /tmp/test.def
 
 Ping from container:
 --------------------
 
-.. code-block:: none
+.. code-block::
 
     singularity exec --fakeroot --net docker://alpine ping -c1 8.8.8.8
 
 HTTP server:
 ------------
 
-.. code-block:: none
+.. code-block::
 
     singularity run --fakeroot --net --network-args="portmap=8080:80/tcp" -w docker://nginx

@@ -41,7 +41,7 @@ To take advantage of this granted capability as a user, ``pinger`` must also
 request the capability when executing a container with the ``--add-caps`` flag
 like so:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity exec --add-caps CAP_NET_RAW library://sylabs/tests/ubuntu_ping:v1.0 ping -c 1 8.8.8.8
     PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
@@ -56,7 +56,7 @@ If the admin decides that it is no longer necessary to allow the user
 the appropriate Linux capability and ``pinger`` will not be able to add that
 capability to their containers anymore:
 
-.. code-block:: none
+.. code-block::
 
     $ singularity exec --add-caps CAP_NET_RAW library://sylabs/tests/ubuntu_ping:v1.0 ping -c 1 8.8.8.8
     WARNING: not authorized to add capability: CAP_NET_RAW
@@ -76,7 +76,7 @@ Assuming the root user will execute containers with the ``CAP_NET_RAW``
 capability by default, executing the same container ``pinger`` executed above
 works without the need to grant capabilities:
 
-.. code-block:: none
+.. code-block::
 
     # singularity exec library://sylabs/tests/ubuntu_ping:v1.0 ping -c 1 8.8.8.8
     PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
@@ -88,7 +88,7 @@ works without the need to grant capabilities:
 
 Now we can manually drop the ``CAP_NET_RAW`` capability like so:
 
-.. code-block:: none
+.. code-block::
 
     # singularity exec --drop-caps CAP_NET_RAW library://sylabs/tests/ubuntu_ping:v1.0 ping -c 1 8.8.8.8
     ping: socket: Operation not permitted
@@ -140,7 +140,7 @@ precaution.  But the root user can override this precaution and allow SetUID
 binaries to behave as expected within a {Singularity} container with the
 ``--allow-setuid`` option like so:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity shell --allow-setuid some_container.sif
 
@@ -155,7 +155,7 @@ default capabilities`` parameter in the ``singularity.conf`` file to ``file`` or
 the ``singularity.conf`` file and enter the container with full capabilities
 using the ``--keep-privs`` option.
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity exec --keep-privs library://centos ping -c 1 8.8.8.8
     PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
@@ -176,7 +176,7 @@ container as root to enhance security.
 For instance, to drop the ability for the root user to open a raw socket inside
 the container:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity exec --drop-caps CAP_NET_RAW library://centos ping -c 1 8.8.8.8
     ping: socket: Operation not permitted
@@ -194,7 +194,7 @@ also change the UID and GID of the user within the container at runtime.
 
 For instance:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo whoami
     root
@@ -213,7 +213,7 @@ with {Singularity}, normally at ``/usr/local/etc/singularity/seccomp-profiles/de
 For this example, we will use a much simpler configuration file to blacklist the
 ``mkdir`` command.
 
-.. code-block:: none
+.. code-block::
 
     {
         "defaultAction": "SCMP_ACT_ALLOW",
@@ -243,7 +243,7 @@ For this example, we will use a much simpler configuration file to blacklist the
 We'll save the file at ``/home/david/no_mkdir.json``. Then we can invoke the
 container like so:
 
-.. code-block:: none
+.. code-block::
 
     $ sudo singularity shell --security seccomp:/home/david/no_mkdir.json my_container.sif
 
@@ -255,7 +255,7 @@ core dump.
 
 The full list of arguments accepted by the ``--security`` option are as follows:
 
-.. code-block:: none
+.. code-block::
 
     --security="seccomp:/usr/local/etc/singularity/seccomp-profiles/default.json"
     --security="apparmor:/usr/bin/man"
