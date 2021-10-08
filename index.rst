@@ -1,7 +1,6 @@
-========================
-{Singularity} User Guide
-========================
-
+##########################
+ {Singularity} User Guide
+##########################
 
 Welcome to the {Singularity} User Guide!
 
@@ -11,11 +10,11 @@ and running containers.
 
 For a detailed guide to installation and configuration, please see the
 separate Admin Guide for this version of {Singularity} at
-`<https://sylabs.io/guides/\{adminversion\}/admin-guide/>`__.
+https://sylabs.io/guides/{adminversion}/admin-guide/.
 
-
-Getting Started & Background Information
-========================================
+******************************************
+ Getting Started & Background Information
+******************************************
 
 .. toctree::
    :maxdepth: 2
@@ -24,8 +23,9 @@ Getting Started & Background Information
    Quick Start <quick_start>
    Security in {Singularity} <security>
 
-Building Containers
-===================
+*********************
+ Building Containers
+*********************
 
 Learn how to write a definition file that can be used to build a
 container. Understand the environment within a build, how to perform
@@ -40,13 +40,14 @@ non-root user.
    Build Environment <build_env>
    Fakeroot feature <fakeroot>
 
-Container Signing & Encryption
-==============================
+********************************
+ Container Signing & Encryption
+********************************
 
 {Singularity} allows containers to be signed using a PGP key. The
-signature travels with the container image, allowing you to verify
-that the image is unmodified at any time. Encryption of containers
-using LUKS2 is also supported. Encrypted containers can be run without
+signature travels with the container image, allowing you to verify that
+the image is unmodified at any time. Encryption of containers using
+LUKS2 is also supported. Encrypted containers can be run without
 decrypting them to disk first.
 
 .. toctree::
@@ -56,12 +57,13 @@ decrypting them to disk first.
    Key management commands <key_commands>
    Encrypted Containers <encryption>
 
-Sharing & Online Services
-=========================
+***************************
+ Sharing & Online Services
+***************************
 
 Sylabs offers a suite of container services, with a free tier and
-on-premise options. Learn how to make use these services to simplify
-the process of building, signing, and sharing your containers.
+on-premise options. Learn how to make use these services to simplify the
+process of building, signing, and sharing your containers.
 
 .. toctree::
    :maxdepth: 1
@@ -69,8 +71,9 @@ the process of building, signing, and sharing your containers.
    Remote Endpoints <endpoint>
    Sylabs Cloud Library <cloud_library>
 
-Advanced Usage
-==============
+****************
+ Advanced Usage
+****************
 
 Once you've understood the basics, explore all the options which
 {Singularity} provides for accessing data, running persistent services
@@ -89,14 +92,14 @@ networking and security configuration.
    Network Options <networking>
    Cgroups Support <cgroups>
 
-Compatibility
-=============
+***************
+ Compatibility
+***************
 
 {Singularity} has unique benefits and supports easy access to GPUs and
 other hardware. It also strives for compatibility with Docker/OCI
-container formats. Understand the differences between {Singularity}
-and Docker, as well as how to use containerized MPI and GPU
-applications.
+container formats. Understand the differences between {Singularity} and
+Docker, as well as how to use containerized MPI and GPU applications.
 
 .. toctree::
    :maxdepth: 1
@@ -106,20 +109,22 @@ applications.
    Singularity and MPI applications <mpi>
    GPU Support <gpu>
 
-Get Involved
-============
+**************
+ Get Involved
+**************
 
 We'd love you to get involved in the {Singularity} community! Whether
-through contributing feature and fixes, helping to answer questions
-from other users, or simply testing new releases.
+through contributing feature and fixes, helping to answer questions from
+other users, or simply testing new releases.
 
 .. toctree::
    :maxdepth: 1
 
    Contributing <contributing>
 
-Reference
-=========
+***********
+ Reference
+***********
 
 .. toctree::
    :maxdepth: 2
