@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   go: circleci/go@1.7
+  aws-cli: circleci/aws-cli@2.0.3
 
 parameters:
   go-version:
@@ -79,11 +80,12 @@ jobs:
           command: |
             rstcheck --ignore-language c,c++ --report warning *.rst
 
-  make_html:
+  make_docs:
     executor: ubuntu-machine
     steps:
       - checkout
       - install-deps-apt
+      - install-latex-apt
       - install-deps-python
       - go/install:
           version: << pipeline.parameters.go-version >>
@@ -95,17 +97,6 @@ jobs:
       - store_artifacts:
           path: _build/html
           destination: html
-
-  make_pdf_epub:
-    executor: ubuntu-machine
-    steps:
-      - checkout
-      - install-deps-apt
-      - install-latex-apt
-      - install-deps-python
-      - go/install:
-          version: << pipeline.parameters.go-version >>
-      - init-submodules  
       - run:
           name: make pdf
           command: |
@@ -121,15 +112,55 @@ jobs:
           path: _build/epub
           destination: epub
 
+  publish_docs:
+    executor: ubuntu-machine
+    steps:
+      - checkout
+      - install-deps-apt
+      - install-latex-apt
+      - install-deps-python
+      - go/install:
+          version: << pipeline.parameters.go-version >>
+      - init-submodules  
+      - run:
+          name: make pdf
+          command: |
+            make latexpdf
+      - run:
+          name: make html
+          command: |
+            make html
+      - run:
+          name: make epub
+          command: |
+            make epub
+      - aws-cli/setup
+      - run:
+          name: publish to s3
+          command: |
+            aws s3 sync _build/html s3://ce-docs.sylabs.io/guides/${CIRCLECI_BRANCH}/user-guide --delete
+            aws s3 cp _build/latex/*.pdf s3://ce-docs.sylabs.io/guides/${CIRCLECI_BRANCH}/user-guide.pdf
+            aws s3 cp _build/epub/*.epub s3://ce-docs.sylabs.io/guides/${CIRCLECI_BRANCH}/user-guide.epub
+
 workflows:
   version: 2
   build_and_test:
     jobs:
       - lint_markdown
       - check_rst
-      - make_html:
+      - make_docs:
           requires:
             - check_rst
-      - make_pdf_epub:
+          filters:
+            branches:
+              ignore:
+                - master
+                - /v\d\.\d/
+      - publish_docs:
           requires:
             - check_rst
+          filters:
+            branches:
+              only:
+                - master
+                - /v\d\.\d/
