@@ -138,9 +138,9 @@ jobs:
       - run:
           name: publish to s3
           command: |
-            aws s3 sync _build/html s3://ce-docs.sylabs.io/guides/${CIRCLECI_BRANCH}/user-guide --delete
-            aws s3 cp _build/latex/*.pdf s3://ce-docs.sylabs.io/guides/${CIRCLECI_BRANCH}/user-guide.pdf
-            aws s3 cp _build/epub/*.epub s3://ce-docs.sylabs.io/guides/${CIRCLECI_BRANCH}/user-guide.epub
+            aws s3 sync _build/html s3://ce-docs.sylabs.io/guides/${CIRCLE_BRANCH}/user-guide --delete
+            aws s3 cp _build/latex/*.pdf s3://ce-docs.sylabs.io/guides/${CIRCLE_BRANCH}/user-guide.pdf
+            aws s3 cp _build/epub/*.epub s3://ce-docs.sylabs.io/guides/${CIRCLE_BRANCH}/user-guide.epub
 
 workflows:
   version: 2
@@ -155,7 +155,7 @@ workflows:
             branches:
               ignore:
                 - master
-                - /v\d\.\d/
+                - /\d\.\d/
       - publish_docs:
           requires:
             - check_rst
@@ -163,4 +163,4 @@ workflows:
             branches:
               only:
                 - master
-                - /v\d\.\d/
+                - /\d\.\d/
