@@ -81,50 +81,34 @@ common things you need to do when writing or editing RST.
 
 #### 1. Create a section/subsection/subsubsection title
 
-Sections titles are defined by surrounding or underlining them
-with different characters. Each combination of overline/underline and character
-used represents a different level section.
-
-- To create a main section title: A main section title is surrounded (above and
-  below) with `=` characters:
+Section titles are defined by surrounding or underlining them with different
+characters. Each combination of overline/underline and character used represents
+a different level section. We follow the conventions used by the python
+documentation for headers:
 
 ```rst
-================
-New Main Section
-================
+##################
+H1: document title
+##################
+
+*********
+Sample H2
+*********
+
+Sample H3
+=========
+
+Sample H4
+---------
+
+Sample H5
+^^^^^^^^^
+
+Sample H6
+"""""""""
 ```
 
-- To create a sub-section: A sub section title is surrounded (above and below)
-  with `-` characters:
-
-```rst
----------------
-New Sub section
----------------
-```
-
-- To create a sub-sub-section: A sub-sub section title is underlined with ``=``
-  characters:
-
-```rst
-New sub-sub section
-===================
-```
-
-- If you need more levels you can keep going: A sub-sub-sub-section is
-  underlined with `-` characters.
-
-```rst
-New sub-sub-sub section
------------------------
-```
-
-RST doesn't actually set a specific order for the characters you use to
-underline and overline titles, as it will pick up the method used for the first
-title at each level. Following the convention above, though, will make it easy
-to see what level a section is wherever you are working in the documentation.
-
-#### 2. Reference sections
+#### 2. Referencing sections
 
 To reference a section in an RST file you need to first create the reference
 above the title you need to reference, and second to reference it where you need
