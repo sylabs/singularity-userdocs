@@ -24,29 +24,13 @@ Runtime Specification that is of concern here.
 
 Briefly, compliance with respect to the OCI Runtime Specification is
 addressed in {Singularity} through the introduction of the ``oci``
-command group. Although this command group can, in principle, be used to
-provide a runtime that supports end users, in this initial documentation
-effort, emphasis is placed upon interoperability with Kubernetes; more
-specifically, interoperability with Kubernetes via the `{Singularity}
-Container Runtime Interface
-<https://www.sylabs.io/guides/cri/1.0/user-guide/index.html>`_.
-
-Owing to this restricted focus, a subset of the {Singularity} ``oci``
-command group receives attention here; specifically:
-
-   -  Mounting and unmounting OCI filesystem bundles
-   -  Creating OCI compliant container instances
-
-Some context for integration with Kubernetes via the {Singularity} CRI
-is provided at the end of the section.
+command group.
 
 .. note::
 
    All commands in the ``oci`` command group require ``root``
    privileges.
 
-..
-   TODO All commands require root access ...
 
 ..
    TODO Need to account for the diff bootstrap agents that could produce a SIF file for OCI runtime support ...
@@ -795,14 +779,6 @@ For a comprehensive discussion of all the ``config.json`` file
 properties, refer to the `implementation guide
 <https://github.com/opencontainers/runtime-spec/blob/master/config.md>`_.
 
-Technically, the ``overlay`` directory was *not* content expected of an
-OCI compliant filesystem bundle. As detailed in the section dedicated to
-`Persistent Overlays
-<https://www.sylabs.io/guides/3.0/user-guide/persistent_overlays.html>`_,
-these directories allow for the introduction of a writable file system
-on an otherwise immutable read-only container; thus they permit the
-illusion of read-write access.
-
 ..
    TODO Need to ensure that what's written above is correct
 
@@ -930,81 +906,6 @@ be issued:
 
 ..
    https://www.sylabs.io/guides/cri/1.0/user-guide/installation.html?highlight=oci#install-dependencies
-
-************************
- Kubernetes Integration
-************************
-
-As noted at the :ref:`outset here <sec:oci_runtime_overview>`, in
-documenting support for an OCI runtime in {Singularity}, the impetus is
-initially derived from the requirement to integrate with `Kubernetes
-<https://kubernetes.io/>`_. Simply stated, Kubernetes is an open-source
-system for orchestrating containers; developed originally at Google,
-Kubernetes was contributed as seed technology to the `Cloud Native
-Compute Foundation <https://www.cncf.io/>`_ (CNCF). At this point,
-Kubernetes is regarded as a Graduated Project by CNCF, and is being used
-widely in production deployments. Even though Kubernetes emphasizes an
-orientation around services, it is appealing to those seeking to
-orchestrate containers having compute-driven requirements. Furthermore,
-emerging classes of workload in AI for example, appear to have
-requirements that are best addressed by a combination of service and
-traditional HPC infrastructures. Thus there is ample existing, as well
-as emerging, interest in integrating {Singularity} containers with
-Kubernetes.
-
-The connection with support for the OCI runtime documented here, within
-the context of a {Singularity}-Kubernetes integration, can be best
-established through an architectural schematic. Dating back to the
-introduction of a Container Runtime Interface (CRI) for Kubernetes in
-late 2016, the schematic below is a modified version of the original
-presented in `a Kubernetes blog post
-<https://kubernetes.io/blog/2016/12/container-runtime-interface-cri-in-kubernetes/>`_.
-The lower branch of this schematic is essentially a reproduction of the
-original; it does however, place emphasis on OCI compliance in terms of
-the CRI and containers (the runtime as well as their instances).
-
-.. image:: sycri_ociruntime_implementation.png
-
-From this schematic it is evident that integrating {Singularity}
-containers with Kubernetes requires the following efforts:
-
-   #. Implementation of a CRI for {Singularity}
-   #. Implementation of an OCI runtime in {Singularity}
-
-The implementation of a CRI for {Singularity} is the emphasis of a
-separate and distinct `open source project
-<https://github.com/sylabs/singularity-cri>`_; the implementation of
-this CRI is documented here. For the rationale conveyed through the
-architectural schematic, {Singularity} CRI's dependence upon
-{Singularity} with OCI runtime support is made clear as `an installation
-prerequisite
-<https://www.sylabs.io/guides/cri/1.0/user-guide/installation.html?highlight=oci#install-dependencies>`_.
-User-facing documentation for {Singularity} CRI details usage in a
-Kubernetes context - usage, of course, that involves orchestration of a
-{Singularity} container obtained from the `Sylabs Cloud Container
-Library <https://cloud.sylabs.io/library>`_. Because the entire
-Kubernetes-based deployment can exist within a single instance of a
-{Singularity} container, {Singularity} CRI can be easily evaluated via
-Sykube; inspired by `Minikube
-<https://kubernetes.io/docs/setup/minikube/>`_, `use of Sykube
-<https://www.sylabs.io/guides/cri/1.0/user-guide/sykube.html>`_ is
-included in the documentation for {Singularity} CRI.
-
-Documenting the implementation of an OCI-compliant runtime for
-{Singularity} has been the emphasis here. Although this standalone
-runtime can be used by end users independent of anything to do with
-{Singularity} and Kubernetes, the primary purpose here has been
-documenting it within this integrated context. In other words, by making
-use of the OCI runtime presented by {Singularity}, commands originating
-from Kubernetes (see, e.g., `Basic Usage
-<https://sylabs.io/guides/cri/1.0/user-guide/examples.html>`_ in the
-{Singularity} CRI documentation) have impact ultimately on {Singularity}
-containers via the CRI. {Singularity} CRI is implemented as a `gRPC
-<https://grpc.io/>`_ server - i.e., a persistent service available to
-`Kubelets
-<https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/>`_
-(node agents). Taken together, this integration allows {Singularity}
-containers to be manipulated directly from Kubernetes.
 
 ..
    TODO Describe a workflow
