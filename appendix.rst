@@ -96,6 +96,15 @@ below with their respective functionality.
 #. **SINGULARITY_DOCKER_PASSWORD**: To specify the password for docker
    authentication.
 
+#. **SINGULARITY_DOWNLOAD_CONCURRENCY**: To specify how many concurrent streams
+   when downloading (pulling) an image from cloud library.
+
+#. **SINGULARITY_DOWNLOAD_PART_SIZE**: To specify the size of each part (bytes)
+   when concurrent downloads are enabled.
+
+#. **SINGULARITY_DOWNLOAD_BUFFER_SIZE**: To specify the transfer buffer size
+   (bytes) when concurrent downloads are enabled.
+
 #. **SINGULARITY_DROP_CAPS**: To specify a list (comma separated string)
    of capabilities to be dropped. Default is an empty string.
 
@@ -183,6 +192,13 @@ below with their respective functionality.
 #. **SINGULARITY_LIBRARY**: Specifies the library to pull from. Default
    is set to our Cloud Library.
 
+``M``
+=====
+
+#. **SINGULARITY_MOUNT**: To specify host to container mounts, using the
+   syntax understood by the ``--mount`` flag. Multiple mounts should be
+   separated by newline characters.
+
 ``N``
 =====
 
@@ -216,8 +232,11 @@ below with their respective functionality.
 #. **SINGULARITY_NO_PRIVS**: To drop all the privileges from root user
    in the container. Default is set to false.
 
-#. **SINGULARITY_NV**: To enable experimental Nvidia support. Default is
+#. **SINGULARITY_NV**: To enable Nvidia GPU support. Default is
    set to false.
+
+#. **SINGULARITY_NVCCLI**: To use nvidia-container-cli for container GPU setup
+   (experimental).
 
 ``O``
 =====
