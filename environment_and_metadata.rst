@@ -456,7 +456,7 @@ it is not modifying an existing label when ``--force`` is not used:
 .. note::
 
    {Singularity} 3.0 through 3.8 did not inherit labels from Docker/OCI
-   images during a build. {Singularity} 3.8 restores the behavior of
+   images during a build. {Singularity} 3.9 restores the behavior of
    2.x, and inherits these labels.
 
 Custom Labels
