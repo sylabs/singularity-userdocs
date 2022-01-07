@@ -152,10 +152,43 @@ The ``%runscript`` is set to echo the value.
    setup container environments, therefore all commands executed from
    the ``%environment`` section have an execution timeout of **5
    seconds** for {Singularity} 3.6 and a **1 minute** timeout since
-   {Singularity} 3.7. While it is fine to source a script from there, it
+   {Singularity} 3.7. While it is possible to source a script from there, it
    is not recommended to use this section to run potentially long
    initialization tasks because this would impact users running the
    image and the execution could abort due to timeout.
+
+
+Default values
+==============
+
+To set a default value for a variable in the ``%environment`` section,
+but adopt the value of a host environment variable if it is set, use
+the following syntax:
+
+.. code:: singularity
+
+    %environment
+        FOO=${FOO:-'default'}
+
+The value of ``FOO`` in the container will take the value of ``FOO``
+on the host, or ``default`` if ``FOO`` is not set on the host or
+``--cleanenv`` / ``--containall`` have been specified.
+
+Build time variables in ``%post``
+=================================
+
+In some circumstances the value that needs to be assigned to an
+environment variable may only be known after e.g. software
+installation, in ``%post``. For situations like this, the
+``$SINGULARITY_ENVIRONMENT`` variable is provided. Redirecting text to
+this variable will cause it to be written to a file called
+``/.singularity.d/env/91-environment.sh`` that will be sourced at
+runtime.
+
+Variables set in the ``%post`` section through
+``$SINGULARITY_ENVIRONMENT`` take precedence over those added via
+``%environment``.
+
 
 ***************************
  Environment from the host
@@ -165,6 +198,11 @@ If you have environment variables set outside of your container, on the
 host, then by default they will be available inside the container.
 Except that:
 
+   -  An environment variable set on the host will be overriden by a
+      variable of the same name that has been set inside the container
+      image, via ``SINGULARITYENV_`` environment variables, or the
+      ``--env`` and ``--env-file`` flags.
+
    -  The ``PS1`` shell prompt is reset for a container specific prompt.
 
    -  The ``PATH`` environment variable will be modified to contain
@@ -173,9 +211,6 @@ Except that:
    -  The ``LD_LIBRARY_PATH`` is modified to a default
       ``/.singularity.d/libs``, that will include NVIDIA / ROCm
       libraries if applicable.
-
-Also, an environment variable set on the host *will not* override a
-variable of the same name that has been set inside the container image.
 
 If you *do not want* the host environment variables to pass into the
 container you can use the ``-e`` or ``--cleanenv`` option. This gives a
@@ -351,38 +386,138 @@ to the start) of the ``PATH`` variable in the container.
 Alternatively you could use the ``--env`` option to set a
 ``PREPEND_PATH`` variable, e.g. ``--env PREPEND_PATH=/startpath``.
 
-Evaluating container variables
-==============================
+Escaping and evaluation of environment variables
+================================================
 
-When setting environment variables with ``--env`` etc. you can specify
-an escaped variable name, e.g. ``\$PATH`` to evaluate the value of that
-variable in the container.
+{Singularity} uses an embedded shell interpreter to process the
+container startup scripts and environment. When this processing is
+performed, a single step of shell evaluation happens in the container
+context. The shell from which you are running {Singularity} may also
+evaluate variables on your command line before passing them to
+{Singularity}.
 
-For example, ``--env PATH="\$PATH:/endpath"`` would have the same effect
-as ``--env APPEND_PATH="/endpath"``.
+.. warning::
+
+   This behaviour differs from Docker/OCI handling of environment
+   variables / ``ENV`` directives. You may need additional quoting and
+   escaping to replicate behavior. See below.
+
+Using host variables
+--------------------
+
+To set a container environment variable to the value of a variable on
+the host, use double quotes around the variable, so that it is
+processed by the host shell before the value is passed to
+{Singularity}. For example:
+
+.. code::
+
+   singularity run --env "MYHOST=$HOSTNAME" mycontainer.sif
+
+This will set the ``MYHOST`` environment variable inside the container
+to the value of the ``HOSTNAME`` on the host system. ``$HOSTNAME`` is
+substituted before the host shell runs ``singularity``.
+
+.. note::
+
+   You can often use no quotes, but it is good practice to use quotes
+   consistently so that variables containing e.g. spaces are handled
+   correctly.
+
+Using Container Variables
+-------------------------
+
+To set an environment variable to a value that references another
+variable inside the container, you should escape the ``$`` sign to
+``\$``. This prevents the host shell from substituting the
+value. Instead it will be substituted inside the container.
+
+For example, to create an environment variable ``MYPATH``, with the
+same value as ``PATH`` in the container (not the host's ``PATH``):
+
+.. code::
+
+   singularity run --env "MYPATH=\$PATH" mycontainer.sif
+
+You can also use this approach to append or prepend to variables that
+are already set in the container. For example, ``--env
+PATH="\$PATH:/endpath"`` would have the same effect as ``--env
+APPEND_PATH="/endpath"``, which uses the special ``APPEND/PREPEND``
+handling for ``PATH`` discussed above.
+
+Quoting / Avoiding Evaluation
+-----------------------------
+
+If you need to pass an environment variable into the container
+verbatim, it must be quoted and escaped appropriately. For example, if
+you need to set a path containing a literal ``$LIB`` for the
+``LD_PRELOAD`` environment variable:
+
+.. code::
+
+   singularity run --env="LD_PRELOAD=/foo/bar/\\\$LIB/baz.so" mycontainer.sif
+
+This will result in ``LD_PRELOAD`` having the value
+``/foo/bar/$LIB/baz.so`` inside the container.
+
+The host shell consumes the double ``\\``, and then environment
+processing within {Singularity} will consume the third ``\`` that
+escapes the literal ``$``.
+
+You can also use single quotes on the command line, to avoid one
+level of escaping:
+
+.. code::
+
+   singularity run --env='LD_PRELOAD=/foo/bar/\$LIB/baz.so' mycontainer.sif
+
 
 Environment Variable Precedence
 ===============================
 
-When a container is run with {Singularity} 3.6, the container
+When a container is run with {Singularity}, the container
 environment is constructed in the following order:
 
    -  Clear the environment, keeping just ``HOME`` and
       ``SINGULARITY_APPNAME``.
-   -  Take Docker defined environment variables, where Docker was the
-      base image source.
+   -  Set Docker/OCI defined environment variables, where a Docker or
+      OCI image was used as the base for the container build.
    -  If ``PATH`` is not defined set the {Singularity} default ``PATH``
       *or*
    -  If ``PATH`` is defined, add any missing path parts from
       {Singularity} defaults
-   -  Take environment variables defined explicitly in the image
-      (``%environment``). These can override any previously set values.
+   -  Set environment variables defined explicitly in the
+      ``%environment`` section of the definition file. These can
+      override any previously set values, and may reference host
+      variables.
+   -  Set environment variables that were defined in the ``%post``
+      section of the build, by addition to the
+      ``$SINGULARITY_ENVIRONMENT`` file.
    -  Set SCIF (``--app``) environment variables
    -  Set base environment essential vars (``PS1`` and
       ``LD_LIBRARY_PATH``)
    -  Inject ``SINGULARITYENV_`` / ``--env`` / ``--env-file`` variables
-      so they can override or modify any previous values:
-   -  Source any remaining scripts from ``/singularity.d/env``
+      so they can override or modify any previous values.
+   -  Apply special ``APPEND_PATH`` / ``PREPEND_PATH`` handling.
+   -  Restore environment variables from the host, if they have not
+      already been set in the container, and the ``--cleanenv`` /
+      ``--containall`` options were not specified.
+
+.. warning::
+
+   While {Singularity} will process additional scripts found under
+   ``/.singularity.d/env`` inside the container, it is strongly
+   recommended to avoid manipulating the container environment by
+   directly adding or modifying scripts in this directory. Please use
+   the ``%environment`` section of the definition file, and the
+   ``$SINGULARITY_ENVIRONMENT`` file from ``%post`` if required.
+
+   A future version of {Singularity} may move container scripts,
+   environment, and metadata outside of the container's root
+   filesystem. This will permit further reproducibility and
+   compatibility improvements, but will preclude environment
+   manipulation via arbitrary scripts.
+
 
 .. _sec:umask:
 

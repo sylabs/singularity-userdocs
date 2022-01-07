@@ -394,6 +394,10 @@ text to this variable will cause it to be written to a file called
 ``/.singularity.d/env/91-environment.sh`` that will be sourced at
 runtime.
 
+Variables set in the ``%post`` section through
+``$SINGULARITY_ENVIRONMENT`` take precedence over those added via
+``%environment``.
+
 %test
 =====
 
@@ -509,18 +513,22 @@ variables are set appropriately at runtime with the following command:
    LISTEN_PORT=12345
    LC_ALL=C
 
-In the special case of variables generated at build time, you can also
-add environment variables to your container in the ``%post`` section.
+To set a default value for a variable in the ``%environment`` section,
+but adopt the value of a host environment variable if it is set, use
+the following syntax:
 
-At build time, the content of the ``%environment`` section is written to
-a file called ``/.singularity.d/env/90-environment.sh`` inside of the
-container. Text redirected to the ``$SINGULARITY_ENVIRONMENT`` variable
-during ``%post`` is added to a file called
-``/.singularity.d/env/91-environment.sh``.
+.. code:: singularity
 
-At runtime, scripts in ``/.singularity/env`` are sourced in order. This
-means that variables in the ``%post`` section take precedence over those
-added via ``%environment``.
+    %environment
+	  FOO=${FOO:-'default'}
+
+The value of ``FOO`` in the container will take the value of ``FOO``
+on the host, or ``default`` if ``FOO`` is not set on the host or
+``--cleanenv`` / ``--containall`` have been specified.
+
+Note that variables added to the ``$SINGULARITY_ENVIRONMENT`` file in
+``%post`` will take precedence over variables set in the
+``%environment`` section.
 
 See :ref:`Environment and Metadata <environment-and-metadata>` for more
 information about the {Singularity} container environment.
