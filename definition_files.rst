@@ -71,7 +71,7 @@ Library:
    Bootstrap: library
    From: debian:7
 
-A def file that uses an official mirror to install Centos-7 might look
+A def file that uses an official mirror to install CentOS 7 might look
 like this:
 
 .. code:: singularity

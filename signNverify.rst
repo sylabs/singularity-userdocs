@@ -15,7 +15,7 @@ intended it.
 .. note::
 
    {Singularity} 3.6.0 uses a new signature format. Containers signed by
-   3.6.0 cannot be verifed by older versions of {Singularity}.
+   3.6.0 cannot be verified by older versions of {Singularity}.
 
    To verify containers signed with older versions of {Singularity}
    using 3.6.0 the ``--legacy-insecure`` flag must be provided to the

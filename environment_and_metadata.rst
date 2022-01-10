@@ -198,7 +198,7 @@ If you have environment variables set outside of your container, on the
 host, then by default they will be available inside the container.
 Except that:
 
-   -  An environment variable set on the host will be overriden by a
+   -  An environment variable set on the host will be overridden by a
       variable of the same name that has been set inside the container
       image, via ``SINGULARITYENV_`` environment variables, or the
       ``--env`` and ``--env-file`` flags.
@@ -398,7 +398,7 @@ evaluate variables on your command line before passing them to
 
 .. warning::
 
-   This behaviour differs from Docker/OCI handling of environment
+   This behavior differs from Docker/OCI handling of environment
    variables / ``ENV`` directives. You may need additional quoting and
    escaping to replicate behavior. See below.
 

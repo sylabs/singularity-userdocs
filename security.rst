@@ -40,12 +40,12 @@ data, devices, and prevent them from disrupting or accessing others'
 work.
 
 To provide security in these environments a container needs to run as
-the user who starts it on the system. Before the widepread adoption of
+the user who starts it on the system. Before the widespread adoption of
 the Linux user namespace, only a privileged user could perform the
 operations which are needed to run a container. A default Docker
 installation uses a root-owned daemon to start containers. Users can
 request that the daemon starts a container on their behalf. However,
-co-ordinating a daemon with other schedulers is difficult and, since the
+coordinating a daemon with other schedulers is difficult and, since the
 daemon is privileged, users can ask it to carry out actions that they
 wouldn't normally have permission to do.
 
@@ -81,7 +81,7 @@ In this mode *all* operations run as the user who starts the
    file provides.
 
 -  Replacing direct kernel mounts with a FUSE approach is likely to
-   cause a significant reduction in perfomance.
+   cause a significant reduction in performance.
 
 -  The effectiveness of signing and verifying container images is
    reduced as, when extracted to a directory, modification is possible
@@ -142,7 +142,7 @@ additional namespaces and functionality such as seccomp and cgroups.
 is a single file, which makes it easy to manage and distribute. Inside
 the SIF file, the container filesystem is held in a SquashFS object. By
 default, we mount the container filesystem directly using SquashFS. On a
-network filesytem this means that reads from the container are
+network filesystem this means that reads from the container are
 data-only. Metadata operations happen locally, speeding up workloads
 with many small files.
 
