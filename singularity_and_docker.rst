@@ -936,6 +936,30 @@ There is no flag to override an ``ENTRYPOINT`` set for a Docker
 container. Instead, use ``singularity exec`` to run an arbitrary program
 inside a container.
 
+Argument Handling
+=================
+
+Because {Singularity} runscripts are evaluated shell scripts
+arguments can behave slightly differently than in Docker/OCI
+runtimes, if they contain shell code that may be evaluated. To
+replicate Docker/OCI behaviour you may need additional escaping or
+quoting of arguments.
+
+.. code::
+
+   $ docker run -it --rm alpine echo "\$HOSTNAME"
+   $HOSTNAME
+
+   $ singularity run docker://alpine echo "\$HOSTNAME"
+   p700
+
+   $ singularity run docker://alpine echo "\\\$HOSTNAME"
+   $HOSTNAME
+
+If you are running a binary inside a ``docker://`` container directly,
+using the ``exec`` command the argument handling mirrors Docker/OCI
+runtimes as there is no evaluated runscript.
+
 .. _sec:best_practices:
 
 *********************************************************
