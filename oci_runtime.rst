@@ -754,7 +754,7 @@ additional properties - for example:
       of the OCI runtime specification that the bundle is compliant with
 
    -  ``process`` - an optional property that specifies the container
-      process. When invoked via {Singularity}, subproperties such as
+      process. When invoked via {Singularity}, sub-properties such as
       ``args`` are populated by making use of the contents of the
       ``.singularity.d`` directory, e.g. via ``$ sudo cat
       /var/tmp/busybox/config.json | jq [.process.args]``:

@@ -1,6 +1,6 @@
 def variableReplace(app, docname, source):
     """
-    Takes the source on rst and replaces all the needed variables declared on 
+    Takes the source on rst and replaces all the needed variables declared on
     variable_replacements structure
     """
     result = source[0]
@@ -12,7 +12,7 @@ def variableReplace(app, docname, source):
 # Add the needed variables to be replaced either on code or on text on the next
 # dictionary structure.
 variable_replacements = {
-    "{InstallationVersion}": "3.9.0-rc.3",
+    "{InstallationVersion}": "3.9.2",
     "{version}": "3.9",
     "{adminversion}": "3.9",
     # The 'Singularity' noun is now a replacement so we can have

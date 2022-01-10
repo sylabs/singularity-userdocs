@@ -289,4 +289,4 @@ translated to v2 format when applied on a cgroups v1 system.
 See
 https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#control-groups
 for information about the available limits. Note that {Singularity} uses
-TOML format for the confiuration file, rather than JSON.
+TOML format for the configuration file, rather than JSON.
