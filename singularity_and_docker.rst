@@ -391,7 +391,7 @@ methods.
 ***************************************
 
 If you wish to use an existing Docker or OCI container as the basis for
-a new container, you will need to specifiy it as the *bootstrap* source
+a new container, you will need to specify it as the *bootstrap* source
 in a {Singularity} definition file.
 
 Just as you can run or pull containers from different registries using a
@@ -411,7 +411,7 @@ Docker Hub
 ----------
 
 Docker Hub is the default registry, so when building from Docker Hub the
-``From:`` header only needs to specify the container respository and
+``From:`` header only needs to specify the container repository and
 tag:
 
 .. code:: singularity
@@ -479,7 +479,7 @@ Archives & Docker Daemon
 
 As well as being hosted in a registry, Docker / OCI containers might be
 found inside a running Docker daemon, or saved as an archive.
-{Singularity} can build from these locations by using specialised
+{Singularity} can build from these locations by using specialized
 bootstrap agents.
 
 Containers Cached by the Docker Daemon
@@ -712,7 +712,7 @@ running Docker containers. Various software will look for packages,
 plugins, and configuration files in ``$HOME``. If you have, for example,
 installed packages for Python into your home directory (``pip install
 --user``) then a Python container may find and attempt to use them. This
-can cause conflicts and unexpected behaviour.
+can cause conflicts and unexpected behavior.
 
 If you experience issues, use the ``--contain`` option to stop
 {Singularity} automatically binding directories into the container. You
@@ -935,6 +935,30 @@ with any user supplied arguments:
 There is no flag to override an ``ENTRYPOINT`` set for a Docker
 container. Instead, use ``singularity exec`` to run an arbitrary program
 inside a container.
+
+Argument Handling
+=================
+
+Because {Singularity} runscripts are evaluated shell scripts
+arguments can behave slightly differently than in Docker/OCI
+runtimes, if they contain shell code that may be evaluated. To
+replicate Docker/OCI behavior you may need additional escaping or
+quoting of arguments.
+
+.. code::
+
+   $ docker run -it --rm alpine echo "\$HOSTNAME"
+   $HOSTNAME
+
+   $ singularity run docker://alpine echo "\$HOSTNAME"
+   p700
+
+   $ singularity run docker://alpine echo "\\\$HOSTNAME"
+   $HOSTNAME
+
+If you are running a binary inside a ``docker://`` container directly,
+using the ``exec`` command the argument handling mirrors Docker/OCI
+runtimes as there is no evaluated runscript.
 
 .. _sec:best_practices:
 

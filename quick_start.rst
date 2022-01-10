@@ -54,6 +54,7 @@ On Debian-based systems, including Ubuntu:
 On CentOS/RHEL:
 
 .. code::
+
    # Install basic tools for compiling
    sudo yum groupinstall -y 'Development Tools'
    # Install RPM packages for dependencies
@@ -515,6 +516,41 @@ disappears.
                (__)\       )\/\
                    ||----w |
                    ||     ||
+
+
+Arguments to ``run``
+--------------------
+
+You can pass arguments to the runscript of a container, if it accepts
+them. For example, the default runscript of the ``library://alpine``
+container passes any arguments to a shell. We can ask the container
+to run ``echo`` command in this shell:
+
+.. code::
+
+   $ singularity run library://alpine echo "hello"
+
+   hello
+
+Because {Singularity} runscripts are evaluated shell scripts
+arguments can behave slightly differently than in Docker/OCI
+runtimes, if they contain shell code that may be evaluated. To
+replicate Docker/OCI behaviour you may need additional escaping or
+quoting of arguments.
+
+.. code::
+
+   $ docker run -it --rm alpine echo "\$HOSTNAME"
+   $HOSTNAME
+
+   $ singularity run docker://alpine echo "\$HOSTNAME"
+   p700
+
+   $ singularity run docker://alpine echo "\\\$HOSTNAME"
+   $HOSTNAME
+
+The ``exec`` command replicates the Docker/OCI behavior as it calls
+the specified executable directly.
 
 ********************
  Working with Files

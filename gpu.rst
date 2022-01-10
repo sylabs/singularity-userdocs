@@ -67,7 +67,7 @@ compiled for the latest versions of CUDA.
 {Singularity} will find the NVIDIA/CUDA libraries on your host using the
 list of libraries in the configuration file
 ``etc/singularity/nvbliblist``, and resolving paths through the
-``ldconfig`` cache. At time of release this list is approriate for the
+``ldconfig`` cache. At time of release this list is appropriate for the
 latest stable CUDA version. It can be modified by the administrator to
 add additional libraries if necessary. See the admin guide for more
 details.
@@ -76,7 +76,7 @@ Example - tensorflow-gpu
 ========================
 
 Tensorflow is commonly used for machine learning projects but can be
-diffficult to install on older systems, and is updated frequently.
+difficult to install on older systems, and is updated frequently.
 Running tensorflow from a container removes installation problems and
 makes trying out new versions easy.
 
@@ -214,7 +214,7 @@ operation has a number of advantages, including:
    libraries in new CUDA releases closely.
 -  Support for passing only specific GPUs / MIG devices into the
    container.
--  Support for providing different classes of GPU cabability to the
+-  Support for providing different classes of GPU capability to the
    container, e.g. compute, graphics, and display functionality.
 -  Configuration via the same environment variables that are in use with
    OCI containers.
