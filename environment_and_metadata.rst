@@ -119,6 +119,15 @@ This happens because the ``Dockerfile`` used to build that container has
 You can always override the value of these base image environment
 variables, if needed. See below.
 
+.. note::
+
+   Dockerfile `ENV` var entries are set as :ref:`default values
+   <environment-default-values>` in the {Singularity} container. They will be
+   overridden by host variables unless ``-e / --cleanenv`` or the ``--containall
+   / --compat`` flags are used. This differs from the behavior of Docker, and
+   you should consider using ``--compat`` if you experience issues when running
+   Docker containers dues to environment variables on the host.
+
 ************************************
  Environment from a definition file
 ************************************
@@ -157,6 +166,8 @@ The ``%runscript`` is set to echo the value.
    initialization tasks because this would impact users running the
    image and the execution could abort due to timeout.
 
+
+.. _environment-default-values:
 
 Default values
 ==============
@@ -198,10 +209,15 @@ If you have environment variables set outside of your container, on the
 host, then by default they will be available inside the container.
 Except that:
 
-   -  An environment variable set on the host will be overridden by a
-      variable of the same name that has been set inside the container
-      image, via ``SINGULARITYENV_`` environment variables, or the
-      ``--env`` and ``--env-file`` flags.
+   -  An environment variable set on the host will be overridden by a variable
+      of the same name that has been set either inside the container image, or
+      via ``SINGULARITYENV_`` environment variables, or the ``--env`` and
+      ``--env-file`` flags.
+
+   -  You can use the :ref:`default values <environment-default-values>` method
+      to define container environment variables that avoid the hard override,
+      and honor the value of an environment variable value from the host if it
+      is set.
 
    -  The ``PS1`` shell prompt is reset for a container specific prompt.
 
@@ -232,6 +248,14 @@ environment variables for correct operation of most software.
    SINGULARITY_ENVIRONMENT=/.singularity.d/env/91-environment.sh
    SINGULARITY_NAME=env.sif
    TERM=xterm-256color
+
+.. note::
+
+   Because Dockerfile `ENV` var entries are set as
+   :ref:`default values <environment-default-values>` in the {Singularity} 
+   container, they will be overridden by host variables unless
+   ``-e / --cleanenv`` or the related ``--containall / --compat`` flags are
+   used.
 
 .. warning::
 
