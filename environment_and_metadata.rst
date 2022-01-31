@@ -116,8 +116,9 @@ If I build a singularity container from the image
 This happens because the ``Dockerfile`` used to build that container has
 ``ENV PYTHON_VERSION 3.7.7`` set inside it.
 
-You can always override the value of these base image environment
-variables, if needed. See below.
+You can override the inherited environment with ``SINGULARITYENV_`` vars, or the
+``--env / --env-file`` flags (see below), but ``Dockerfile`` ``ENV`` vars will
+not be overridden by host environment variables of the same name.
 
 ************************************
  Environment from a definition file
@@ -157,23 +158,6 @@ The ``%runscript`` is set to echo the value.
    initialization tasks because this would impact users running the
    image and the execution could abort due to timeout.
 
-
-Default values
-==============
-
-To set a default value for a variable in the ``%environment`` section,
-but adopt the value of a host environment variable if it is set, use
-the following syntax:
-
-.. code:: singularity
-
-    %environment
-        FOO=${FOO:-'default'}
-
-The value of ``FOO`` in the container will take the value of ``FOO``
-on the host, or ``default`` if ``FOO`` is not set on the host or
-``--cleanenv`` / ``--containall`` have been specified.
-
 Build time variables in ``%post``
 =================================
 
@@ -189,7 +173,6 @@ Variables set in the ``%post`` section through
 ``$SINGULARITY_ENVIRONMENT`` take precedence over those added via
 ``%environment``.
 
-
 ***************************
  Environment from the host
 ***************************
@@ -198,10 +181,10 @@ If you have environment variables set outside of your container, on the
 host, then by default they will be available inside the container.
 Except that:
 
-   -  An environment variable set on the host will be overridden by a
-      variable of the same name that has been set inside the container
-      image, via ``SINGULARITYENV_`` environment variables, or the
-      ``--env`` and ``--env-file`` flags.
+   -  An environment variable set on the host will be overridden by a variable
+      of the same name that has been set either inside the container image, or
+      via ``SINGULARITYENV_`` environment variables, or the ``--env`` and
+      ``--env-file`` flags.
 
    -  The ``PS1`` shell prompt is reset for a container specific prompt.
 
@@ -211,6 +194,19 @@ Except that:
    -  The ``LD_LIBRARY_PATH`` is modified to a default
       ``/.singularity.d/libs``, that will include NVIDIA / ROCm
       libraries if applicable.
+
+To override an environment variable that is already set in the container with
+the value from the host, use ``SINGULARITY_ENV`` or the ``--env`` flag. For
+example, to force ``MYVAR`` in the container to take the value of ``MYVAR`` on
+the host:
+
+.. code::
+
+   $ export SINGULARITYENV_MYVAR="$MYVAR"
+   $ singularity run mycontainer.sif
+
+   # or
+   $ singularity run --env "MYVAR=$MYVAR"
 
 If you *do not want* the host environment variables to pass into the
 container you can use the ``-e`` or ``--cleanenv`` option. This gives a
@@ -488,8 +484,7 @@ environment is constructed in the following order:
       {Singularity} defaults
    -  Set environment variables defined explicitly in the
       ``%environment`` section of the definition file. These can
-      override any previously set values, and may reference host
-      variables.
+      override any previously set values.
    -  Set environment variables that were defined in the ``%post``
       section of the build, by addition to the
       ``$SINGULARITY_ENVIRONMENT`` file.
