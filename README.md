@@ -23,10 +23,11 @@ Sphinx is written in Python. To get setup to contribute:
 
 - Install Python 3.5 or newer, from your OS package manager or the [Python download
   site](https://www.python.org/downloads/)
-- Use `pip3`to install Sphinx and the RTD theme package into your home directory:
+- Use `pip3`to install Sphinx, RTD theme package, and extensions / linters into
+  your home directory:
 
 ```sh
-pip3 install --user Sphinx sphinx-rtd-theme
+pip3 install --user sphinx sphinx-rtd-theme rstcheck pygments m2r2
 ```
 
 If your version of python 3 does not come with `pip` / `pip3`, you may need to
