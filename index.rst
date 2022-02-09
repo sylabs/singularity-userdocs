@@ -135,4 +135,4 @@ other users, or simply testing new releases.
    :maxdepth: 1
 
    Command Line Reference <cli>
-   License <license>
+   Licenses <license>
