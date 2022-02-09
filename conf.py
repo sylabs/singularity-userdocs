@@ -45,7 +45,7 @@ master_doc = 'index'
 # General information about the project.
 project = u'SingularityCE User Guide'
 author = u'SingularityCE Project Contributors'
-copyright = u'2017-2021, Sylabs Inc & Project Contributors'
+copyright = u'2017-2022, Sylabs Inc & Project Contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
