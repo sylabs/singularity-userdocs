@@ -29,7 +29,7 @@ this is the issue, then the sandbox should work.
     sudo singularity build --sandbox [fatty] Singularity
 
 **Solution**
-You simply need to set the ``$SINGULARITY_CACHEDIR`` to a different location that you have more
+You simply need to set the ``$TMPDIR`` to a different location that you have more
 room.
 
 -------------------------------------
