@@ -193,8 +193,8 @@ Mount specifications are also read from then environment variable
 ``$SINGULARITY_MOUNT``. Multiple bind mounts set via this environment
 variable should be separated by newlines (``\n``).
 
-Using ``--bind`` or ``-mount`` with the ``--writable`` flag
-===========================================================
+Using ``--bind`` or ``--mount`` with the ``--writable`` flag
+============================================================
 
 To mount a bind path inside the container, a *bind point* must be
 defined within the container. The bind point is a directory within the
