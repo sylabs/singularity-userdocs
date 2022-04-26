@@ -245,8 +245,6 @@ workflow.
 ``--env`` option
 ================
 
-*New in {Singularity} 3.6*
-
 The ``--env`` option on the ``run/exec/shell`` commands allows you to
 specify environment variables as ``NAME=VALUE`` pairs:
 
@@ -264,8 +262,6 @@ variables include special characters.
 
 ``--env-file`` option
 =====================
-
-*New in {Singularity} 3.6*
 
 The ``--env-file`` option lets you provide a file that contains
 environment variables as ``NAME=VALUE`` pairs, e.g.:
@@ -910,15 +906,14 @@ SIF file metadata descriptor.
    dynamically written at runtime, *and should not be modified* in the
    container.
 
--  **env**: All ``*.sh`` files in this directory are sourced in
-   alphanumeric order when the container is started. For legacy purposes
-   there is a symbolic link called ``/environment`` that points to
-   ``/.singularity.d/env/90-environment.sh``. Whenever possible, avoid
-   modifying or creating environment files manually to prevent potential
-   issues building & running containers with future versions of
-   {Singularity}. Beginning with {Singularity} 3.6, additional
-   facilities such as ``--env`` and ``--env-file`` are available to
-   allow manipulation of the container environment at runtime.
+-  **env**: All ``*.sh`` files in this directory are sourced in alphanumeric
+   order when the container is started. For legacy purposes there is a symbolic
+   link called ``/environment`` that points to
+   ``/.singularity.d/env/90-environment.sh``. Whenever possible, avoid modifying
+   or creating environment files manually to prevent potential issues building &
+   running containers with future versions of {Singularity}. Additional
+   facilities such as ``--env`` and ``--env-file`` are available to allow
+   manipulation of the container environment at runtime.
 
 -  **labels.json**: The json file that stores a containers labels
    described above.
