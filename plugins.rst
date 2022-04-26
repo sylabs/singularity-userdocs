@@ -8,12 +8,45 @@
  Overview
 **********
 
-A {Singularity} plugin is a package that can be dynamically loaded by
-the {Singularity} runtime, augmenting {Singularity} with experimental,
-non-standard and/or vendor-specific functionality. Currently, plugins
-are able to add commands and flags to {Singularity}. In the future,
-plugins will also be able to interface with more complex subsystems of
-the {Singularity} runtime.
+A {Singularity} plugin is a package that can be dynamically loaded by the
+{Singularity} runtime, augmenting {Singularity} with experimental, non-standard
+and/or vendor-specific functionality. 
+
+Plugins can influence the behaviour of {Singularity} in specific ways:
+
+* A cli plugin can use the ``Command`` callback to add or modify CLI
+  subcommands and/or flags.
+* A cli plugin can use the ``SingularityEngineConfig`` callback to change the
+  container configuration before it is passed to the runtime, e.g. adding bind
+  mounts etc.
+* A runtime plugin can use the ``MonitorContainer`` callback to watch the
+  container process as it is executing.
+* A runtime plugin can use the ``PostStartProcess`` callback to carry out a task
+  after the container has been started.
+* A runtime plugin can use the ``RegisterImageDriver`` callback to implement an
+  alternative way of providing a container image to execute.
+
+****************************
+ Limitations / Requirements
+****************************
+
+The way that plugin functionality is implemented in the Go language, which
+{Singularity} is written with, is quite restrictive.
+
+Go plugins must be built with the same Go version, and set of dependencies, as
+the main program they will be loaded into. This means it is generally
+impractical to develop and build plugins except in lock-step with the main
+{Singularity} source tree.
+
+Functionality that can be implemented with plugins is limited to the scope of
+the exposed plugin callbacks. Container runtimes such as {Singularity} execute
+using multiple processes, with distinct boundaries that limit the influence a
+plugin can have.
+
+If you are considering writing a plugin for {Singularity} you may wish to
+investigate whether the feature can be contributed to the main source tree
+directly via a PR. This simplifies future maintenance, and avoids the
+limitations of Go plugins.
 
 ***************
  Using Plugins
@@ -26,44 +59,33 @@ The ``list`` command prints the currently installed plugins.
    $ singularity plugin list
    There are no plugins installed.
 
-Plugins are packaged and distributed as binaries encoded with the
-versatile Singularity Image Format (SIF). However, plugin authors may
-also distribute the source code of their plugins. A plugin can be
-compiled from its source code with the ``compile`` command. A sample
-plugin ``test-plugin`` is included with the {Singularity} source code.
+Plugins are packaged and distributed as binaries encoded with the versatile
+Singularity Image Format (SIF). However, plugin authors may also distribute the
+source code of their plugins. A plugin can be compiled from its source code with
+the ``compile`` command. A number of example plugins are included in the
+``examples/plugins`` directory of the {Singularity} source.
 
 .. code::
 
-   $ singularity plugin compile examples/plugins/test-plugin/
+   $ singularity plugin compile examples/plugins/cli-plugin/
+   INFO:    Plugin built to: /home/dtrudg/Git/singularity/examples/plugins/cli-plugin/cli-plugin.sif
 
-Upon successful compilation, a SIF file will appear in the directory of
-the plugin's source code.
+Upon successful compilation, a SIF file will appear in the directory of the
+plugin's source code.
 
 .. code::
 
-   $ ls examples/plugins/test-plugin/ | grep sif
-   test-plugin.sif
+   $ ls examples/plugins/cli-plugin/ | grep sif
+   cli-plugin.sif
 
 .. note::
 
-   Currently, **all** plugins must be compiled from the {Singularity}
-   source code tree.
-
-   Also, the plugins mechanism for the Go language that {Singularity} is
-   written in is quite restrictive - it requires extremely close version
-   matching of packages used in a plugin to the ones used in the program
-   the plugin is built for. Additionally {Singularity} is using build
-   time config to get the source tree location for ``singularity plugin
-   compile`` so that you don't need to export environment variables etc,
-   and there isn't mismatch between package path information that Go
-   uses. This means that at present you must:
-
-   -  Build plugins using the exact same version of the source code, in
-      the same location, as was used to build the {Singularity}
-      executable.
-
-   -  Use the exact same version of Go that was used to build the
-      executable when compiling a plugin for it.
+   Due to the structure of the {Singularity} project, and the strict
+   requirements of Go plugin compilation, **all** plugins must be compiled from
+   within the {Singularity} source code tree. 
+   
+   The ability to compile plugins outside of the {Singularity} tree, that
+   previously existed, has been removed due to incompatible changes in Go 1.18.
 
 Every plugin encapsulates various information such as the plugin's
 author, the plugin's version, etc. To view this information about a
@@ -71,21 +93,21 @@ plugin, use the ``inspect`` command.
 
 .. code::
 
-   $ singularity plugin inspect examples/plugins/test-plugin/test-plugin.sif
-   Name: sylabs.io/test-plugin
-   Description: This is a short test plugin for {Singularity}
-   Author: Michael Bauer
-   Version: 0.0.1
+   $ singularity plugin inspect examples/plugins/cli-plugin/cli-plugin.sif
+   Name: github.com/sylabs/singularity/cli-example-plugin
+   Description: This is a short example CLI plugin for Singularity
+   Author: Sylabs Team
+   Version: 0.1.0
 
 To install a plugin, use the ``install`` command. This operation
 requires root privilege.
 
 .. code::
 
-   $ sudo singularity plugin install examples/plugins/test-plugin/test-plugin.sif
+   $ sudo singularity plugin install examples/plugins/cli-plugin/cli-plugin.sif
    $ singularity plugin list
    ENABLED  NAME
-       yes  sylabs.io/test-plugin
+       yes  sylabs.io/cli-plugin
 
 After successful installation, the plugin will automatically be enabled.
 Any plugin can be disabled with the ``disable`` command and re-enabled
@@ -94,22 +116,24 @@ privilege.
 
 .. code::
 
-   $ sudo singularity plugin disable sylabs.io/test-plugin
+   $ sudo singularity plugin disable sylabs.io/cli-plugin
    $ singularity plugin list
    ENABLED  NAME
-        no  sylabs.io/test-plugin
-   $ sudo singularity plugin enable sylabs.io/test-plugin
+        no  sylabs.io/cli-plugin
+
+   $ sudo singularity plugin enable sylabs.io/cli-plugin
    $ singularity plugin list
    ENABLED  NAME
-       yes  sylabs.io/test-plugin
+       yes  sylabs.io/cli-plugin
 
 Finally, to uninstall a plugin, use the ``uninstall`` command. This
 operation requires root privilege.
 
 .. code::
 
-   $ sudo singularity plugin uninstall sylabs.io/test-plugin
-   Uninstalled plugin "sylabs.io/test-plugin".
+   $ sudo singularity plugin uninstall sylabs.io/cli-plugin
+   Uninstalled plugin "sylabs.io/cli-plugin".
+
    $ singularity plugin list
    There are no plugins installed.
 
@@ -120,8 +144,7 @@ operation requires root privilege.
 Developers interested in writing {Singularity} plugins can get started
 by reading the `Go documentation
 <https://godoc.org/github.com/sylabs/singularity/pkg/plugin>`_ for the
-plugin package. Furthermore, reading through the `source code
-<https://github.com/sylabs/singularity/tree/master/examples/plugins>`_
-for the example plugins will prove valuable. More detailed plugin
-development documentation is in the works and will be released at a
-future date.
+plugin package.
+
+Example plugins can be found in the {Singularity} `source code
+<https://github.com/sylabs/singularity/tree/master/examples/plugins>`_.
