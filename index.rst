@@ -90,7 +90,7 @@ networking and security configuration.
    Plugins <plugins>
    Security Options <security_options>
    Network Options <networking>
-   Cgroups Support <cgroups>
+   Limiting Container Resources <cgroups>
 
 ***************
  Compatibility
