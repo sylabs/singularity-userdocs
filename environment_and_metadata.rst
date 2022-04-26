@@ -22,35 +22,6 @@ details such as the version of {Singularity} used are present as
 :ref:`labels <sec:labels>` on a container. You can also specify your own
 to be recorded against your container.
 
-******************************
- Changes in {Singularity} 3.6
-******************************
-
-{Singularity} 3.6 modified the ways in which environment variables are
-handled to allow long-term stability and consistency that has been
-lacking in prior versions. It also introduced new ways of setting
-environment variables, such as the ``--env`` and ``--env-file`` options.
-
-.. warning::
-
-   If you have containers built with {Singularity} <3.6, and frequently
-   set and override environment variables, please review this section
-   carefully. Some behavior has changed.
-
-Summary of changes
-==================
-
-   -  When building a container, the environment defined in the base
-      image (e.g. a Docker image) is available during the ``%post``
-      section of the build.
-
-   -  An environment variable set in a container image, from the
-      bootstrap base image, or in the ``%environment`` section of a
-      definition file *will not* be overridden by a host environment
-      variable of the same name. The ``--env``, ``--env-file``, or
-      ``SINGULARITYENV_`` methods must be used to explicitly override a
-      environment variable set by the container image.
-
 **********************
  Environment Overview
 **********************
@@ -91,7 +62,7 @@ container, rather than when running a container, see :ref:`build
 environment section <build-environment>`.
 
 *******************************
- Environment from a base image
+ Environment From a Base Image
 *******************************
 
 When you build a container with {Singularity} you might *bootstrap* from
@@ -121,7 +92,7 @@ You can override the inherited environment with ``SINGULARITYENV_`` vars, or the
 not be overridden by host environment variables of the same name.
 
 ************************************
- Environment from a definition file
+ Environment From a Definition File
 ************************************
 
 Environment variables can be included in your container by adding them
@@ -158,7 +129,7 @@ The ``%runscript`` is set to echo the value.
    initialization tasks because this would impact users running the
    image and the execution could abort due to timeout.
 
-Build time variables in ``%post``
+Build Time Variables in ``%post``
 =================================
 
 In some circumstances the value that needs to be assigned to an
@@ -174,7 +145,7 @@ Variables set in the ``%post`` section through
 ``%environment``.
 
 ***************************
- Environment from the host
+ Environment From the Host
 ***************************
 
 If you have environment variables set outside of your container, on the
@@ -239,7 +210,7 @@ environment variables for correct operation of most software.
    consider using ``--cleanenv``.
 
 ********************************************
- Environment from the {Singularity} runtime
+ Environment From the {Singularity} Runtime
 ********************************************
 
 It can be useful for a program to know when it is running in a
@@ -264,7 +235,7 @@ program running in the container.
       container.
 
 **********************************
- Overriding environment variables
+ Overriding Environment Variables
 **********************************
 
 You can override variables that have been set in the container image, or
@@ -273,8 +244,6 @@ workflow.
 
 ``--env`` option
 ================
-
-*New in {Singularity} 3.6*
 
 The ``--env`` option on the ``run/exec/shell`` commands allows you to
 specify environment variables as ``NAME=VALUE`` pairs:
@@ -293,8 +262,6 @@ variables include special characters.
 
 ``--env-file`` option
 =====================
-
-*New in {Singularity} 3.6*
 
 The ``--env-file`` option lets you provide a file that contains
 environment variables as ``NAME=VALUE`` pairs, e.g.:
@@ -382,24 +349,55 @@ to the start) of the ``PATH`` variable in the container.
 Alternatively you could use the ``--env`` option to set a
 ``PREPEND_PATH`` variable, e.g. ``--env PREPEND_PATH=/startpath``.
 
-Escaping and evaluation of environment variables
-================================================
+.. _escaping-environment:
 
-{Singularity} uses an embedded shell interpreter to process the
-container startup scripts and environment. When this processing is
-performed, a single step of shell evaluation happens in the container
-context. The shell from which you are running {Singularity} may also
-evaluate variables on your command line before passing them to
-{Singularity}.
+************************************************
+Escaping and Evaluation of Environment Variables
+************************************************
 
-.. warning::
+{Singularity} uses an embedded shell interpreter to process the container
+startup scripts and environment. When this processing is performed, by default a
+single step of shell evaluation happens in the container context. The shell from
+which you are running {Singularity} may also evaluate variables on your command
+line before passing them to {Singularity}.
 
-   This behavior differs from Docker/OCI handling of environment
-   variables / ``ENV`` directives. You may need additional quoting and
-   escaping to replicate behavior. See below.
+Docker / OCI Compatibility
+==========================
 
-Using host variables
---------------------
+This default behavior of {Singularity} differs from Docker/OCI handling of
+environment variables / ``ENV`` directives. To avoid the extra evaluation of
+variables that {Singularity} performs you can:
+
+* Follow the instructions about escaping in the sections below, to add
+  additional escape characters and/or quoting.
+* Use the ``--no-eval`` or ``--compat`` flags.
+
+
+``--no-eval`` prevents {Singularity} from evaluating environment variables on
+container startup, so that they will take the same value as with a Docker/OCI
+runtime:
+
+.. code::
+
+   # Set an environment variable that would run `date` if evaluated
+   $ export SINGULARITYENV_MYVAR='$(date)'
+
+   # Default behavior
+   # MYVAR was evaluated in the container, and is set to the output of `date`
+   $ singularity run ~/ubuntu_latest.sif env | grep MYVAR
+   MYVAR=Tue Apr 26 14:37:07 CDT 2022
+
+   # --no-eval / --compat behavior
+   # MYVAR was not evaluated and is a literal `$(date)`
+   $ singularity run --no-eval ~/ubuntu_latest.sif env | grep MYVAR
+   MYVAR=$(date)
+
+
+The ``--compat`` flag is a short-hand flag to activate ``--no-eval`` along with
+other Docker/OCI compatibility flags. See :ref:`compat-flag` for more details.
+
+Using Host Variables
+====================
 
 To set a container environment variable to the value of a variable on
 the host, use double quotes around the variable, so that it is
@@ -421,7 +419,7 @@ substituted before the host shell runs ``singularity``.
    correctly.
 
 Using Container Variables
--------------------------
+=========================
 
 To set an environment variable to a value that references another
 variable inside the container, you should escape the ``$`` sign to
@@ -442,7 +440,7 @@ APPEND_PATH="/endpath"``, which uses the special ``APPEND/PREPEND``
 handling for ``PATH`` discussed above.
 
 Quoting / Avoiding Evaluation
------------------------------
+=============================
 
 If you need to pass an environment variable into the container
 verbatim, it must be quoted and escaped appropriately. For example, if
@@ -467,9 +465,9 @@ level of escaping:
 
    singularity run --env='LD_PRELOAD=/foo/bar/\$LIB/baz.so' mycontainer.sif
 
-
+*******************************
 Environment Variable Precedence
-===============================
+*******************************
 
 When a container is run with {Singularity}, the container
 environment is constructed in the following order:
@@ -908,15 +906,14 @@ SIF file metadata descriptor.
    dynamically written at runtime, *and should not be modified* in the
    container.
 
--  **env**: All ``*.sh`` files in this directory are sourced in
-   alphanumeric order when the container is started. For legacy purposes
-   there is a symbolic link called ``/environment`` that points to
-   ``/.singularity.d/env/90-environment.sh``. Whenever possible, avoid
-   modifying or creating environment files manually to prevent potential
-   issues building & running containers with future versions of
-   {Singularity}. Beginning with {Singularity} 3.6, additional
-   facilities such as ``--env`` and ``--env-file`` are available to
-   allow manipulation of the container environment at runtime.
+-  **env**: All ``*.sh`` files in this directory are sourced in alphanumeric
+   order when the container is started. For legacy purposes there is a symbolic
+   link called ``/environment`` that points to
+   ``/.singularity.d/env/90-environment.sh``. Whenever possible, avoid modifying
+   or creating environment files manually to prevent potential issues building &
+   running containers with future versions of {Singularity}. Additional
+   facilities such as ``--env`` and ``--env-file`` are available to allow
+   manipulation of the container environment at runtime.
 
 -  **labels.json**: The json file that stores a containers labels
    described above.

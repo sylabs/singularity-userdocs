@@ -789,6 +789,39 @@ For example, the ``docker://openjdk:latest`` container sets ``JAVA_HOME``:
    $ singularity run docker://openjdk:latest echo \$JAVA_HOME
    /test
 
+
+Environment Variable Escaping / Evaluation
+==========================================
+
+The default behavior of {Singularity} differs from Docker/OCI handling of
+environment variables as {Singularity} uses a shell interpreter to process
+environment on container startup, in a manner that evaluates environment
+variables. To avoid the extra evaluation of variables that {Singularity}
+performs you can:
+
+* Follow the instructions in the :ref:`escaping-environment` section to
+  explictly escape environment variables.
+* Use the ``--no-eval`` flag.
+
+``--no-eval`` prevents {Singularity} from evaluating environment variables on
+container startup, so that they will take the same value as with a Docker/OCI
+runtime:
+
+.. code::
+
+   # Set an environment variable that would run `date` if evaluated
+   $ export SINGULARITYENV_MYVAR='$(date)'
+
+   # Default behavior
+   # MYVAR was evaluated in the container, and is set to the output of `date`
+   $ singularity run ~/ubuntu_latest.sif env | grep MYVAR
+   MYVAR=Tue Apr 26 14:37:07 CDT 2022
+
+   # --no-eval / --compat behavior
+   # MYVAR was not evaluated and is a literal `$(date)`
+   $ singularity run --no-eval ~/ubuntu_latest.sif env | grep MYVAR
+   MYVAR=$(date)
+
 Namespace & Device Isolation
 ============================
 
@@ -855,6 +888,8 @@ around this, use the ``--no-init`` flag to disable the shim:
    ...
    # NO WARNINGS
 
+.. _compat-flag:
+
 *******************************
  Docker-like ``--compat`` Flag
 *******************************
@@ -867,6 +902,7 @@ to using all of:
 -  ``--no-init``
 -  ``--no-umask``
 -  ``--writable-tmpfs``
+-  ``--no-eval``
 
 A container run with ``--compat`` has:
 
@@ -878,10 +914,12 @@ A container run with ``--compat`` has:
    which will be discarded at container exit.
 -  A minimal ``/dev`` tree, that does not expose host devices inside the
    container (except GPUs when used with ``--nv`` or ``--rocm``).
--  An clean environment, not including environment variables set on the
+-  A clean environment, not including environment variables set on the
    host.
 -  Its own PID and IPC namespaces.
 -  No shim init process.
+-  Argument and environment variable handling matching Docker / OCI runtimes,
+   with respect to evaluation and escaping.
 
 These options will allow most, but not all, Docker / OCI containers to
 execute correctly under {Singularity}. The user namespace and network
@@ -958,11 +996,40 @@ inside a container.
 Argument Handling
 =================
 
-Because {Singularity} runscripts are evaluated shell scripts
-arguments can behave slightly differently than in Docker/OCI
-runtimes, if they contain shell code that may be evaluated. To
-replicate Docker/OCI behavior you may need additional escaping or
-quoting of arguments.
+Because {Singularity} runscripts are evaluated shell scripts, arguments can
+behave slightly differently than in Docker/OCI runtimes if they contain shell
+code that may be evaluated. 
+
+If you are using a container that was directly built or run from a Docker/OCI
+source, with {Singularity} 3.10 or later, the ``--no-eval`` flag will prevent
+this extra evaluation so that arguments are handled in a compatible manner:
+
+.. code:: 
+
+   # docker/OCI behavior
+   $ docker run -it --rm alpine echo "\$HOSTNAME"
+   $HOSTNAME
+
+   # Singularity default
+   $ singularity run docker://alpine echo "\$HOSTNAME"
+   p700
+
+   # Singularity with --no-eval
+   $ singularity run --no-eval docker://alpine echo "\$HOSTNAME"
+   $HOSTNAME
+
+.. note:: 
+
+   ``--no-eval`` will not change argument behavior for containers built with
+   {Singularity} 3.9 or earlier, as the handling is implemented in the runscript
+   that is built into the container.
+
+   You can check the version of {Singularity} used to build  a container with
+   ``singularity inspect mycontainer.sif``.
+
+To avoid evaluation without ``--no-eval``, and when using containers built with
+{Singularity} 3.9 or earlier, you will need to add an extra level of shell
+escaping to arguments on the command line:
 
 .. code::
 
@@ -976,7 +1043,7 @@ quoting of arguments.
    $HOSTNAME
 
 If you are running a binary inside a ``docker://`` container directly,
-using the ``exec`` command the argument handling mirrors Docker/OCI
+using the ``exec`` command, the argument handling mirrors Docker/OCI
 runtimes as there is no evaluated runscript.
 
 .. _sec:best_practices:
@@ -991,7 +1058,7 @@ however, there are some best practices that should be applied when
 creating Docker / OCI containers that will also be run using
 {Singularity}.
 
-   #. **Don't require execution by a specific user**
+   1. **Don't require execution by a specific user**
 
    Avoid using the ``USER`` instruction in your Docker file, as it is
    ignored by Singularity. Install and configure software inside the
