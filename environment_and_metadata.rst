@@ -353,6 +353,8 @@ to the start) of the ``PATH`` variable in the container.
 Alternatively you could use the ``--env`` option to set a
 ``PREPEND_PATH`` variable, e.g. ``--env PREPEND_PATH=/startpath``.
 
+.. _escaping-environment:
+
 ************************************************
 Escaping and Evaluation of Environment Variables
 ************************************************
