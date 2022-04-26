@@ -129,7 +129,7 @@ The ``%runscript`` is set to echo the value.
    initialization tasks because this would impact users running the
    image and the execution could abort due to timeout.
 
-Build Time Cariables in ``%post``
+Build Time Variables in ``%post``
 =================================
 
 In some circumstances the value that needs to be assigned to an
