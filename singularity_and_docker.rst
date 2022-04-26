@@ -855,6 +855,8 @@ around this, use the ``--no-init`` flag to disable the shim:
    ...
    # NO WARNINGS
 
+.. _compat-flag:
+
 *******************************
  Docker-like ``--compat`` Flag
 *******************************
