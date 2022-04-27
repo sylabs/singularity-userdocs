@@ -843,9 +843,12 @@ enable some of the extra namespaces that Docker uses, with flags:
 -  ``--net / -n`` creates a new network namespace, abstracting the
    container networking from the host.
 
--  ``--userns / -u`` runs the container unprivileged, inside a user
-   namespace and avoiding setuid setup code. This prevents executing SIF
-   images directly. They will be extracted to a directory sandbox.
+-  ``--userns / -u`` runs the container unprivileged, inside a user namespace
+   and avoiding {Singularity}'s setuid setup code. By default, SIF container
+   images will be extracted to disk, as mounting the container filesystem from
+   the SIF requires privilege. An experimental ``--sif-fuse`` flag can be used
+   to perform a mount with ``squashfuse`` instead, if it is available on your
+   system.
 
 -  ``--uts`` creates a new UTS namespace, which allows a different
    hostname and/or NIS domain for the container.
