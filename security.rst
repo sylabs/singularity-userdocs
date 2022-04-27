@@ -75,10 +75,15 @@ In this mode *all* operations run as the user who starts the
 
 -  SIF and other single file container images cannot be mounted
    directly. The container image must be extracted to a directory on
-   disk to run. This impact the speed of execution. Workloads accessing
+   disk to run. This impacts the speed of execution. Workloads accessing
    large numbers of small files (such as python application startup) do
    not benefit from the reduced metadata load on the filesystem an image
    file provides.
+
+   {Singularity} 3.10 introduces experimental functionality to avoid this
+   extraction by mounting the SIF container using ``squashfuse``, if it is
+   available on your system. You can enable this with the ``--sif-fuse`` flag,
+   or ``sif fuse`` option in ``singularity.conf``.
 
 -  Replacing direct kernel mounts with a FUSE approach is likely to
    cause a significant reduction in performance.
