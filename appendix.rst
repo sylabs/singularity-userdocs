@@ -42,6 +42,13 @@ below with their respective functionality.
    string ``source:<dest>`` list of paths to bind between the host and
    the container.
 
+#. **SINGULARITY_BLKIO_WEIGHT**: Specify a relative weight for block
+   device access during contention. Range 10-1000. Default is 0 (disabled).
+
+#. **SINGULARITY_BLKIO_WEIGHT_DEVICE**: Specify a relative weight for
+   block device access during contention on a specific device.
+   Must be supplied in ``<device path>:weight`` format. Default is unset.
+
 #. **SINGULARITY_BOOT**: Set to false by default, considers if executing
    ``/sbin/init`` when container boots (root only).
 
@@ -57,6 +64,10 @@ below with their respective functionality.
 #. **SINGULARITY_CLEANENV**: Specifies if the environment should be
    cleaned or not before running the container. Default is set to false.
 
+#. **SINGULARITY_COMPAT**: Set to true to enable Docker/OCI compatibility mode.
+   Equivalent to setting ``--containall --no-eval --no-init --no-umask
+   --writable-tmpfs``. Default is false.
+
 #. **SINGULARITY_CONTAIN**: To use minimal ``/dev`` and empty other
    directories (e.g. ``/tmp`` and ``$HOME``) instead of sharing
    filesystems from your host. Default is set to false.
@@ -67,6 +78,18 @@ below with their respective functionality.
 #. **SINGULARITY_CONTAINLIBS**: Used to specify a string of file names
    (comma separated string) to bind to the ``/.singularity.d/libs``
    directory.
+
+#. **SINGULARITY_CPU_SHARES**: Specify a relative share of CPU time
+   available to the container. Default is -1 (disabled).
+
+#. **SINGULARITY_CPUS**: Specify a fractional number of CPUs available
+   to the container. Default is unset. 
+
+#. **SINGULARITY_CPUSET_CPUS**: Specify a list or range of CPU cores
+   available to the container. Default is unset.
+
+#. **SINGULARITY_CPUSET_MEMS**: Specify a list or range of memory nodes
+   available to the container. Default is unset.
 
 ``D``
 =====
@@ -195,6 +218,15 @@ below with their respective functionality.
 ``M``
 =====
 
+#. **SINGULARITY_MEMORY**: Specify a memory limit in bytes for the 
+   container. Default is unset (no limit).
+
+#. **SINGULARITY_MEMORY_RESERVATION**: Specify a memory soft limit in
+   bytes for the container. Default is unset (no limit).
+
+#. **SINGULARITY_MEMORY_SWAP**: Specify a limit for memory + swap usage by the
+   container. Default is unset. Effect depends on **SINGULARITY_MEMORY**.
+
 #. **SINGULARITY_MOUNT**: To specify host to container mounts, using the
    syntax understood by the ``--mount`` flag. Multiple mounts should be
    separated by newline characters.
@@ -219,6 +251,10 @@ below with their respective functionality.
    HTTPS for communicating with the local docker registry. Default is
    set to false.
 
+#. **SINGULARITY_NO_EVAL**: Set to true in order to prevent {Singularity}
+   performing shell evaluation on environment variables / runscript
+   arguments at startup.
+
 #. **SINGULARITY_NO_HOME**: Considers not mounting users home directory
    if home is not the current working directory. Default is set to
    false.
@@ -226,11 +262,18 @@ below with their respective functionality.
 #. **SINGULARITY_NO_INIT** and **SINGULARITY_NOSHIMINIT**: Considers not
    starting the ``shim`` process with ``--pid``.
 
+#. **SINGULARITY_NO_MOUNT**: Disable an automatic mount that has been set in
+   ``singularity.conf``. Accepts ``proc / sys / dev / devpts / home / tmp /
+   hostfs / cwd``, or the source path for a system specifc bind.
+
 #. **SINGULARITY_NO_NV**: Flag to disable Nvidia support. Opposite of
    ``SINGULARITY_NV``.
 
 #. **SINGULARITY_NO_PRIVS**: To drop all the privileges from root user
    in the container. Default is set to false.
+
+#. **SINGULARITY_NO_UMASK**: Set to true to prevent host umask propagating
+   to container, and use a default 0022 unmask instead. Default is false.
 
 #. **SINGULARITY_NV**: To enable Nvidia GPU support. Default is
    set to false.
@@ -241,12 +284,18 @@ below with their respective functionality.
 ``O``
 =====
 
+#. **SINGULARITY_OOM_KILL_DISABLE**: Set to true to disable OOM killer for
+   container processes, if possible. Default is false.
+
 #. **SINGULARITY_OVERLAY** and **SINGULARITY_OVERLAYIMAGE**: To indicate
    the use of an overlay file system image for persistent data storage
    or as read-only layer of container.
 
 ``P``
 =====
+
+#. **SINGULARITY_PIDS_LIMIT**: Specify maximum number of processes that
+   the container may spawne. Default is 0 (no limit).
 
 #. **SINGULARITY_PWD** and **SINGULARITY_TARGET_PWD**: The initial
    working directory for payload process inside the container.
@@ -281,6 +330,10 @@ below with their respective functionality.
 
 #. **SINGULARITY_SHELL**: The path to the program to be used as an
    interactive shell.
+
+#. **SINGULARITY_SIF_FUSE**: (experimental) Set to true to attempt to 
+   mount SIF images with ``squashfuse`` in unprivileged user namespace
+   workflows.
 
 #. **SINGULARITY_SIGNAL**: Specifies a signal sent to the instance.
 
