@@ -12,9 +12,9 @@ def variableReplace(app, docname, source):
 # Add the needed variables to be replaced either on code or on text on the next
 # dictionary structure.
 variable_replacements = {
-    "{InstallationVersion}": "3.9.2",
-    "{version}": "3.9",
-    "{adminversion}": "3.9",
+    "{InstallationVersion}": "master",
+    "{version}": "master",
+    "{adminversion}": "master",
     # The 'Singularity' noun is now a replacement so we can have
     # {Singularity}  rather than bare 'Singularity'... and Sylabs can
     # replace to SingularityPRO so that it is clearer where docs
