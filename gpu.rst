@@ -72,8 +72,8 @@ latest stable CUDA version. It can be modified by the administrator to
 add additional libraries if necessary. See the admin guide for more
 details.
 
-Example - tensorflow-gpu
-========================
+Example - Official tensorflow-gpu container
+===========================================
 
 Tensorflow is commonly used for machine learning projects but can be
 difficult to install on older systems, and is updated frequently.
@@ -136,6 +136,39 @@ tensorflow ``list_local_devices()`` function:
    2019-11-14 15:32:09.843984: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1618] Found device 0 with properties:
    name: GeForce GT 730 major: 3 minor: 5 memoryClockRate(GHz): 0.9015
    ...
+
+Example - tensorflow-gpu from NVIDIA NGC
+========================================
+
+From the NVIDIA NGC webiste:
+
+   The TensorFlow NGC Container is optimized for GPU acceleration,
+   and contains a validated set of libraries that enable and optimize
+   GPU performance. This container may also contain modifications to
+   the TensorFlow source code in order to maximize performance and
+   compatibility. This container also contains software for
+   accelerating ETL (DALI, RAPIDS), Training (cuDNN, NCCL), and 
+   Inference (TensorRT) workloads.
+
+Again, the container is large, so it's best to build or pull the docker image
+to a SIF before you start working with it:
+
+.. code::
+
+   $ singularity pull docker://nvcr.io/nvidia/tensorflow:22.04-tf2-py3
+   ...
+   INFO:    Creating SIF file...
+   ...
+
+Then run the container with GPU support:
+
+.. code::
+
+   $ singularity shell --nv tensorflow_22.04-tf2-py3.sif
+
+   Singularity> python -c "import tensorflow as tf; print(tf.config.list_physical_devices())"
+   [PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU'), PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
+
 
 Multiple GPUs
 =============
