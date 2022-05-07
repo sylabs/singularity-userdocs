@@ -169,6 +169,7 @@ Then run the container with GPU support:
    Singularity> python -c "import tensorflow as tf; print(tf.config.list_physical_devices())"
    [PhysicalDevice(name='/physical_device:CPU:0', device_type='CPU'), PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU')]
 
+For production runs, you can use ``singularity exec --nv tensorflow_22.04-tf2-py3.sif python my_script.py``.
 
 Multiple GPUs
 =============
