@@ -77,7 +77,7 @@ Other dependencies include:
 More information about contributing to the documentation, instructions
 on how to install the dependencies, and how to generate the files can be
 obtained `here
-<https://github.com/sylabs/singularity-userdocs/blob/master/README.md>`__.
+<https://github.com/sylabs/singularity-userdocs/blob/main/README.md>`__.
 
 For more information on using Git and GitHub to create a pull request
 suggesting additions and edits to the docs, see the :ref:`section on
@@ -93,12 +93,12 @@ identical for contributions to the documentation and the code base.
 We use the traditional `GitHub Flow
 <https://guides.github.com/introduction/flow/>`_ to develop. This means
 that you fork the main repo, create a new branch to make changes, and
-submit a pull request (PR) to the master branch.
+submit a pull request (PR) to the main branch.
 
 Check out our official `CONTRIBUTING.md
-<https://github.com/sylabs/singularity/blob/master/CONTRIBUTING.md>`_
+<https://github.com/sylabs/singularity/blob/main/CONTRIBUTING.md>`_
 document, which also includes a `code of conduct
-<https://github.com/sylabs/singularity/blob/master/CONTRIBUTING.md#code-of-conduct>`_.
+<https://github.com/sylabs/singularity/blob/main/CONTRIBUTING.md#code-of-conduct>`_.
 
 Step 1. Fork the repo
 =====================
@@ -119,13 +119,13 @@ Step 2. Checkout a new branch
 
 `Branches <https://guides.github.com/introduction/flow//>`_ are a way of
 isolating your features from the main branch. Given that we’ve just
-cloned the repo, we will probably want to make a new branch from master
+cloned the repo, we will probably want to make a new branch from main
 in which to work on our new feature. Lets call that branch
 ``new-feature``:
 
 .. code::
 
-   $ git checkout master && \
+   $ git checkout main && \
        git checkout -b new-feature
 
 .. note::
@@ -156,7 +156,7 @@ changes that you have made. Good commit messages read like so:
 
 The tags ``close #10`` and ``fix #2`` are referencing issues that are
 posted on the upstream repo where you will direct your pull request.
-When your PR is merged into the master branch, these messages will
+When your PR is merged into the main branch, these messages will
 automatically close the issues, and further, they will link your commits
 directly to the issues they intend to fix. This will help future
 maintainers understand your contribution, or (hopefully not) revert the
@@ -186,7 +186,7 @@ Once you have pushed your branch, then you can go to your fork (in the
 web GUI on GitHub) and `submit a Pull Request
 <https://help.github.com/articles/creating-a-pull-request/>`_.
 Regardless of the name of your branch, your PR should be submitted to
-the Sylabs ``master`` branch. Submitting your PR will open a
+the Sylabs ``main`` branch. Submitting your PR will open a
 conversation thread for the maintainers of {Singularity} to discuss your
 contribution. At this time, the continuous integration that is linked
 with the code base will also be executed. If there is an issue, or if
@@ -198,14 +198,14 @@ Step 6. Keep your branch in sync
 
 Cloning the repo will create an exact copy of the {Singularity}
 repository at that moment. As you work, your branch may become out of
-date as others merge changes into the upstream master. In the event that
+date as others merge changes into the upstream main. In the event that
 you need to update a branch, you will need to follow the next steps:
 
 .. code::
 
    $ git remote add upstream https://github.com/sylabs/singularity.git && # to add a new remote named "upstream" \
-       git checkout master && # or another branch to be updated \
-       git pull upstream master && \
-       git push origin master && # to update your fork \
+       git checkout main && # or another branch to be updated \
+       git pull upstream main && \
+       git push origin main && # to update your fork \
        git checkout new-feature && \
-       git merge master
+       git merge main

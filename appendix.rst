@@ -855,9 +855,9 @@ Notes
 Arch Linux is, by design, a very stripped down, light-weight OS. You may
 need to perform a significant amount of configuration to get a usable
 OS. Please refer to this `README.md
-<https://github.com/singularityware/singularity/blob/master/examples/arch/README.md>`_
+<https://github.com/sylabs/singularity/blob/main/examples/arch/README.md>`_
 and the `Arch Linux example
-<https://github.com/singularityware/singularity/blob/master/examples/arch/Singularity>`_
+<https://github.com/sylabs/singularity/blob/main/examples/arch/Singularity>`_
 for more info.
 
 .. _build-busybox:

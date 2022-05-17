@@ -212,5 +212,5 @@ git add vendor/src/github.com/sylabs/singularity
 git commit
 ```
 
-This will update the submodule to the latest version of the master
+This will update the submodule to the latest version of the main
 branch.
