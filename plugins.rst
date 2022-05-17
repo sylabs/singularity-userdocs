@@ -147,4 +147,4 @@ by reading the `Go documentation
 plugin package.
 
 Example plugins can be found in the {Singularity} `source code
-<https://github.com/sylabs/singularity/tree/master/examples/plugins>`_.
+<https://github.com/sylabs/singularity/tree/main/examples/plugins>`_.
