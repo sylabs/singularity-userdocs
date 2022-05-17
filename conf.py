@@ -52,7 +52,7 @@ copyright = u'2017-2022, Sylabs Inc & Project Contributors'
 # built documents.
 #
 # The short X.Y version.
-version = 'master'
+version = 'main'
 # We have not had separate docs per release version for some time, so set
 # release = version here.
 release = version
@@ -118,7 +118,7 @@ html_context = {
     'display_github': True,
     'github_user': 'sylabs',
     'github_repo': 'singularity-userdocs',
-    'github_version': 'master',
+    'github_version': 'main',
     'conf_py_path': '/',
 }
 
