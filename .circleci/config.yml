@@ -154,13 +154,13 @@ workflows:
           filters:
             branches:
               ignore:
-                - master
-                - /\d\.\d/
+                - main
+                - /\d\.\d+/
       - publish_docs:
           requires:
             - check_rst
           filters:
             branches:
               only:
-                - master
-                - /\d\.\d/
+                - main
+                - /\d\.\d+/
