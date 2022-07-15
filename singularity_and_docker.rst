@@ -497,12 +497,12 @@ command will list containers that are available:
 
 This indicates that ``sylabsio/lolcow:latest`` has been cached locally
 by Docker. You can directly build it into a SIF file using a
-``docker-daemon://`` URI specifying the ``REPOSITORY:TAG`` container
+``docker-daemon:`` URI specifying the ``REPOSITORY:TAG`` container
 name:
 
 .. code::
 
-   $ singularity build lolcow_from_docker_cache.sif docker-daemon://sylabsio/lolcow:latest
+   $ singularity build lolcow_from_docker_cache.sif docker-daemon:sylabsio/lolcow:latest
    INFO:    Starting build...
    Getting image source signatures
    Copying blob sha256:a2022691bf950a72f9d2d84d557183cb9eee07c065a76485f1695784855c5193
@@ -1001,13 +1001,13 @@ Argument Handling
 
 Because {Singularity} runscripts are evaluated shell scripts, arguments can
 behave slightly differently than in Docker/OCI runtimes if they contain shell
-code that may be evaluated. 
+code that may be evaluated.
 
 If you are using a container that was directly built or run from a Docker/OCI
 source, with {Singularity} 3.10 or later, the ``--no-eval`` flag will prevent
 this extra evaluation so that arguments are handled in a compatible manner:
 
-.. code:: 
+.. code::
 
    # docker/OCI behavior
    $ docker run -it --rm alpine echo "\$HOSTNAME"
@@ -1021,7 +1021,7 @@ this extra evaluation so that arguments are handled in a compatible manner:
    $ singularity run --no-eval docker://alpine echo "\$HOSTNAME"
    $HOSTNAME
 
-.. note:: 
+.. note::
 
    ``--no-eval`` will not change argument behavior for containers built with
    {Singularity} 3.9 or earlier, as the handling is implemented in the runscript
