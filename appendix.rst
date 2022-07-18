@@ -83,7 +83,7 @@ below with their respective functionality.
    available to the container. Default is -1 (disabled).
 
 #. **SINGULARITY_CPUS**: Specify a fractional number of CPUs available
-   to the container. Default is unset. 
+   to the container. Default is unset.
 
 #. **SINGULARITY_CPUSET_CPUS**: Specify a list or range of CPU cores
    available to the container. Default is unset.
@@ -93,6 +93,9 @@ below with their respective functionality.
 
 ``D``
 =====
+
+#. **SINGULARITY_DEBUG**: Enable debug output when set. Equivalent to ``-d /
+   --debug``.
 
 #. **SINGULARITY_DEFFILE**: Shows the {Singularity} recipe that was used
    to generate the image.
@@ -218,7 +221,7 @@ below with their respective functionality.
 ``M``
 =====
 
-#. **SINGULARITY_MEMORY**: Specify a memory limit in bytes for the 
+#. **SINGULARITY_MEMORY**: Specify a memory limit in bytes for the
    container. Default is unset (no limit).
 
 #. **SINGULARITY_MEMORY_RESERVATION**: Specify a memory soft limit in
@@ -331,7 +334,7 @@ below with their respective functionality.
 #. **SINGULARITY_SHELL**: The path to the program to be used as an
    interactive shell.
 
-#. **SINGULARITY_SIF_FUSE**: (experimental) Set to true to attempt to 
+#. **SINGULARITY_SIF_FUSE**: (experimental) Set to true to attempt to
    mount SIF images with ``squashfuse`` in unprivileged user namespace
    workflows.
 
