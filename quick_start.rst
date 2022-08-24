@@ -76,7 +76,7 @@ Install Go
 
 {Singularity} is written in Go, and may require a newer version of Go than is
 available in the repositories of your distribution. We recommend installing the
-latest version of Go from the [official binaries](https://golang.org/dl/).
+latest version of Go from the `official binaries <https://golang.org/dl/>`_.
 
 {Singularity} aims to maintain support for the two most recent stable versions
 of Go. This corresponds to the Go Release Maintenance Policy and Security
