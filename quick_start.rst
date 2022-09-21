@@ -61,7 +61,10 @@ On CentOS/RHEL:
    sudo yum install -y \
       libseccomp-devel \
       squashfs-tools \
-      cryptsetup
+      cryptsetup \
+      glib2-devel \
+      glibc-devel \
+      runc
 
 There are 3 broad steps to installing {Singularity}:
 
