@@ -38,6 +38,7 @@ _build/html/_static/websupport.js
 _build/html/_static/js/theme.js
 _build/epub/*
 _build/latex/*
+_build/html/*
 cli/*
 
 # go mod pkg cache

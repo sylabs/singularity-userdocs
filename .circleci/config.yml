@@ -78,7 +78,7 @@ jobs:
       - run:
           name: Lint rst
           command: |
-            rstcheck --ignore-language c,c++ --report warning *.rst
+            rstcheck --ignore-languages c,c++ --report-level warning *.rst
 
   make_docs:
     executor: ubuntu-machine
@@ -89,7 +89,7 @@ jobs:
       - install-deps-python
       - go/install:
           version: << pipeline.parameters.go-version >>
-      - init-submodules  
+      - init-submodules
       - run:
           name: make html
           command: |
@@ -121,7 +121,7 @@ jobs:
       - install-deps-python
       - go/install:
           version: << pipeline.parameters.go-version >>
-      - init-submodules  
+      - init-submodules
       - run:
           name: make pdf
           command: |
