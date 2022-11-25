@@ -1,0 +1,11 @@
+{% extends "!layout.html" %}
+{%- block content %}
+<div class="rst-content style-external-links">
+    <div class="admonition warning">
+        <p class="admonition-title">Warning</p>
+        <p>You're browsing the documentation for an old version of SingularityCE. Consider upgrading to the latest version of SingularityCE.</p>
+        <p>Documentation for the latest version can always be found at: <br><a class="reference external" href="https://docs.sylabs.io/latest/user-guide">https://docs.sylabs.io/latest/user-guide</a></p>
+    </div>
+</div>
+{{ super() }}
+{% endblock %}
