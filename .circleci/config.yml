@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  aws-cli: circleci/aws-cli@2.0.3
+
 executors:
   node:
     docker:
@@ -108,6 +111,55 @@ jobs:
           path: _build/epub
           destination: epub
 
+  publish_docs:
+    executor: python
+    steps:
+      - checkout
+      - run:
+          name: Install sphinx
+          command: |
+            pip install sphinx sphinx-rtd-theme restructuredtext_lint pygments
+      - run:
+          name: submodule init
+          command: |
+            git submodule update --init --recursive
+      - run:
+          name: Install singularity deps
+          command: |
+            apt-get update -y && \
+            apt-get install -f -y build-essential libssl-dev uuid-dev squashfs-tools libseccomp-dev cryptsetup-bin libgpgme-dev
+      - run:
+          name: Install Go 1.17
+          command: |
+            wget https://dl.google.com/go/go1.17.linux-amd64.tar.gz
+            rm -rf /usr/local/go
+            tar -C /usr/local -xzf go1.17.linux-amd64.tar.gz
+            ln -s /usr/local/go/bin/go /usr/local/bin/go
+      - run:
+          name: Install TeXlive
+          command: |
+            apt-get install -f -y texlive-latex-extra latexmk
+      - run:
+          name: make pdf
+          command: |
+            make latexpdf
+      - run:
+          name: make html
+          command: |
+            make html
+      - run:
+          name: make epub
+          command: |
+            make epub
+      - aws-cli/setup
+      - run:
+          name: publish to s3
+          command: |
+            aws s3 sync _build/html s3://ce-docs.sylabs.io/guides/${CIRCLE_BRANCH}/user-guide --delete
+            aws s3 cp _build/latex/*.pdf s3://ce-docs.sylabs.io/guides/${CIRCLE_BRANCH}/user-guide.pdf
+            aws s3 cp _build/epub/*.epub s3://ce-docs.sylabs.io/guides/${CIRCLE_BRANCH}/user-guide.epub
+
+
 workflows:
   version: 2
   build_and_test:
@@ -117,6 +169,24 @@ workflows:
       - make_html:
           requires:
             - check_rst
+          filters:
+            branches:
+              ignore:
+                - main
+                - /\d\.\d+/
       - make_pdf_epub:
           requires:
             - check_rst
+          filters:
+            branches:
+              ignore:
+                - main
+                - /\d\.\d+/
+      - publish_docs:
+          requires:
+            - check_rst
+          filters:
+            branches:
+              only:
+                - main
+                - /\d\.\d+/
