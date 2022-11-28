@@ -108,15 +108,33 @@ jobs:
           destination: epub
 
   publish_docs:
-    executor: ubuntu-machine
+    <<: *defaults
     steps:
       - checkout
-      - install-deps-apt
-      - install-latex-apt
-      - install-deps-python
-      - go/install:
-          version: << pipeline.parameters.go-version >>
-      - init-submodules
+      - run:
+          name: Install sphinx
+          command: |
+            pip install sphinx sphinx-rtd-theme restructuredtext_lint pygments
+      - run:
+          name: submodule init
+          command: |
+            git submodule update --init --recursive
+      - run:
+          name: Install singularity deps
+          command: |
+            apt-get update -y && \
+            apt-get install -f -y build-essential libssl-dev uuid-dev squashfs-tools libseccomp-dev cryptsetup-bin libgpgme-dev
+      - run:
+          name: Install Go 1.13.4
+          command: |
+            wget https://dl.google.com/go/go1.13.4.linux-amd64.tar.gz
+            rm -rf /usr/local/go
+            tar -C /usr/local -xzf go1.13.4.linux-amd64.tar.gz
+            ln -s /usr/local/go/bin/go /usr/local/bin/go
+      - run:
+          name: Install TeXlive
+          command: |
+            apt-get install -f -y texlive-latex-extra latexmk
       - run:
           name: make pdf
           command: |
@@ -146,9 +164,19 @@ workflows:
       - make_html:
           requires:
             - check_rst
+          filters:
+            branches:
+              ignore:
+                - main
+                - /\d\.\d+/
       - make_pdf_epub:
           requires:
             - check_rst
+          filters:
+            branches:
+              ignore:
+                - main
+                - /\d\.\d+/
       - publish_docs:
           requires:
             - check_rst
