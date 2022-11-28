@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Lint rst
           command: |
-            rstcheck --ignore-language c,c++ --report warning *.rst
+            rstcheck --ignore-languages c,c++ --report-level warning *.rst
 
   make_html:
     <<: *defaults
