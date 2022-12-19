@@ -102,14 +102,15 @@ Visit the `Go Downloads page <https://golang.org/dl/>`_ and pick a
 package archive suitable to the environment you are in. Once the
 Download is complete, extract the archive to ``/usr/local`` (or use
 other instructions on go installation page). Alternatively, follow the
-commands here:
+commands here (make sure to replace the values as needed):
 
 .. code::
 
-   $ export VERSION=1.17.2 OS=linux ARCH=amd64 && \  # Replace the values as needed
-     wget https://dl.google.com/go/go$VERSION.$OS-$ARCH.tar.gz && \ # Downloads the required Go package
-     sudo tar -C /usr/local -xzvf go$VERSION.$OS-$ARCH.tar.gz && \ # Extracts the archive
-     rm go$VERSION.$OS-$ARCH.tar.gz    # Deletes the ``tar`` file
+   $ export VERSION=1.17.2 OS=linux ARCH=amd64 && \
+     wget https://dl.google.com/go/go$VERSION.$OS-$ARCH.tar.gz && \
+     sudo tar -C /usr/local -xzvf go$VERSION.$OS-$ARCH.tar.gz && \
+     rm go$VERSION.$OS-$ARCH.tar.gz
+
 
 Set the Environment variable ``PATH`` to point to Go:
 
@@ -131,7 +132,7 @@ the installation.
 
 .. code::
 
-   $ export VERSION={InstallationVersion} && # adjust this as necessary \
+   $ export VERSION={InstallationVersion} && \
        wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce-${VERSION}.tar.gz && \
        tar -xzf singularity-ce-${VERSION}.tar.gz && \
        cd singularity-ce-${VERSION}
