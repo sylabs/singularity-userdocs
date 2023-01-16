@@ -611,7 +611,7 @@ module to use.
 
 .. code:: singularity
 
-   From: oras://registry/namespace/image:tag
+   From: registry/namespace/image:tag
 
 The ``From`` keyword is mandatory. It specifies the container to use as
 a base. Also,``tag`` is mandatory that refers to the version of image
