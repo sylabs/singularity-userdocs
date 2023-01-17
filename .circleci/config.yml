@@ -50,7 +50,7 @@ commands:
     steps:
       - run:
           name: Install python dependencies
-          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>pip install sphinx sphinx-rtd-theme rstcheck pygments m2r2
+          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>pip install 'sphinx<6' sphinx-rtd-theme rstcheck pygments m2r2
   init-submodules:
     steps:
       - run:
