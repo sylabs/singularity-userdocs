@@ -45,11 +45,14 @@ On Debian-based systems, including Ubuntu:
    sudo apt-get update
    # Install debian packages for dependencies
    sudo apt-get install -y \
+      wget \
       build-essential \
       libseccomp-dev \
+      libglib2.0-dev \
       pkg-config \
       squashfs-tools \
-      cryptsetup
+      cryptsetup \
+      runc
 
 On CentOS/RHEL:
 
@@ -59,9 +62,12 @@ On CentOS/RHEL:
    sudo yum groupinstall -y 'Development Tools'
    # Install RPM packages for dependencies
    sudo yum install -y \
+      wget \
       libseccomp-devel \
+      glib2-devel \
       squashfs-tools \
-      cryptsetup
+      cryptsetup \
+      runc
 
 There are 3 broad steps to installing {Singularity}:
 
