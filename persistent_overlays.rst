@@ -27,12 +27,18 @@ persist, use the ``--writable-tmpfs`` option. This stores all changes in
 an in-memory temporary filesystem which is discarded as soon as the
 container finishes executing.
 
+.. note::
+
+   The ``--writable-tmpfs`` size is controlled by ``sessiondir max size`` in
+   ``singularity.conf``. This defaults to 64MiB, and may need to be increased if
+   your workflows create larger temporary files.
+
 You can use persistent overlays with the following commands:
 
 -  ``run``
 -  ``exec``
 -  ``shell``
--  ``instance.start``
+-  ``instance start``
 
 *******
  Usage
@@ -44,13 +50,11 @@ To use a persistent overlay, you must first have a container.
 
    $ sudo singularity build ubuntu.sif library://ubuntu
 
-File system image overlay
-=========================
+Filesystem image overlay
+========================
 
 Since 3.8, {Singularity} provides a command ``singularity overlay
-create`` to create persistent overlay images. You can create a single
-EXT3 overlay image or adding a EXT3 writable overlay partition to an
-existing SIF image.
+create`` to create persistent overlay images.
 
 .. note::
 
@@ -64,18 +68,6 @@ For example, to create a 1 GiB overlay image:
 
    $ singularity overlay create --size 1024 /tmp/ext3_overlay.img
 
-To add a 1 GiB writable overlay partition to an existing SIF image:
-
-.. code::
-
-   $ singularity overlay create --size 1024 ubuntu.sif
-
-.. warning::
-
-   It is not possible to add a writable overlay partition to a
-   **signed**, **encrypted** SIF image or if the SIF image already
-   contain a writable overlay partition.
-
 ``singularity overlay create`` also provides an option ``--create-dir``
 to create additional directories owned by the calling user, it can be
 specified multiple times to create many directories. This is
@@ -87,23 +79,50 @@ So for example:
 .. code::
 
    $ singularity build /tmp/nginx.sif docker://nginx
-   $ singularity overlay create --size 1024 --create-dir /var/cache/nginx /tmp/nginx.sif
-   $ echo "test" | singularity exec /tmp/nginx.sif sh -c "cat > /var/cache/nginx/test"
+   $ singularity overlay create --size 1024 --create-dir /var/cache/nginx /tmp/nginx_overlay.img
+   $ echo "test" | singularity exec --overlay /tmp/nginx_overlay.img /tmp/nginx.sif sh -c "cat > /var/cache/nginx/test"
 
-Create an overlay image (< 3.8)
--------------------------------
+.. note::
+
+   Filesystem image overlays are only supported when {singularity} is installed in
+   setuid mode. An unprivileged installation of {Singularity} can create these
+   kinds of overlays, but cannot mount them to the container at runtime.
+
+Sparse overlay images
+---------------------
+
+Since 3.11, {Singularity} allows the creation of overlay images as sparse files.
+A sparse overlay image only takes up space on disk as data is written to it. A
+standard overlay image will use an amount of disk space equal to its size, from
+the time that it is created.
+
+To create a sparse overlay image, use the ``--sparse`` flag.
+
+.. code::
+
+   $ singularity overlay create --sparse --size 1024 /tmp/ext3_overlay.img
+
+Note that ``ls`` will show the full size of the file, while ``du`` will show the
+space on disk that the file is currently using:
+
+.. code::
+
+   $ ls -lah /tmp/ext3_overlay.img 
+   -rw-------. 1 dtrudg-sylabs dtrudg-sylabs 1.0G Jan 27 11:47 /tmp/ext3_overlay.img
+
+   $ du -h /tmp/ext3_overlay.img 
+   33M     /tmp/ext3_overlay.img
+
+If you copy or move the sparse image you should ensure that the tool you use to
+do so supports sparse files, which may require enabling an option. Failure to
+copy or move the file with sparse file support will lead to it taking its full
+size on disk in the new location.
+
+Create an overlay image manually
+--------------------------------
 
 You can use tools like ``dd`` and ``mkfs.ext3`` to create and format an
-empty ext3 file system image, which holds all changes made in your
-container within a single file. Using an overlay image file makes it
-easy to transport your modifications as a single additional file
-alongside the original SIF container image.
-
-Workloads that write a very large number of small files into an overlay
-image, rather than a directory, are also faster on HPC parallel
-filesystems. Each write is a local operation within the single open
-image file, and does not cause additional metadata operations on the
-parallel filesystem.
+empty ext3 file system image that will be used as an overlay.
 
 To create an overlay image file with 500MBs of empty space:
 
@@ -162,9 +181,12 @@ transported or shared as easily as a single overlay file.
 
 .. note::
 
-   For security reasons, you must be root to use a bare directory as an
-   overlay. ext3 file system images can be used as overlays without root
-   privileges.
+   For security reasons, if {Singularity} is installed in setuid mode, you must
+   be root to use a bare directory as an overlay. ext3 file system images can be
+   used as overlays without root privileges.
+
+   Non-root users can use directory overlays if {Singularity} is installed in
+   non-setuid mode, and the kernel (>=5.11) of the system supports this.
 
 Create a directory as usual:
 
@@ -194,10 +216,50 @@ The example below shows the directory overlay in action.
 Overlay embedded in SIF
 =======================
 
-It is possible to embed an overlay image in the SIF file that holds a
+It is possible to embed an overlay image into the SIF file that holds a
 container. This allows the read-only container image and your
-modifications to it to be managed as a single file. In order to do this,
-you must first create a file system image:
+modifications to it to be managed as a single file. 
+
+To add a 1 GiB writable overlay partition to an existing SIF image:
+
+.. code::
+
+   $ singularity overlay create --size 1024 ubuntu.sif
+
+.. warning::
+
+   It is not possible to add a writable overlay partition to a
+   **signed**, **encrypted** SIF image or if the SIF image already
+   contains a writable overlay partition.
+
+``singularity overlay create`` also provides an option ``--create-dir``
+to create additional directories owned by the calling user, it can be
+specified multiple times to create many directories. This is
+particularly useful when you need to make a directory writable by your
+user.
+
+So for example:
+
+.. code::
+
+   $ singularity build /tmp/nginx.sif docker://nginx
+   $ singularity overlay create --size 1024 --create-dir /var/cache/nginx /tmp/nginx.sif
+   $ echo "test" | singularity exec /tmp/nginx.sif sh -c "cat > /var/cache/nginx/test"
+
+.. note::
+
+   SIF embedded overlays are only supported when {singularity} is installed in
+   setuid mode. An unprivileged installation of {Singularity} can create these
+   kinds of overlays, but cannot mount them to the container at runtime.
+
+
+Embed an overlay image in SIF
+-----------------------------
+
+To embed an existing overlay in a SIF image, or to create an empty overlay when
+using {Singularity} <3.8, use the ``sif add`` subcommand.
+
+In order to do this, you must first create a file system image:
 
 .. code::
 
@@ -238,8 +300,8 @@ container with the ``--writable`` option.
 Final note
 ==========
 
-You will find that your changes persist across sessions as though you
-were using a writable container.
+You will find that when using the ``--overlay`` option, your changes persist
+across sessions as though you were using a writable container.
 
 .. code::
 
