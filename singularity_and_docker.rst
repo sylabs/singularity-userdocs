@@ -673,6 +673,20 @@ A writable overlay file in a SIF partition cannot be used in parallel.
 {Singularity} will refuse to run concurrently using the same SIF
 writable overlay partition.
 
+.. note::
+
+   Using `--writable-tmpfs` as a non-root user requires that {Singularity} was
+   installed in setuid mode, or the system has a kernel version >=5.11 in
+   non-setuid mode.
+
+   Using a writable overlay as a non-root user generally requires that
+   {Singularity} was installed in setuid mode.
+
+   The ``--writable-tmpfs`` size is controlled by ``sessiondir max size`` in
+   ``singularity.conf``. This defaults to 64MiB, and may need to be increased if
+   your workflows create larger temporary files.
+
+
 Dockerfile ``USER``
 ===================
 
