@@ -189,6 +189,11 @@ Singularity accepts a username, and password / token, as
 respectively. These environment variables will override any stored
 credentials.
 
+If ``DOCKER_USERNAME`` and ``DOCKER_PASSWORD``, without the ``SINGULARITY_``
+prefix, are set they will also be used provided the ``SINGULARITY_`` equivalent
+is not overriding them. This allows a single set of environment variables to be
+set for both ``singularity`` and ``docker`` operations.
+
 .. code::
 
    $ export SINGULARITY_DOCKER_USERNAME=myuser
