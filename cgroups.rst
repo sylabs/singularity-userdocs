@@ -61,6 +61,8 @@ satisfy these criteria by default. On older distributions support can often be
 enabled. Consult the admin documentation or speak to your system administrator
 about this.
 
+.. _cgroup_flags:
+
 ***************************
  Command Line Limit Flags
 ***************************
