@@ -132,7 +132,7 @@ SIF container.
 .. code:: singularity
 
    Bootstrap: docker
-   From: ubuntu:16.04
+   From: ubuntu:22.04
 
    %post
        apt-get -y update
@@ -151,17 +151,94 @@ You can do so with the following command.
 
    $ sudo singularity build lolcow.sif lolcow.def
 
-The command requires ``sudo`` just as installing software on your local
-machine requires root privileges.
+In this case we're running the ``singularity build`` with ``sudo`` because
+installing software with ``apt-get`` requires the privileges of the ``root``
+user. By default, when you run {Singularity} you are the same user inside the
+container as outside on the host, so becoming ``root`` on the host with ``sudo``
+ensures we can ``apt-get`` as ``root`` in the container build.
 
-.. note::
+If you aren't able, or don't wish to use ``sudo`` when building a container,
+{Singularity} offers ``--remote`` builds, a ``--fakeroot`` mode, and limited
+unprivileged builds with ``proot``.
 
-   Beware that it is possible to build an image on a host and have the
-   image not work on a different host. This could be because of the
-   default compressor supported by the host. For example, when building
-   an image on a host in which the default compressor is ``xz`` and then
-   trying to run that image on a CentOS 6 node, where the only
-   compressor available is ``gzip``.
+``--remote`` builds
+===================
+
+`Singularity Container Services <https://cloud.sylabs.io/`__ and `Singularity
+Enterprise <https://sylabs.io/singularity-enterprise/>`__ provide a 'Remote
+Build Service'. This service can perform a container build, as the root user,
+inside a secure single-use virtual machine.
+
+Remote builds do not have the system requirements of ``--fakeroot`` builds, or
+the limitations of unprivileged ``proot`` builds. They are a convenient way to
+build {Singularity} containers on systems where ``sudo`` rights are not
+available.
+
+To perform a remote build, ensure you are logged in to `Singularity Container
+Services <https://cloud.sylabs.io/>`__, and then add the ``--remote`` flag to
+your build command. The build will be sent to the remote build service, and
+build progress / output displayed on your local machine. When the build is
+complete, the resulting SIF container image will be retrieved to your machine.
+
+.. code:: 
+
+    $ singularity build --remote lolcow.sif lolcow.def
+
+
+``--fakeroot`` builds
+=====================
+
+A build run with the ``--fakeroot`` flag uses Linux kernel features so that you
+remain as your own user on the host system, but become an emulated 'fake' root
+user in the container build.
+
+The ``--fakeroot`` feature depends on certain system configuration, and is
+covered further in the :ref:`fakeroot <fakeroot>` fakeroot section of this user
+guide, and the admin guide.
+
+If your system is configured for ``--fakeroot`` support then you can run the
+above build by dropping ``sudo`` and adding the ``--fakeroot`` flag:
+
+.. code::
+
+   $ singularity build --fakeroot lolcow.sif lolcow.def
+
+Unprivilged ``proot`` builds
+============================
+
+{Singularity} 3.11 introduces the ability to run some definition file builds
+without ``--fakeroot``, or ``sudo``. This is useful on systems where you cannot
+``sudo``, and the administrator cannot configure ``--fakeroot`` support.
+
+Unprivileged ``proot`` builds are automatically performed when `proot
+<https://proot-me.github.io/>`__ is available on the system ``PATH``, and
+``singularity build`` is run by a non-root user against a definition file:
+
+.. code:: 
+
+   $ singularity build lolcow.sif lolcow.def
+   INFO:    Using proot to build unprivileged. Not all builds are supported. If build fails, use --remote or --fakeroot.
+   INFO:    Starting build...
+
+Builds using ``proot`` to run unprivileged have limitations, as the emulation of
+the root user is not complete. These builds:
+
+- Do not support arch / debootstrap / yum / zypper bootstraps. Use localimage,
+  library, oras, or one of the docker/oci sources.
+- Do not support ``%pre`` and ``%setup`` sections of definition files.
+- Run the ``%post`` sections of a build in the container as an emulated root user.
+- Run the ``%test`` section of a build as the non-root user, like singularity test.
+- Are subject to any restrictions imposed in singularity.conf.
+- Incur a performance penalty due to proot's ptrace based interception of
+  syscalls.
+- May fail if the ``%post`` script requires privileged operations that proot cannot
+  emulate.
+
+Generally, if your definition file starts from an existing SIF/OCI container
+image, and adds software using system package managers, an unprivileged proot build is
+appropriate. If your definition file compiles and install large complex software
+from source, you may wish to investigate ``--remote`` or ``--fakeroot`` builds
+further.
 
 *******************************
  Building encrypted containers
