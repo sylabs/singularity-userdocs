@@ -41,9 +41,9 @@ container.
 Disabling System Binds
 ======================
 
-The ``--no-mount`` flag, added in {Singularity} 3.7, allows specific
-system mounts to be disabled, even if they are set in the
-``singularity.conf`` configuration file by the administrator.
+The ``--no-mount`` flag allows specific system mounts to be disabled, even if
+they are set in the ``singularity.conf`` configuration file by the
+administrator.
 
 For example, if {Singularity} has been configured with ``mount hostfs =
 yes`` then every filesystem on the host will be bind mounted to the
@@ -55,11 +55,30 @@ running, you can disable the ``hostfs`` binds:
 
    $ singularity run --no-mount hostfs mycontainer.sif
 
-Multiple mounts can be disabled by specifying them separated by commas:
+Multiple system mounts can be disabled by specifying them separated by commas:
 
 .. code:: console
 
    $ singularity run --no-mount tmp,sys,dev mycontainer.sif
+
+When the administrator has configured custom ``bind path`` entries in
+``singularity.conf``, to mount specific paths into the container by default, you
+can disable them individually. To do this, specify the path(s) to disable with
+the ``--no-mount`` flag. For example, if the adminstrator has configured
+``singularity.conf`` to always mount ``/data2``. you can disable this with
+``--no-mount /data2``:
+
+.. code:: console
+
+   $ singularity run --no-mount /data2 mycontainer.sif
+
+To disable all ``bind path`` entries set in ``singularity.conf``, use
+``--no-mount bind-paths``:
+
+.. code:: console
+
+   $ singularity run --no-mount bind-paths mycontainer.sif
+
 
 .. _user-defined-bind-paths:
 
