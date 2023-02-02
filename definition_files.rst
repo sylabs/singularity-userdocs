@@ -473,6 +473,25 @@ Because the ``%test`` section is a shell scriptlet, complex tests are
 possible. Your scriptlet should usually be written so it will exit with
 a non-zero error code if there is a problem during the tests.
 
+The ``%test`` scriptlet will run under ``sh`` or ``bash`` by default. You can
+change the shell or interpreter that the test runs under by using a custom
+hashbang (``#!``) as the first line in your ``%test`` section:
+
+.. code:: singularity
+
+   %test
+      #!/usr/bin/zsh
+
+      cat /proc/$$/cmdline
+
+
+In the ``%test`` section above, the ``#!/usr/bin/zsh`` means that the test code
+will be run by the zsh shell installed at ``/usr/bin/zsh``. The ``cat
+/proc/$$/cmdline`` will display the shell that is running the script, confirming
+that this works. Note that ``/usr/bin/zsh`` must be installed in the
+*container*. A custom hashbang runs the specified shell from the container
+filesystem, not the host.
+
 Now, the following sections are all inserted into the container
 filesystem in single step:
 
@@ -609,6 +628,26 @@ following:
    Container was created Thu Dec  6 20:01:56 UTC 2018
    Arguments received: this that and the other
    this that and the other
+
+The ``%runscript`` scriptlet will run under ``sh`` or ``bash`` by default. You
+can change the shell or interpreter that the test runs under by using a custom
+hashbang (``#!``) as the first line in your ``%runscript`` section:
+
+.. code:: singularity
+
+   %runscript
+      #!/usr/bin/zsh
+
+      cat /proc/$$/cmdline
+
+
+In the ``%runscript`` section above, the ``#!/usr/bin/zsh`` means that the
+runscript code will be run by the zsh shell installed at ``/usr/bin/zsh``. The
+``cat /proc/$$/cmdline`` will display the shell that is running the script,
+confirming that this works. Note that ``/usr/bin/zsh`` must be installed in the
+*container*. A custom hashbang runs the specified shell from the container
+filesystem, not the host.
+
 
 %labels
 =======
