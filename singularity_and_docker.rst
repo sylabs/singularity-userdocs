@@ -23,9 +23,17 @@ Using {Singularity} you can:
 -  Pull and build from OCI containers in archive formats, or cached in a
    local Docker daemon.
 
-This section will highlight these workflows, and discuss the limitations
-and best practices to keep in mind when creating containers targeting
-both Docker and {Singularity}.
+Behind the scenes, {Singularity} automatically translates the Docker / OCI
+container into its native format. This section will highlight these workflows,
+and discuss the limitations and best practices to keep in mind when creating
+containers targeting both Docker and {Singularity}.
+
+{Singularity} 3.11 introduces an alternative, experimental, :ref:`oci mode
+<oci_mode>`, to run Docker / OCI containers natively, without translation. This
+is accessed using the ``--oci`` flag for ``run / shell / exec`` and offers
+improved compatibility in some cases. Special requirements and limitations
+apply, which will be addressed through version 4.0. Please :ref:`consult the
+documentation <oci_mode>` about ``--oci`` mode for more information.
 
 ****************************
  Containers From Docker Hub
