@@ -45,8 +45,13 @@ are stored by the moment before importing a new key).
 
 .. note::
 
-   Remember that using ``--secret`` flag or ``-s`` flag will return the
+   Remember that using ``--secret`` flag will return the
    secret or private local keyring as output.
+
+.. note::
+
+   The ``--private`` flag is available as a synonym for ``--secret``, as is the
+   shorthand ``-s``.
 
 The output will look as it follows:
 
@@ -113,7 +118,7 @@ keystore by running ``singularity key list -s`` command:
      F: 5720799FE7B048CF36FAB8445EE1E2BD7B6342C5
      L: 1024
      --------
-     3) U: Pinkie Pie (Eternal chaos comes with chocolate rain!) <balloons@sylabs.io>
+     2) U: Pinkie Pie (Eternal chaos comes with chocolate rain!) <balloons@sylabs.io>
      C: 2019-04-26 12:07:07 +0200 CEST
      F: 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
      L: 1024
@@ -176,6 +181,11 @@ and on binary format instead:
    keyring. This will just obtain the content of the keys and save it on
    a local file on your host.
 
+.. note::
+
+   The ``--private`` flag is available as a synonym for ``--secret``, as is the
+   shorthand ``-s``.
+
 .. _key_remove:
 
 ********************
@@ -193,3 +203,21 @@ keystore, you can do so by running the following command:
 
    Remember that this will only delete the public key and not the
    private one with the same matching fingerprint.
+
+If you want to remove a private key from your local keystore, you can do so by
+passing the `--secret` flag to `key remove`:
+
+.. code:: singularity
+
+   $ singularity key remove --secret 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
+
+.. note::
+
+   Remember that this will only delete the private key and not the
+   public one with the same matching fingerprint.
+
+.. note::
+
+   The ``--private`` flag is available as a synonym for ``--secret``, as is the
+   shorthand ``-s``.
+
