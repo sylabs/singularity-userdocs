@@ -28,7 +28,7 @@ https://www.sylabs.io/contact/
 
 You will need a Linux system to run {Singularity} natively. Options for
 using {Singularity} on Mac and Windows machines, along with alternate
-Linux installation options are discussed in the `installation section of
+Linux installation options, are discussed in the `installation section of
 the admin guide
 <https://sylabs.io/guides/{adminversion}/admin-guide/installation.html>`__.
 
@@ -91,18 +91,17 @@ supported language versions.
 
 .. note::
 
-   If you have previously installed Go from a download, rather than an
-   operating system package, you should remove your ``go`` directory,
-   e.g. ``rm -r /usr/local/go`` before installing a newer version.
-   Extracting a new version of Go over an existing installation can lead
-   to errors when building Go programs, as it may leave old files, which
-   have been removed or replaced in newer versions.
+   If you have previously installed Go from a download, rather than an operating
+   system package, you should remove your ``go`` directory, e.g.
+   ``rm -r /usr/local/go``, before installing a newer version. Extracting a new
+   version of Go over an existing installation can lead to errors when building
+   Go programs, as it may leave behind old files, which have been removed or
+   replaced in newer versions.
 
-Visit the `Go Downloads page <https://golang.org/dl/>`_ and pick a
-package archive suitable to the environment you are in. Once the
-Download is complete, extract the archive to ``/usr/local`` (or use
-other instructions on go installation page). Alternatively, follow the
-commands here:
+Visit the `Go Downloads page <https://golang.org/dl/>`_ and pick a package
+archive suitable to the environment you are in. Once the Download is complete,
+extract the archive to ``/usr/local`` (or use other instructions on the Go
+installation page). Alternatively, follow the commands here:
 
 .. code::
 
@@ -151,7 +150,9 @@ following commands:
        make -C builddir && \
        sudo make -C builddir install
 
-{Singularity} must be installed as root to function properly.
+.. note::
+
+   {Singularity} must be installed as root to function properly.
 
 *****************************************
  Overview of the {Singularity} Interface
@@ -222,8 +223,8 @@ subcommands as follows:
 
    For additional help or support, please visit https://www.sylabs.io/docs/
 
-Information about subcommand can also be viewed with the ``help``
-command.
+Information about individual subcommands can also be viewed by using the
+``help`` command:
 
 .. code::
 
@@ -258,10 +259,10 @@ command.
 
    For additional help or support, please visit https://www.sylabs.io/docs/
 
-{Singularity} uses positional syntax (i.e. the order of commands and
-options matters). Global options affecting the behavior of all commands
-follow the main ``singularity`` command. Then sub commands are followed
-by their options and arguments.
+{Singularity} uses positional syntax (i.e. the order of commands and options
+matters). Global options affecting the behavior of all commands follow
+immediately after the main ``singularity`` command. Then come subcommands,
+followed by their options and arguments.
 
 For example, to pass the ``--debug`` option to the main ``singularity``
 command and run {Singularity} with debugging messages on:
@@ -279,15 +280,15 @@ To pass the ``--containall`` option to the ``run`` command and run a
 
 {Singularity} 2.4 introduced the concept of command groups. For
 instance, to list Linux capabilities for a particular user, you would
-use the ``list`` command in the ``capability`` command group like so:
+use the ``list`` command in the ``capability`` command group, like so:
 
 .. code::
 
    $ singularity capability list dave
 
-Container authors might also write help docs specific to a container or
+Container authors might also write help docs specific to a container, or
 for an internal module called an ``app``. If those help docs exist for a
-particular container, you can view them like so.
+particular container, you can view them as follows:
 
 .. code::
 
@@ -305,7 +306,7 @@ containers of interest on the `Container Library
 
 .. code::
 
-   singularity search tensorflow
+   $ singularity search tensorflow
    Found 22 container images for amd64 matching "tensorflow":
 
        library://ajgreen/default/tensorflow2-gpu-py3-r-jupyter:latest
@@ -339,16 +340,16 @@ commands to download pre-built images from an external resource like the
 `Container Library <https://cloud.sylabs.io/library>`_ or `Docker Hub
 <https://hub.docker.com/>`_.
 
-When called on a native {Singularity} image like those provided on the
+When called on a native {Singularity} image like those provided by the
 Container Library, ``pull`` simply downloads the image file to your
-system.
+system:
 
 .. code::
 
    $ singularity pull library://lolcow
 
-You can also use ``pull`` with the ``docker://`` uri to reference Docker
-images served from a registry. In this case ``pull`` does not just
+You can also use ``pull`` with a ``docker://`` URI to reference Docker
+images served from a registry. In this case, ``pull`` does not just
 download an image file. Docker images are stored in layers, so ``pull``
 must also combine those layers into a usable {Singularity} file.
 
@@ -356,11 +357,14 @@ must also combine those layers into a usable {Singularity} file.
 
    $ singularity pull docker://sylabsio/lolcow
 
-Pulling Docker images reduces reproducibility. If you were to pull a
-Docker image today and then wait six months and pull again, you are not
-guaranteed to get the same image. If any of the source layers has
-changed the image will be altered. If reproducibility is a priority for
-you, try building your images from the Container Library.
+.. note::
+
+   Pulling Docker images reduces reproducibility. If you were to pull a Docker
+   image today and then wait six months and pull again, you are not guaranteed
+   to get the same image. If any of the source layers has changed the image will
+   be altered. If reproducibility is a priority for you, try building your
+   images from the `Container Library <https://cloud.sylabs.io/library>`_
+   instead.
 
 You can also use the ``build`` command to download pre-built images from
 an external resource. When using ``build`` you must specify a name for
@@ -378,7 +382,7 @@ Unlike ``pull``, ``build`` will convert your image to the latest
 images, you can use ``build`` to create images from other images or from
 scratch using a :ref:`definition file <definition-files>`. You can also
 use ``build`` to convert an image between the container formats
-supported by {Singularity}. To see a comparison of {Singularity}
+supported by {Singularity}. To see a comparison of the {Singularity}
 definition file with Dockerfile, please see: :ref:`this section
 <sec:deffile-vs-dockerfile>`.
 
@@ -391,8 +395,8 @@ definition file with Dockerfile, please see: :ref:`this section
 You can interact with images in several ways, each of which can accept
 image URIs in addition to a local image path.
 
-For demonstration, we will use a ``lolcow_latest.sif`` image that can be
-pulled from the Container Library:
+As an example, the following command will pull a ``lolcow_latest.sif`` image
+from the Container Library:
 
 .. code::
 
@@ -404,7 +408,7 @@ Shell
 The `shell
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`_
 command allows you to spawn a new shell within your container and
-interact with it as though it were a small virtual machine.
+interact with it as though it were a virtual machine.
 
 .. code::
 
@@ -413,8 +417,8 @@ interact with it as though it were a small virtual machine.
    {Singularity} lolcow_latest.sif:~>
 
 The change in prompt indicates that you have entered the container
-(though you should not rely on that to determine whether you are in
-container or not).
+(though you should not rely on prompt forms to determine whether you are in
+a container or not).
 
 Once inside of a {Singularity} container, you are the same user as you
 are on the host system.
@@ -462,7 +466,7 @@ command and disappears.
 
 .. code::
 
-   $ singularity exec library://lolcow cowsay "Fresh from the library!"
+   $ singularity exec library://lolcow cowsay 'Fresh from the library!'
     _________________________
    < Fresh from the library! >
     -------------------------
@@ -478,7 +482,7 @@ Running a container
 ===================
 
 {Singularity} containers contain :ref:`runscripts <runscript>`. These
-are user defined scripts that define the actions a container should
+are user-defined scripts that define the actions a container should
 perform when someone runs it. The runscript can be triggered with the
 `run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`_
@@ -530,19 +534,17 @@ Arguments to ``run``
 You can pass arguments to the runscript of a container, if it accepts
 them. For example, the default runscript of the ``library://alpine``
 container passes any arguments to a shell. We can ask the container
-to run ``echo`` command in this shell:
+to run ``echo`` command in this shell as follows:
 
 .. code::
 
    $ singularity run library://alpine echo "hello"
-
    hello
 
-Because {Singularity} runscripts are evaluated shell scripts
-arguments can behave slightly differently than in Docker/OCI
-runtimes, if they contain shell code that may be evaluated. To
-replicate Docker/OCI behaviour you may need additional escaping or
-quoting of arguments.
+Because {Singularity} runscripts are evaluated shell scripts arguments can
+behave slightly differently than in Docker/OCI runtimes, if they contain
+expressions that have special meaning to the shell. Here is an illustrative
+example:
 
 .. code::
 
@@ -555,25 +557,35 @@ quoting of arguments.
    $ singularity run docker://alpine echo "\\\$HOSTNAME"
    $HOSTNAME
 
-The ``exec`` command replicates the Docker/OCI behavior as it calls
-the specified executable directly.
+To replicate Docker/OCI behavior, you may need additional escaping or
+quoting of arguments.
+
+Unlike the ``run`` command, the ``exec`` command replicates the Docker/OCI
+behavior, as it calls the specified executable directly:
+
+.. code::
+
+   $ singularity exec docker://alpine echo "\$HOSTNAME"
+   $HOSTNAME
+
+   $ singularity exec docker://alpine echo "\\\$HOSTNAME"
+   \$HOSTNAME
 
 ********************
  Working with Files
 ********************
 
-Files on the host are reachable from within the container.
+Files on the host are reachable from within the container:
 
 .. code::
 
    $ echo "Hello from inside the container" > $HOME/hostfile.txt
 
    $ singularity exec lolcow_latest.sif cat $HOME/hostfile.txt
-
    Hello from inside the container
 
-This example works because ``hostfile.txt`` exists in the user’s home
-directory. By default {Singularity} bind mounts ``/home/$USER``,
+This example works because ``hostfile.txt`` exists in the user's home
+directory. By default, {Singularity} bind mounts ``/home/$USER``,
 ``/tmp``, and ``$PWD`` into your container at runtime.
 
 You can specify additional directories to bind mount into your container
@@ -588,8 +600,8 @@ container.
    $ singularity exec --bind /data:/mnt lolcow_latest.sif cat /mnt/cow_advice.txt
    Drink milk (and never eat hamburgers).
 
-Pipes and redirects also work with {Singularity} commands just like they
-do with normal Linux commands.
+Pipes and redirects also work with {Singularity} commands, just like they
+do with normal Linux commands:
 
 .. code::
 
@@ -605,9 +617,9 @@ do with normal Linux commands.
 
 .. _build-images-from-scratch:
 
-***************************
- Build images from scratch
-***************************
+*****************************
+ Building images from scratch
+*****************************
 
 .. _sec:buildimagesfromscratch:
 
@@ -630,21 +642,21 @@ To build into a ``sandbox`` (container in a directory) use the ``build
 
 .. code::
 
-   $ sudo singularity build --sandbox ubuntu/ library://ubuntu
+   $ singularity build --sandbox ubuntu/ library://ubuntu
 
-This command creates a directory called ``ubuntu/`` with an entire
-Ubuntu Operating System and some {Singularity} metadata in your current
+This command creates a sub-directory called ``ubuntu/`` with an entire
+Ubuntu operating system and some {Singularity} metadata in your current
 working directory.
 
 You can use commands like ``shell``, ``exec`` , and ``run`` with this
 directory just as you would with a {Singularity} image. If you pass the
-``--writable`` option when you use your container you can also write
+``--writable`` option when you use your container, you can also write
 files within the sandbox directory (provided you have the permissions to
 do so).
 
 .. code::
 
-   $ sudo singularity exec --writable ubuntu touch /foo
+   $ singularity exec --writable ubuntu touch /foo
 
    $ singularity exec ubuntu/ ls /foo
    /foo
@@ -652,84 +664,86 @@ do so).
 Converting images from one format to another
 ============================================
 
-The ``build`` command allows you to build a container from an existing
-container. This means that you can use it to convert a container from
-one format to another. For instance, if you have already created a
-sandbox (directory) and want to convert it to the default immutable
-image format (squashfs) you can do so:
+The ``build`` command allows you to build a new container from an existing
+container. This means that you can use it to convert a container from one format
+to another. For instance, if you have already created a sandbox (directory) and
+want to convert it to the Singularity Image Format you can do so:
 
 .. code::
 
-   $ singularity build new-sif sandbox
+   $ singularity build new.sif sandbox
 
-Doing so may break reproducibility if you have altered your sandbox
-outside of the context of a definition file, so you are advised to
-exercise care.
+Doing so may break reproducibility if you have altered your sandbox outside of
+the context of a :ref:`definition file <qs-def-files>`, so you are advised
+to exercise care.
+
+.. _qs-def-files:
 
 {Singularity} Definition Files
 ==============================
 
-For a reproducible, verifiable and production-quality container you
-should build a SIF file using a {Singularity} definition file. This also
-makes it easy to add files, environment variables, and install custom
-software, and still start from your base of choice (e.g., the Container
+For a reproducible, verifiable and production-quality container, it is
+recommended that you build your SIF file using a {Singularity} definition file.
+This also makes it easy to add files, environment variables, and install custom
+software, while still starting from your base of choice (e.g., the Container
 Library).
 
 A definition file has a header and a body. The header determines the
 base container to begin with, and the body is further divided into
-sections that perform things like software installation, environment
-setup, and copying files into the container from host system, etc.
+sections that perform tasks such as software installation, environment
+setup, and copying files into the container from host system.
 
 Here is an example of a definition file:
 
 .. code:: singularity
 
    BootStrap: library
-   From: ubuntu:16.04
+   From: ubuntu:22.04
 
    %post
-       apt-get -y update
-       apt-get -y install date cowsay lolcat
+      apt-get -y update
+      apt-get -y install cowsay lolcat
 
    %environment
-       export LC_ALL=C
-       export PATH=/usr/games:$PATH
+      export LC_ALL=C
+      export PATH=/usr/games:$PATH
 
    %runscript
-       date | cowsay | lolcat
+      date | cowsay | lolcat
 
    %labels
-       Author Sylabs
+      Author Sylabs
 
 To build a container from this definition file (assuming it is a file
-named lolcow.def), you would call build like so:
+named ``lolcow.def``), you would call ``build`` as follows:
 
 .. code::
 
    $ sudo singularity build lolcow.sif lolcow.def
 
-In this example, the header tells {Singularity} to use a base Ubuntu
-16.04 image from the Container Library.
+In this example, the header tells {Singularity} to use a base Ubuntu 22.04 image
+from the Container Library. The other sections in this definition file are as
+follows:
 
--  The ``%post`` section executes within the container at build time
-   after the base OS has been installed. The ``%post`` section is
-   therefore the place to perform installations of new applications.
+-  The ``%post`` section is executed within the container at build time, after
+   the base OS has been installed. The ``%post`` section is therefore the place
+   to perform installations of new libraries and applications.
 
--  The ``%environment`` section defines some environment variables that
-   will be available to the container at runtime.
+-  The ``%environment`` section defines environment variables that will be
+   available to the container at runtime.
 
 -  The ``%runscript`` section defines actions for the container to take
-   when it is executed.
+   when it is executed. (These commands will therefore not be run at build time.)
 
 -  And finally, the ``%labels`` section allows for custom metadata to be
    added to the container.
 
 This is a very small example of the things that you can do with a
-:ref:`definition file <definition-files>`. In addition to building a
-container from the Container Library, you can start with base images
-from Docker Hub and use images directly from official repositories such
-as Ubuntu, Debian, CentOS, Arch, and BusyBox. You can also use an
-existing container on your host system as a base.
+:ref:`definition file <definition-files>`. In addition to building a container
+from the Container Library, you can start with base images from Docker Hub and
+use images directly from official repositories such as Ubuntu, Debian, CentOS,
+Arch, and BusyBox. You can also use an existing container on your host system as
+a base.
 
 If you want to build {Singularity} images but you don't have
 administrative (root) access on your build system, you can build images
@@ -750,11 +764,11 @@ Perhaps you are a user who wants a few talking points and background to
 share with your administrator. Or maybe you are an administrator who
 needs to decide whether to install {Singularity}.
 
-This document, and the accompanying administrator documentation provides
+This document and the accompanying administrator documentation provide
 answers to many common questions.
 
-If you need to request an installation you may decide to draft a message
-similar to this:
+If you need to request an installation from your administrator, you may decide
+to draft a message similar to this:
 
 .. code::
 
