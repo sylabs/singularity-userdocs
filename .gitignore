@@ -11,6 +11,7 @@ pygments_json.pyc
 
 _build/*
 cli/*
+.vscode/*
 
 # go mod pkg cache
 vendor/pkg/
