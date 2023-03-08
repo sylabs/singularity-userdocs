@@ -141,7 +141,7 @@ There are various software packages which are so complicated that it
 takes much effort in order to port, update and qualify to new operating
 systems or compilers. The atmospheric and weather applications are a
 good example of this. Porting them to a contained operating system will
-prolong the use-fullness of the development effort considerably.
+prolong the usefullness of the development effort considerably.
 
 Complicated work-flows that require custom installation and/or data
 ===================================================================
