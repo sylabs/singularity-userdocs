@@ -757,8 +757,9 @@ https://www.sylabs.io/contact/
 
 .. _installation-request:
 
-{Singularity} on a shared resource
-----------------------------------
+***********************************
+ {Singularity} on a shared resource
+***********************************
 
 Perhaps you are a user who wants a few talking points and background to
 share with your administrator. Or maybe you are an administrator who
