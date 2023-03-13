@@ -1,8 +1,8 @@
 .. _introduction:
 
-###############################
- Introduction to {Singularity}
-###############################
+#############################
+Introduction to {Singularity}
+#############################
 
 {Singularity} is a *container* platform. It allows you to create and run
 containers that package up pieces of software in a way that is portable
@@ -13,9 +13,9 @@ cloud, or on a workstation down the hall. Your container is a single
 file, and you don't have to worry about how to install all the software
 you need on each different operating system.
 
-************************
- Why use {Singularity}?
-************************
+**********************
+Why use {Singularity}?
+**********************
 
 {Singularity} was created to run complex applications on HPC clusters in
 a simple, portable, and reproducible way. First developed at Lawrence
@@ -42,9 +42,9 @@ Many container platforms are available, but {Singularity} is focused on:
       container as outside, and cannot gain additional privilege on the
       host system by default. Read more about :ref:`security`.
 
-*********************
- Why use containers?
-*********************
+*******************
+Why use containers?
+*******************
 
 A Unix operating system is broken into two primary components, the
 kernel space, and the user space. The Kernel talks to the hardware, and
@@ -72,9 +72,9 @@ system base fits their needs best, and create distributable runtime
 environments so that users never have to worry about dependencies and
 requirements, that they might not be able to satisfy on their systems.
 
-***********
- Use Cases
-***********
+*********
+Use Cases
+*********
 
 BYOE: Bring Your Own Environment!
 =================================

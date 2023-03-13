@@ -1,8 +1,8 @@
 .. _quick-start:
 
-#############
- Quick Start
-#############
+###########
+Quick Start
+###########
 
 .. _sec:quickstart:
 
@@ -22,9 +22,9 @@ https://www.sylabs.io/contact/
 
 .. _quick-installation:
 
-**************************
- Quick Installation Steps
-**************************
+************************
+Quick Installation Steps
+************************
 
 You will need a Linux system to run {Singularity} natively. Options for
 using {Singularity} on Mac and Windows machines, along with alternate
@@ -154,9 +154,9 @@ following commands:
 
    {Singularity} must be installed as root to function properly.
 
-*****************************************
- Overview of the {Singularity} Interface
-*****************************************
+***************************************
+Overview of the {Singularity} Interface
+***************************************
 
 {Singularity}’s :ref:`command line interface <cli>` allows you to build
 and interact with containers transparently. You can run programs inside
@@ -280,7 +280,8 @@ To pass the ``--containall`` option to the ``run`` command and run a
 
 {Singularity} 2.4 introduced the concept of command groups. For
 instance, to list Linux capabilities for a particular user, you would
-use the ``list`` command in the ``capability`` command group, like so:
+use the ``list`` command in the ``capability`` command group, as
+follows:
 
 .. code::
 
@@ -296,9 +297,9 @@ particular container, you can view them as follows:
 
    $ singularity inspect --helpfile --app=foo foo.sif  # See the help for foo, if provided
 
-***************************
- Download pre-built images
-***************************
+*************************
+Download pre-built images
+*************************
 
 You can use the ``search`` command to locate groups, collections, and
 containers of interest on the `Container Library
@@ -340,6 +341,9 @@ commands to download pre-built images from an external resource like the
 `Container Library <https://cloud.sylabs.io/library>`_ or `Docker Hub
 <https://hub.docker.com/>`_.
 
+Using the ``pull`` subcommand
+=============================
+
 When called on a native {Singularity} image like those provided by the
 Container Library, ``pull`` simply downloads the image file to your
 system:
@@ -357,14 +361,31 @@ must also combine those layers into a usable {Singularity} file.
 
    $ singularity pull docker://sylabsio/lolcow
 
+Pulling docker images may reduce reproducibility: if you were to pull a
+Docker image today and then wait six months and pull it again, you are
+not guaranteed to get the same image from docker on both occasions. If
+any of the source layers of the docker image has changed, the image will
+be altered. You can get around this by pulling docker images *by
+digest*, as follows:
+
+.. code::
+
+   $ singularity pull docker://alpine@sha256:69665d02cb32192e52e07644d76bc6f25abeb5410edc1c7a81a10ba3f0efb90a
+
 .. note::
 
-   Pulling Docker images reduces reproducibility. If you were to pull a Docker
-   image today and then wait six months and pull again, you are not guaranteed
-   to get the same image. If any of the source layers has changed the image will
-   be altered. If reproducibility is a priority for you, try building your
-   images from the `Container Library <https://cloud.sylabs.io/library>`_
-   instead.
+   {Singularity} will make a SIF image out of the underlying docker
+   image; and because SIF images contain metadata (including
+   timestamps), resulting {Singularity} images will not be bit-for-bit
+   identical, even if they are created from docker images that were
+   pulled by digest.
+
+If reproducibility is a priority for you, the best option is to always
+build your images from the `Container Library
+<https://cloud.sylabs.io/library>`_ if possible.
+
+Using the ``build`` subcommand
+===============================
 
 You can also use the ``build`` command to download pre-built images from
 an external resource. When using ``build`` you must specify a name for
@@ -388,9 +409,9 @@ definition file with Dockerfile, please see: :ref:`this section
 
 .. _cowimage:
 
-**********************
- Interact with images
-**********************
+***********************
+Interacting with images
+***********************
 
 You can interact with images in several ways, each of which can accept
 image URIs in addition to a local image path.
@@ -541,10 +562,10 @@ to run ``echo`` command in this shell as follows:
    $ singularity run library://alpine echo "hello"
    hello
 
-Because {Singularity} runscripts are evaluated shell scripts arguments can
-behave slightly differently than in Docker/OCI runtimes, if they contain
-expressions that have special meaning to the shell. Here is an illustrative
-example:
+Because {Singularity} runscripts are evaluated shell scripts, arguments
+can behave slightly differently than in Docker/OCI runtimes, if they
+contain expressions that have special meaning to the shell. Here is an
+illustrative example:
 
 .. code::
 
@@ -571,9 +592,9 @@ behavior, as it calls the specified executable directly:
    $ singularity exec docker://alpine echo "\\\$HOSTNAME"
    \$HOSTNAME
 
-********************
- Working with Files
-********************
+******************
+Working with Files
+******************
 
 Files on the host are reachable from within the container:
 
@@ -617,9 +638,9 @@ do with normal Linux commands:
 
 .. _build-images-from-scratch:
 
-*****************************
- Building images from scratch
-*****************************
+****************************
+Building images from scratch
+****************************
 
 .. _sec:buildimagesfromscratch:
 

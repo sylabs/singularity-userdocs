@@ -1,8 +1,8 @@
 .. _build-a-container:
 
-###################
- Build a Container
-###################
+#################
+Build a Container
+#################
 
 .. _sec:build_a_container:
 
@@ -16,9 +16,9 @@ conjunction with a :ref:`{Singularity} definition <definition-files>`
 file to create a container from scratch and customized it to fit your
 needs.
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 The ``build`` command accepts a target as input and produces a container
 as output.
@@ -45,9 +45,9 @@ Because ``build`` can accept an existing container as a target and
 create a container in either supported format, you can use it to convert
 existing containers from one format to another.
 
-**************************************************************
- Downloading an existing container from the Container Library
-**************************************************************
+************************************************************
+Downloading an existing container from the Container Library
+************************************************************
 
 You can use the ``build`` command to download a container from the
 Container Library:
@@ -62,9 +62,9 @@ Container Library URI from which to download. By default, the container
 will be converted to a compressed, read-only SIF. If you want your
 container in a writable format, use the ``--sandbox`` option.
 
-***************************************************
- Downloading an existing container from Docker Hub
-***************************************************
+*************************************************
+Downloading an existing container from Docker Hub
+*************************************************
 
 You can use ``build`` to download layers from Docker Hub and assemble
 them into {Singularity} containers.
@@ -75,9 +75,9 @@ them into {Singularity} containers.
 
 .. _create_a_writable_container:
 
-*********************************************
- Creating writable ``--sandbox`` directories
-*********************************************
+*******************************************
+Creating writable ``--sandbox`` directories
+*******************************************
 
 If you want to create a container within a writable directory (called a
 *sandbox*) you can do so with the ``--sandbox`` option. It's possible to
@@ -98,9 +98,9 @@ directories that you want to change.
 
    $ sudo singularity shell --writable lolcow/
 
-**************************************************
- Converting containers from one format to another
-**************************************************
+************************************************
+Converting containers from one format to another
+************************************************
 
 If you already have a container saved locally, you can use it as a
 target to build a new container. This allows you convert containers from
@@ -119,9 +119,9 @@ which compromises the reproducibility of your container. It is therefore
 preferable to build production containers directly from a {Singularity}
 definition file, instead.
 
-*********************************************************
- Building containers from {Singularity} definition files
-*********************************************************
+*******************************************************
+Building containers from {Singularity} definition files
+*******************************************************
 
 {Singularity} definition files are the most powerful type of target when
 building a container. For detailed information on writing {Singularity}
@@ -164,8 +164,8 @@ container, {Singularity} offers several other options: ``--remote``
 builds, a ``--fakeroot`` mode, and limited unprivileged builds using
 ``proot``.
 
-Building with ``--remote``
-==========================
+``--remote`` builds
+===================
 
 `Singularity Container Services <https://cloud.sylabs.io/>`__ and
 `Singularity Enterprise <https://sylabs.io/singularity-enterprise/>`__
@@ -241,23 +241,29 @@ Unprivileged builds that use ``proot`` have limitations, because
 ``proot``'s emulation of the root user is not complete. In particular,
 such builds:
 
-- Do not support ``arch`` / ``debootstrap`` / ``yum`` / ``zypper`` bootstraps. Use ``localimage``, ``library``, ``oras``, or one of the ``docker``/``oci`` sources.
+- Do not support ``arch`` / ``debootstrap`` / ``yum`` / ``zypper``
+  bootstraps. Use ``localimage``, ``library``, ``oras``, or one of the
+  ``docker``/``oci`` sources.
 - Do not support ``%pre`` and ``%setup`` sections of definition files.
-- Run the ``%post`` sections of a build in the container as an emulated root user.
-- Run the ``%test`` section of a build as the non-root user, like ``singularity test``.
+- Run the ``%post`` sections of a build in the container as an emulated
+  root user.
+- Run the ``%test`` section of a build as the non-root user, like
+  ``singularity test``.
 - Are subject to any restrictions imposed in ``singularity.conf``.
-- Incur a performance penalty due to the``ptrace``-based interception of syscalls used by ``proot``.
-- May fail if the ``%post`` script requires privileged operations that ``proot`` cannot emulate.
+- Incur a performance penalty due to the``ptrace``-based interception of
+  syscalls used by ``proot``.
+- May fail if the ``%post`` script requires privileged operations that
+  ``proot`` cannot emulate.
 
-Generally, if your definition file starts from an existing SIF/OCI container
-image, and adds software using system package managers, an unprivileged proot build is
-appropriate. If your definition file compiles and installs large complex
-software from source, you may wish to investigate ``--remote`` or
-``--fakeroot`` builds instead.
+Generally, if your definition file starts from an existing SIF/OCI
+container image, and adds software using system package managers, an
+unprivileged proot build is appropriate. If your definition file
+compiles and installs large complex software from source, you may wish
+to investigate ``--remote`` or ``--fakeroot`` builds instead.
 
-*******************************
- Building encrypted containers
-*******************************
+*****************************
+Building encrypted containers
+*****************************
 
 Beginning in {Singularity} 3.4.0, it is possible to build and run
 encrypted containers. The containers are decrypted at runtime entirely
@@ -265,9 +271,9 @@ in kernel space, meaning that no intermediate decrypted data is ever
 written to disk. See :ref:`encrypted containers <encryption>` for more
 details.
 
-***************
- Build options
-***************
+*************
+Build options
+*************
 
 ``--builder``
 =============
@@ -422,9 +428,9 @@ This flag will run the ``%test`` section of the build with a writable
 files, which will be discarded at the end of the build. Other portions
 of the build do not use this temporary filesystem.
 
-*******************
- More Build topics
-*******************
+*****************
+More Build topics
+*****************
 
 -  If you want to **customize the cache location** (where Docker layers
    are downloaded on your system), specify Docker credentials, or apply

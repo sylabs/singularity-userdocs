@@ -1,12 +1,12 @@
 .. _security:
 
-###########################
- Security in {Singularity}
-###########################
+#########################
+Security in {Singularity}
+#########################
 
-*****************
- Security Policy
-*****************
+***************
+Security Policy
+***************
 
 If you suspect you have found a vulnerability in {Singularity}, we want
 to work with you so that it can be investigated, fixed, and disclosed in
@@ -29,9 +29,9 @@ they can be deployed long-term where required. PRO users receive
 security fixes as detailed in the `Sylabs Security Policy
 <https://sylabs.io/security-policy>`__.
 
-************
- Background
-************
+**********
+Background
+**********
 
 {Singularity} grew out of the need to implement a container platform
 that was suitable for use on shared systems, such as HPC clusters. In
@@ -57,9 +57,9 @@ and processes apply. In a default installation, {Singularity} uses a
 setuid starter binary to perform only the specific tasks needed to setup
 the container.
 
-**************************
- Setuid & User Namespaces
-**************************
+************************
+Setuid & User Namespaces
+************************
 
 Using a setuid binary to run container setup operations is essential to
 support containers on older Linux distributions, such as CentOS 6, that
@@ -110,9 +110,9 @@ Because of the points above, the default mode of operation of
 circumstances that require this as new functionality is developed and
 reaches commonly deployed Linux distributions.
 
-********************************
- Runtime & User Privilege Model
-********************************
+******************************
+Runtime & User Privilege Model
+******************************
 
 While other runtimes have aimed to tackle security concerns by
 sandboxing containers executing as the ``root`` user so that they cannot
@@ -143,9 +143,9 @@ If you do require the additional isolation of the network, devices,
 PIDs, etc., which other runtimes provide, {Singularity} can make use of
 additional namespaces and functionality such as seccomp and cgroups.
 
-********************************
- Singularity Image Format (SIF)
-********************************
+******************************
+Singularity Image Format (SIF)
+******************************
 
 {Singularity} uses SIF as its default container format. A SIF container
 is a single file, which makes it easy to manage and distribute. Inside
@@ -185,11 +185,11 @@ Encryption and decryption are performed using the Linux kernel's LUKS2
 feature. This is the same technology routinely used for full disk
 encryption. The encrypted container is mounted directly through the
 kernel. Unlike other container formats, the encrypted container is run
-without ever decrypted its contents to disk.
+without ever decrypting its contents to disk.
 
-*********************************
- Configuration & Runtime Options
-*********************************
+*******************************
+Configuration & Runtime Options
+*******************************
 
 System administrators who manage {Singularity} can use configuration
 files to set security restrictions, grant or revoke a user's
