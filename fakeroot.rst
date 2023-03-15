@@ -1,12 +1,12 @@
 .. _fakeroot:
 
-##################
- Fakeroot feature
-##################
+################
+Fakeroot feature
+################
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 The fakeroot feature (commonly referred as rootless mode) allows an
 unprivileged user to run a container as a **"fake root"** user by
@@ -28,9 +28,9 @@ which means that this user:
    -  has full privileges inside the requested namespaces (network, ipc,
       uts)
 
-***********************
- Restrictions/security
-***********************
+*********************
+Restrictions/security
+*********************
 
 Filesystem
 ==========
@@ -90,9 +90,9 @@ the host network.
    no`` is set in ``singularity.conf`` users won't be able to use a
    ``fakeroot`` network.
 
-******************************
- Requirements / Configuration
-******************************
+****************************
+Requirements / Configuration
+****************************
 
 Fakeroot depends on user mappings set in ``/etc/subuid`` and group
 mappings in ``/etc/subgid``, so your username needs to be listed in
@@ -106,9 +106,9 @@ be a root user or run with ``sudo`` to use ``config fakeroot``, as the
 mapping files are security sensitive. See the admin-guide for more
 details.
 
-*******
- Usage
-*******
+*****
+Usage
+*****
 
 If your user account is configured with valid ``subuid`` and ``subgid``
 mappings you work as a fake root user inside a container by using the

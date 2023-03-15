@@ -2,18 +2,18 @@
  Licenses
 ##########
 
-***************
- Documentation
-***************
+*************
+Documentation
+*************
 
 This documentation is subject to the following 3-clause BSD license:
 
 .. include:: LICENSE
    :literal:
 
-************************
- {Singularity} Software
-************************
+**********************
+{Singularity} Software
+**********************
 
 .. mdinclude:: singularity_source/LICENSE.md
 

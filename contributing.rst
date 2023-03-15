@@ -1,17 +1,17 @@
 .. _contributing:
 
-##############
- Contributing
-##############
+############
+Contributing
+############
 
 {Singularity} is an open source project, meaning we have the challenge
 of limited resources. We are grateful for any support that you can
 offer. Helping other users, raising issues, helping write documentation,
 or contributing code are all ways to help!
 
-********************
- Join the community
-********************
+******************
+Join the community
+******************
 
 This is a huge endeavor, and your help would be greatly appreciated!
 Post to online communities about {Singularity}, and request that your
@@ -36,9 +36,9 @@ find us at `singularityce.slack.com
 
 .. _report-a-issue:
 
-****************
- Raise an Issue
-****************
+**************
+Raise an Issue
+**************
 
 For general bugs/issues, you can open an issue `at the GitHub repo
 <https://github.com/sylabs/singularity/issues/new>`_. However, if you
@@ -47,9 +47,9 @@ security@sylabs.io. More information about the Sylabs security policies
 and procedures can be found `here
 <https://www.sylabs.io/singularity/security-policy/>`__
 
-*********************
- Write Documentation
-*********************
+*******************
+Write Documentation
+*******************
 
 We (like almost all open source software providers) have a documentation
 dilemma… We tend to focus on the code features and functionality before
@@ -86,9 +86,9 @@ identical for contributions to the documentation and the code base.
 
 .. _contribute-to-the-code:
 
-************************
- Contribute to the code
-************************
+**********************
+Contribute to the code
+**********************
 
 We use the traditional `GitHub Flow
 <https://guides.github.com/introduction/flow/>`_ to develop. This means
