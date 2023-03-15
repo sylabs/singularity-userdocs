@@ -1,8 +1,8 @@
 .. _mpi:
 
-####################################
- {Singularity} and MPI applications
-####################################
+##################################
+{Singularity} and MPI applications
+##################################
 
 .. _sec-mpi:
 
@@ -34,9 +34,9 @@ host into the container.
    disabled by system administrators for operational reasons. If this is
    the case on your system please follow the *hybrid* approach.
 
-**************
- Hybrid model
-**************
+************
+Hybrid model
+************
 
 The basic idea behind the *Hybrid Approach* is when you execute a
 {Singularity} container with MPI code, you will call ``mpiexec`` or a
@@ -277,9 +277,9 @@ when the containers start, the MPI binary is executed:
    Hello, I am rank 1/8
    Hello, I am rank 7/8
 
-************
- Bind model
-************
+**********
+Bind model
+**********
 
 Similar to the *Hybrid Approach*, the basic idea behind the *Bind
 Approach* is to start the MPI application by calling the MPI launcher
@@ -393,9 +393,9 @@ to run the container in bind mode are:
    Hello, I am rank 4/8
    Hello, I am rank 6/8
 
-*************************
- Batch Scheduler / Slurm
-*************************
+***********************
+Batch Scheduler / Slurm
+***********************
 
 If your target system is setup with a batch system such as SLURM, a
 standard way to execute MPI applications is through a batch script. The
@@ -426,9 +426,9 @@ A user can then submit a job by executing the following SLURM command:
 
    $ sbatch my_job.sh
 
-***********************
- Alternative Launchers
-***********************
+*********************
+Alternative Launchers
+*********************
 
 On many systems it is common to use an alternative launcher to start MPI
 applications, e.g. Slurm's ``srun`` rather than the ``mpirun`` provided
@@ -440,9 +440,9 @@ launcher.
 In the bind mode the host MPI is used in the container, and should
 interact correctly with the same launchers as it does on the host.
 
-****************************
- Interconnects / Networking
-****************************
+**************************
+Interconnects / Networking
+**************************
 
 High performance interconnects such as Infiniband and Omnipath require
 that MPI implementations are built to support them. You may need to
@@ -455,9 +455,9 @@ container. If you run a container using the ``--contain`` or
 to bind in additional ``/dev/`` entries manually to support the
 operation of your interconnect drivers in the container in this case.
 
-**********************
- Troubleshooting Tips
-**********************
+********************
+Troubleshooting Tips
+********************
 
 If your containers run N rank 0 processes, instead of operating
 correctly as an MPI application, it is likely that the MPI stack used to

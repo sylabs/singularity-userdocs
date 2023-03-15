@@ -1,16 +1,16 @@
 .. _plugins:
 
-#########
- Plugins
-#########
+#######
+Plugins
+#######
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 A {Singularity} plugin is a package that can be dynamically loaded by the
 {Singularity} runtime, augmenting {Singularity} with experimental, non-standard
-and/or vendor-specific functionality. 
+and/or vendor-specific functionality.
 
 Plugins can influence the behaviour of {Singularity} in specific ways:
 
@@ -26,9 +26,9 @@ Plugins can influence the behaviour of {Singularity} in specific ways:
 * A runtime plugin can use the ``RegisterImageDriver`` callback to implement an
   alternative way of providing a container image to execute.
 
-****************************
- Limitations / Requirements
-****************************
+**************************
+Limitations / Requirements
+**************************
 
 The way that plugin functionality is implemented in the Go language, which
 {Singularity} is written with, is quite restrictive.
@@ -48,9 +48,9 @@ investigate whether the feature can be contributed to the main source tree
 directly via a PR. This simplifies future maintenance, and avoids the
 limitations of Go plugins.
 
-***************
- Using Plugins
-***************
+*************
+Using Plugins
+*************
 
 The ``list`` command prints the currently installed plugins.
 
@@ -82,8 +82,8 @@ plugin's source code.
 
    Due to the structure of the {Singularity} project, and the strict
    requirements of Go plugin compilation, **all** plugins must be compiled from
-   within the {Singularity} source code tree. 
-   
+   within the {Singularity} source code tree.
+
    The ability to compile plugins outside of the {Singularity} tree, that
    previously existed, has been removed due to incompatible changes in Go 1.18.
 
@@ -137,9 +137,9 @@ operation requires root privilege.
    $ singularity plugin list
    There are no plugins installed.
 
-******************
- Writing a Plugin
-******************
+****************
+Writing a Plugin
+****************
 
 Developers interested in writing {Singularity} plugins can get started
 by reading the `Go documentation

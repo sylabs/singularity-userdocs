@@ -1,8 +1,8 @@
 .. _key_commands:
 
-##############
- Key commands
-##############
+############
+Key commands
+############
 
 .. _sec:key_commands:
 
@@ -13,9 +13,9 @@ the local keyring and are not related to the cloud keystore.
 
 .. _key_import:
 
-******************************
- Changes in {Singularity} 3.7
-******************************
+****************************
+Changes in {Singularity} 3.7
+****************************
 
 {Singularity} 3.7 introduces a global keyring which can be managed by
 administrators with the new ``--global`` option. This global keyring is
@@ -24,9 +24,9 @@ used by ECL
 and allows administrators to manage public keys used during ECL image
 verification.
 
-********************
- Key import command
-********************
+******************
+Key import command
+******************
 
 {Singularity} 3.2 allows you import keys reading either from binary or
 armored key format and automatically detect if it is a private or public
@@ -45,8 +45,13 @@ are stored by the moment before importing a new key).
 
 .. note::
 
-   Remember that using ``--secret`` flag or ``-s`` flag will return the
+   Remember that using ``--secret`` flag will return the
    secret or private local keyring as output.
+
+.. note::
+
+   The ``--private`` flag is available as a synonym for ``--secret``, as is the
+   shorthand ``-s``.
 
 The output will look as it follows:
 
@@ -113,7 +118,7 @@ keystore by running ``singularity key list -s`` command:
      F: 5720799FE7B048CF36FAB8445EE1E2BD7B6342C5
      L: 1024
      --------
-     3) U: Pinkie Pie (Eternal chaos comes with chocolate rain!) <balloons@sylabs.io>
+     2) U: Pinkie Pie (Eternal chaos comes with chocolate rain!) <balloons@sylabs.io>
      C: 2019-04-26 12:07:07 +0200 CEST
      F: 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
      L: 1024
@@ -131,9 +136,9 @@ detected by the ``key import`` command (no need to specify the format).
 
 .. _key_export:
 
-********************
- Key export command
-********************
+******************
+Key export command
+******************
 
 The key export command allows you to export a key that is on your local
 keystore. This key could be either private or public, and the key can be
@@ -176,11 +181,16 @@ and on binary format instead:
    keyring. This will just obtain the content of the keys and save it on
    a local file on your host.
 
+.. note::
+
+   The ``--private`` flag is available as a synonym for ``--secret``, as is the
+   shorthand ``-s``.
+
 .. _key_remove:
 
-********************
- Key remove command
-********************
+******************
+Key remove command
+******************
 
 In case you would want to remove a public key from your public local
 keystore, you can do so by running the following command:
@@ -193,3 +203,21 @@ keystore, you can do so by running the following command:
 
    Remember that this will only delete the public key and not the
    private one with the same matching fingerprint.
+
+If you want to remove a private key from your local keystore, you can do so by
+passing the `--secret` flag to `key remove`:
+
+.. code:: singularity
+
+   $ singularity key remove --secret 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
+
+.. note::
+
+   Remember that this will only delete the private key and not the
+   public one with the same matching fingerprint.
+
+.. note::
+
+   The ``--private`` flag is available as a synonym for ``--secret``, as is the
+   shorthand ``-s``.
+

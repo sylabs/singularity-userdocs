@@ -1,8 +1,8 @@
 .. _networking:
 
-########################
- Network virtualization
-########################
+######################
+Network virtualization
+######################
 
 .. _sec:networking:
 
@@ -23,9 +23,9 @@ configure a virtualized network for a container.
    configurations. This is accomplished through settings in
    ``singularity.conf``. See the administrator guide for details.
 
-***********
- ``--dns``
-***********
+*********
+``--dns``
+*********
 
 The ``--dns`` option allows you to specify a comma separated list of DNS
 servers to add to the ``/etc/resolv.conf`` file.
@@ -41,9 +41,9 @@ servers to add to the ``/etc/resolv.conf`` file.
    $ sudo singularity exec --dns 8.8.8.8 ubuntu.sif cat /etc/resolv.conf
    nameserver 8.8.8.8
 
-****************
- ``--hostname``
-****************
+**************
+``--hostname``
+**************
 
 The ``--hostname`` option accepts a string argument to change the
 hostname within the container.
@@ -56,9 +56,9 @@ hostname within the container.
    $ sudo singularity exec --hostname hal-9000 my_container.sif hostname
    hal-9000
 
-***********
- ``--net``
-***********
+*********
+``--net``
+*********
 
 Passing the ``--net`` flag will cause the container to join a new
 network namespace when it initiates. New in {Singularity} 3.0, a bridge
@@ -72,9 +72,9 @@ interface will also be set up by default.
    $ sudo singularity exec --net my_container.sif hostname -I
    10.22.0.4
 
-***************
- ``--network``
-***************
+*************
+``--network``
+*************
 
 The ``--network`` option can only be invoked in combination with the
 ``--net`` flag. It accepts a comma delimited string of network types.
@@ -114,9 +114,9 @@ Additional cni configuration files can be added to the ``network``
 configuration directory as required, and {Singularity}'s provided
 configurations may also be modified.
 
-********************
- ``--network-args``
-********************
+******************
+``--network-args``
+******************
 
 The ``--network-args`` option provides a convenient way to specify
 arguments to pass directly to the cni plugins. It must be used in

@@ -1,14 +1,14 @@
 .. _build-environment:
 
-###################
- Build Environment
-###################
+#################
+Build Environment
+#################
 
 .. _sec:buildenv:
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 You may wish to customize your build environment by doing things such as
 specifying a custom cache directory for images or sending your Docker
@@ -17,9 +17,9 @@ other topics related to the build environment.
 
 .. _sec:cache:
 
-***************
- Cache Folders
-***************
+*************
+Cache Folders
+*************
 
 {Singularity} will cache SIF container images generated from remote
 sources, and any OCI/docker layers used to create them. The cache is
@@ -102,9 +102,9 @@ file:
 
    rm ~/.local/share/containers/cache/blob-info-cache-v1.boltdb
 
-****************
- Cache commands
-****************
+**************
+Cache commands
+**************
 
 The ``cache`` command for {Singularity} allows you to view and clean up
 your cache, without manually inspecting the cache directories.
@@ -212,9 +212,9 @@ use the ``type`` / ``-T`` option:
 
 .. _sec:temporaryfolders:
 
-*******************
- Temporary Folders
-*******************
+*****************
+Temporary Folders
+*****************
 
 When building a container, or pulling/running a {Singularity} container
 from a Docker/OCI source, a temporary working space is required. The
@@ -250,9 +250,9 @@ Remember to use ``-E`` option to pass the value of
    Set ``SINGULARITY_TMPDIR`` to a disk location, or disable the
    ``tmpfs`` ``/tmp`` mount on your system if you experience problems.
 
-**********************
- Encrypted Containers
-**********************
+********************
+Encrypted Containers
+********************
 
 Beginning in {Singularity} 3.4.0 it is possible to build and run
 encrypted containers. The containers are decrypted at runtime entirely
@@ -260,9 +260,9 @@ in kernel space, meaning that no intermediate decrypted data is ever
 present on disk or in memory. See :ref:`encrypted containers
 <encryption>` for more details.
 
-***********************
- Environment Variables
-***********************
+*********************
+Environment Variables
+*********************
 
 #. If a flag is represented by both a CLI option and an environment
    variable, and both are set, the CLI option will always take

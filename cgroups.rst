@@ -1,8 +1,8 @@
 .. _cgroups:
 
-##############################
- Limiting Container Resources
-##############################
+############################
+Limiting Container Resources
+############################
 
 It's often useful to limit the resources that are consumed by a container, e.g.
 to allow the container to only use 1 CPU, or 50% of the RAM on the system.
@@ -23,16 +23,16 @@ There are three ways to apply limits to a container that is run with
 {Singularity}:
 
 * Using the command line flags introduced in v3.10.
- 
+
 * Using the ``--apply-cgroups`` flag to apply a ``cgroups.toml`` file that
   defines the resource limits.
 
 * Using external tools such as ``systemd-run`` tool to apply limits, and then
   call ``singularity``.
 
-******************************
- Requirements - Linux Cgroups
-******************************
+****************************
+Requirements - Linux Cgroups
+****************************
 
 Resource limits are applied to containers using functionality in the Linux
 kernel known as *control groups* or *cgroups*. There are two versions of
@@ -61,9 +61,11 @@ satisfy these criteria by default. On older distributions support can often be
 enabled. Consult the admin documentation or speak to your system administrator
 about this.
 
-***************************
- Command Line Limit Flags
-***************************
+.. _cgroup_flags:
+
+*************************
+Command Line Limit Flags
+*************************
 
 {Singularity} 3.10 introduced a number of simple command line flags that you can
 use with `shell/run/exec` and the `instance` commands to directly apply resource
@@ -86,7 +88,7 @@ use.  The minimum is ``0.01`` or one tenth of a physical CPU. The maximum is the
 number of CPU cores on your system.
 
 .. code::
-   
+
    # Limit container to 3.5 CPUs
    $ singularity run --cpus 3.5 myfirstapp.sif
 
@@ -98,7 +100,7 @@ there is contention for CPUs*, i.e. the containers are able to consume more CPU
 time than is available.
 
 .. code::
-   
+
    # Container A - twice as much CPU priority as container B
    $ singularity run --cpu-shares 1024 myfirstapp.sif
 
@@ -113,7 +115,7 @@ run. For example, on a dual CPU system you might pin one container to the first
 should generally be set to the same value as ``--cpu-set-cpus``.
 
 .. code::
-   
+
    # Container A - first CPU
    $ singularity run --cpu-set-cpus 0-11 --cpu-set-mems 0-11 myfirstapp.sif
 
@@ -128,7 +130,7 @@ You can use suffixes such as ``M`` or ``G`` to specify megabytes or gigabytes.
 If the container tries to use more memory than its limit, the system will kill
 it.
 
-.. code:: 
+.. code::
 
    # Run a program that will use 10GB of RAM, with a 100MB limit
    $ singularity exec --memory 100M memhog.sif memhog 10G
@@ -138,7 +140,7 @@ it.
 limit set with ``--memory``. When there is contention for memory, the system
 will attempt to make sure the container doesn't exceed the soft limit.
 
-.. code:: 
+.. code::
 
    # Kill my program if it exceeds 10G, but aim for 8G if there is contention
    $ singularity exec --memory 10G --memory-reservation 8G myfirstapp.sif
@@ -167,7 +169,7 @@ value of ``-1`` means *unlimited swap*. If ``--memory-swap`` is not set or is
 IO Limits
 =========
 
-.. note:: 
+.. note::
 
    Requires the ``cfq`` or ``bfq`` IO scheduler to be configured for block IO on
    the system. This is common on modern distributions, but not universal. Ask
@@ -180,7 +182,7 @@ is contention for I/O with other containers. It may be useful to give high
 priority to a container that needs infrequent but time sensitive data access,
 running alongside an application that is continuously performing bulk reads.
 
-.. code:: 
+.. code::
 
    # Container A - ten times as much block IO priority as container B
    $ singularity run --blkio-weight 1000 myfirstapp.sif
@@ -191,7 +193,7 @@ running alongside an application that is continuously performing bulk reads.
 ``--blkio-weight-device`` sets a relative weight for the container when performing
 block I/O on a specific device. Specify the device and weight as ``<device path>:weight``:
 
-.. code:: 
+.. code::
 
    # Container A - ten times as much block IO priority as container B on disk /dev/sda
    $ singularity run --blkio-weight-device /dev/sda:1000 myfirstapp.sif
@@ -199,9 +201,9 @@ block I/O on a specific device. Specify the device and weight as ``<device path>
    # Container A - ten times less block IO priority as container A on disk /dev/sda
    $ singularity run --blkio-weight-device /dev/sda:100 mysecondapp.sif
 
-********************************************
- Applying Resource Limits From a TOML file
-********************************************
+******************************************
+Applying Resource Limits From a TOML file
+******************************************
 
 {Singularity} 3.9 and above can directly apply resource limitations to systems
 configured for both cgroups v1 and the v2 unified hierarchy, using the
@@ -225,7 +227,7 @@ configuration to be applied:
 
    $ singularity shell --apply-cgroups /path/to/cgroups.toml my_container.sif
 
-.. note:: 
+.. note::
 
    Using ``--apply-cgroups`` as a non-root user requires a cgroups v2 system,
    configured to use the ``systemd cgroups`` manager in ``singularity.conf``.
@@ -377,7 +379,7 @@ is specified in bytes per second.
 Device Limits
 =============
 
-.. note:: 
+.. note::
 
    Device limits can only be applied when running as the root user, and will be
    ignored as a non-root user.
@@ -415,9 +417,9 @@ https://github.com/opencontainers/runtime-spec/blob/master/config-linux.md#contr
 for information about the available limits. Note that {Singularity} uses
 TOML format for the configuration file, rather than JSON.
 
-**********************************************
- Applying Resource Limits With External Tools
-**********************************************
+********************************************
+Applying Resource Limits With External Tools
+********************************************
 
 Because {Singularity} starts a container as a simple process, rather
 than using a daemon, you can limit resource usage by running the

@@ -1,37 +1,57 @@
 .. _signnverify:
 
-##################################
- Signing and Verifying Containers
-##################################
+################################
+Signing and Verifying Containers
+################################
 
 .. _sec:signnverify:
 
-{Singularity} 3.0 introduced the ability to create and manage PGP keys
-and use them to sign and verify containers. This provides a trusted
-method for {Singularity} users to share containers. It ensures a
-bit-for-bit reproduction of the original container as the author
-intended it.
+{Singularity}'s SIF images can be signed, and subsequently verified, so that a
+user can be confident that an image they have obtained is a bit-for-bit
+reproduction of the original container as the author intended it. The signature,
+over the metadata and content of the container, is created using a private key,
+and directly added to the SIF file. This means that a signed container carries
+it's signature with it, avoiding the need for extra infrastructure to distribute
+signatures to end users of the container.
+
+A user verifies the container has not been modified since signing using a public
+key or certificate. By default, {Singularity} uses PGP keys to sign and verify
+containers. Since 3.11, signing and verifying containers with X.509 key material
+/ certificates is also supported.
+
+PGP Public keys for verification can be distributed manually, or can be upload
+to and automatically retrieved from `Singularity Container Services
+<https://cloud.sylabs.io/>`__ or a `Singularity Enterprise
+<https://sylabs.io/singularity-enterprise/>`__ installation. Optionally, an HKP
+keyserver can also be configured.
+
+As well as indicating a container has not been modified, a valid signature may
+be used to indicate a container has undergone testing or review, and is approved
+for execution. Multiple signatures can be added to a container, to document its
+progress through an approval process. {Singularity}'s Execution Control List
+(ECL) feature can be enable by administrators of privileged installations to
+restrict execution of containers based on their signatures (see the admin guide
+for more information).
 
 .. note::
 
-   {Singularity} 3.6.0 uses a new signature format. Containers signed by
-   3.6.0 cannot be verified by older versions of {Singularity}.
+   Due to a change in signature format, containers signed by
+   3.6.0 and later cannot be verified by older versions of {Singularity}.
 
    To verify containers signed with older versions of {Singularity}
-   using 3.6.0 the ``--legacy-insecure`` flag must be provided to the
+   using 3.6.0 and above, the ``--legacy-insecure`` flag must be provided to the
    ``singularity verify`` command.
 
 .. _verify_container_from_library:
 
-*************************************************
- Verifying containers from the Container Library
-*************************************************
+***********************************************
+Verifying containers from the Container Library
+***********************************************
 
-The ``verify`` command will allow you to verify that a container has
-been signed using a PGP key. To use this feature with images that you
-pull from the container library, you must first generate an access token
-to the Sylabs Cloud. If you don't already have a valid access token,
-follow these steps:
+The ``verify`` command will allow you to verify that a SIF container image has
+been signed using a PGP key. To use this feature with images that you pull from
+the container library, you must first generate an access token to the Sylabs
+Cloud. If you don't already have a valid access token, follow these steps:
 
    #. Go to: https://cloud.sylabs.io/
    #. Click "Sign In" and follow the sign in steps.
@@ -44,8 +64,9 @@ follow these steps:
    #. Run ``singularity remote login`` and paste the access token at the
       prompt.
 
-Now you can verify containers that you pull from the library, ensuring
-they are bit-for-bit reproductions of the original image.
+Now you can verify containers that you pull from the library, ensuring they are
+bit-for-bit reproductions of the original image, when it was signed by the
+private key holder.
 
 .. code::
 
@@ -65,9 +86,9 @@ container.
 
 .. _sign_your_own_containers:
 
-*****************************
- Signing your own containers
-*****************************
+***************************
+Signing your own containers
+***************************
 
 Generating and managing PGP keys
 ================================
@@ -342,3 +363,122 @@ specifying ``--group-id`` can also verify the container:
    2   |1       |NONE    |JSON.Generic
    3   |1       |NONE    |FS
    Container verified: my_container.sif
+
+***********************************
+PEM Key / X.509 Certificate Support
+***********************************
+
+Beginning with version 3.11, {Singularity} supports signing SIF container images
+using a PEM format private key, and verifying with a PEM format public key, or
+X.509 certificate. Non-PGP signatures are implemented using the `Dead Simple
+Signing Envelope <https://github.com/secure-systems-lab/dsse>`__ (DSSE)
+standard.
+
+Signing with a PEM key
+======================
+
+To sign a container using a private key in PEM format, provide the key material
+to the ``sign`` command using the ``--key`` flag:
+
+.. code:: 
+
+   $ singularity sign --key mykey.pem lolcow.sif 
+   INFO:    Signing image with key material from 'mykey.pem'
+   INFO:    Signature created and applied to image 'lolcow.sif'
+
+The DSSE signature descriptor can now be seen by inspecting the SIF file:
+
+.. code:: 
+
+   $ singularity sif list lolcow.sif 
+   ------------------------------------------------------------------------------
+   ID   |GROUP   |LINK    |SIF POSITION (start-end)  |TYPE
+   ------------------------------------------------------------------------------
+   1    |1       |NONE    |32176-32393               |Def.FILE
+   2    |1       |NONE    |32393-33522               |JSON.Generic
+   3    |1       |NONE    |33522-33718               |JSON.Generic
+   4    |1       |NONE    |36864-84656128            |FS (Squashfs/*System/amd64)
+   5    |NONE    |1   (G) |84656128-84658191         |Signature (SHA-256)
+
+   $ singularity sif dump 5 lolcow.sif | jq
+   {
+   "payloadType": "application/vnd.sylabs.sif-metadata+json",
+   ...
+
+Attempting to ``verify`` the image without options will fail, as it is not signed with a PGP key:
+
+.. code:: 
+
+   $ singularity verify lolcow.sif 
+   INFO:    Verifying image with PGP key material
+   FATAL:   Failed to verify container: integrity: key material not provided for DSSE envelope signature
+
+Note that the error message shows that the container image has a DSSE signature present.
+
+Verifying with a PEM key
+========================
+
+To verify a container using a PEM public key directly, provide the key material
+to the ``verify`` command using the ``key`` flag:
+
+.. code:: 
+
+   $ singularity verify --key mypublic.pem lolcow.sif 
+   INFO:    Verifying image with key material from 'mypublic.pem'
+   Objects verified:
+   ID  |GROUP   |LINK    |TYPE
+   ------------------------------------------------
+   1   |1       |NONE    |Def.FILE
+   2   |1       |NONE    |JSON.Generic
+   3   |1       |NONE    |JSON.Generic
+   4   |1       |NONE    |FS
+   INFO:    Verified signature(s) from image 'lolcow.sif'
+
+Verifying with an X.509 certificate
+===================================
+
+To verify a container that was signed with a PEM private key, using an X.509 certificate,
+pass the certificate to the ``verify`` command using the ``--certificate`` flag.
+If the certificate is part of a chain, provide intermediate and valid root
+certificates with the ``--certificate-intermediates`` and
+``--certificate-roots`` flags:
+
+.. code::
+
+   $ singularity verify \
+      --certificate leaf.pem \
+      --certificate-intermediates intermediate.pem \
+      --certificate-roots root.pem \
+      lolcow.sif 
+
+.. note:: 
+
+   The certificate must have a usage field that allows code signing in order to
+   verify container images.
+
+OSCP Certificate Revocation Checks
+==================================
+
+When verifying a container using X.509 certificates, {Singularity} can perform
+online revocation checks using the Online Certificate Status Protocol (OCSP). To
+enable OCSP checks, add the ``--ocsp-verify`` flag to your ``verify`` command:
+
+.. code:: 
+
+   $ singularity verify \
+      --certificate leaf.pem \
+      --certificate-intermediates intermediate.pem \
+      --certificate-roots root.pem \
+      --ocsp-verify
+      lolcow.sif 
+
+{Singularity} will then attempt to contact the prescribed OCSP responder for
+each certificate in the chain, in order to check that the relevant certificate
+has not been revoked. In the event that an OCSP responder cannot be contacted,
+or a certificate has been revoked, verification will fail with a validation
+error:
+
+.. code:: 
+
+   INFO:    Validate: cert:leaf  issuer:intermediate
+   FATAL:   Failed to verify container: OCSP verification has failed
