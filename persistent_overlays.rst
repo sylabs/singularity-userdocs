@@ -7,9 +7,9 @@ system on an immutable read-only container for the illusion of
 read-write access. You can run a container and make changes, and these
 changes are kept separately from the base container image.
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 A persistent overlay is a directory or file system image that “sits on
 top” of your immutable SIF container. When you install new software or
@@ -40,9 +40,9 @@ You can use persistent overlays with the following commands:
 -  ``shell``
 -  ``instance start``
 
-*******
- Usage
-*******
+*****
+Usage
+*****
 
 To use a persistent overlay, you must first have a container.
 
@@ -107,10 +107,10 @@ space on disk that the file is currently using:
 
 .. code::
 
-   $ ls -lah /tmp/ext3_overlay.img 
+   $ ls -lah /tmp/ext3_overlay.img
    -rw-------. 1 dtrudg-sylabs dtrudg-sylabs 1.0G Jan 27 11:47 /tmp/ext3_overlay.img
 
-   $ du -h /tmp/ext3_overlay.img 
+   $ du -h /tmp/ext3_overlay.img
    33M     /tmp/ext3_overlay.img
 
 If you copy or move the sparse image you should ensure that the tool you use to
@@ -218,7 +218,7 @@ Overlay embedded in SIF
 
 It is possible to embed an overlay image into the SIF file that holds a
 container. This allows the read-only container image and your
-modifications to it to be managed as a single file. 
+modifications to it to be managed as a single file.
 
 To add a 1 GiB writable overlay partition to an existing SIF image:
 

@@ -2,9 +2,9 @@
  Remote Endpoints
 ##################
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 The ``remote`` command group allows users to manage the service
 endpoints {Singularity} will interact with for many common command
@@ -15,9 +15,9 @@ endpoints managed by this command group: the public Sylabs Cloud (or
 local {Singularity} Enterprise installation), OCI registries and
 keyservers.
 
-*********************
- Public Sylabs Cloud
-*********************
+*******************
+Public Sylabs Cloud
+*******************
 
 Sylabs introduced the online `Sylabs Cloud
 <https://cloud.sylabs.io/home>`_ to enable users to `Create
@@ -91,9 +91,9 @@ You can interact with the public Sylabs Cloud using various
    Using ``docker://``, ``oras://`` and ``shub://`` URIs with these
    commands does not interact with the Sylabs Cloud.
 
-***************************
- Managing Remote Endpoints
-***************************
+*************************
+Managing Remote Endpoints
+*************************
 
 Users can setup and switch between multiple remote endpoints, which are
 stored in their ``~/.singularity/remote.yaml`` file. Alternatively,
@@ -337,9 +337,9 @@ If you do not want to switch remote with ``remote use`` you can:
    ``--builder`` option.
 -  Make ``keys`` use an alternative keyserver with the ``-url`` option.
 
-**************************
- Keyserver Configurations
-**************************
+************************
+Keyserver Configurations
+************************
 
 By default, {Singularity} will use the keyserver correlated to the
 active cloud service endpoint. This behavior can be changed or
@@ -467,9 +467,9 @@ Now we can see that ``https://pgp.example.com`` is logged in:
 
 .. _sec:managing_oci_registries:
 
-*************************
- Managing OCI Registries
-*************************
+***********************
+Managing OCI Registries
+***********************
 
 It is common for users of {Singularity} to use OCI registries as sources
 for their container images. Some registries require credentials to

@@ -1,12 +1,12 @@
 .. _cloud_library:
 
-###############
- Cloud Library
-###############
+#############
+Cloud Library
+#############
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 The Sylabs Cloud Library is the place to :ref:`push <push>` your
 containers to the cloud so other users can :ref:`pull <pull>`,
@@ -19,9 +19,9 @@ have root privileges.
 
 .. _make_a_account:
 
-*****************
- Make an Account
-*****************
+***************
+Make an Account
+***************
 
 Making an account is easy, and straightforward:
 
@@ -33,9 +33,9 @@ Making an account is easy, and straightforward:
 
 .. _creating_a_access_token:
 
-*************************
- Creating a Access token
-*************************
+***********************
+Creating a Access token
+***********************
 
 Access tokens for pushing a container, and remote builder.
 
@@ -56,9 +56,9 @@ Now that you have your token, you are ready to push your container!
 
 .. _push:
 
-*********************
- Pushing a Container
-*********************
+*******************
+Pushing a Container
+*******************
 
 The ``singularity push`` command will push a container to the container
 library with the given URL. Here's an example of a typical push command:
@@ -106,9 +106,9 @@ container in your web browser.
 
 .. _pull:
 
-*********************
- Pulling a container
-*********************
+*******************
+Pulling a container
+*******************
 
 The ``singularity pull`` command will download a container from the
 `Library <https://cloud.sylabs.io/library>`_ (``library://``), `Docker
@@ -165,9 +165,9 @@ etc...
    automatically, but it's good practice to always specify your output
    file.
 
-****************************
- Verify/Sign your Container
-****************************
+**************************
+Verify/Sign your Container
+**************************
 
 Verify containers that you pull from the library, ensuring they are
 bit-for-bit reproductions of the original image.
@@ -178,9 +178,9 @@ sign your own containers <sign_your_own_containers>`.
 
 .. _search_the_library:
 
-**************************************
- Searching the Library for Containers
-**************************************
+************************************
+Searching the Library for Containers
+************************************
 
 To find interesting or useful containers in the library, you can open
 https://cloud.sylabs.io/library in your browser and search from there
@@ -275,9 +275,9 @@ You can also limit results to only signed containers with the
 
 .. _remote_builder:
 
-****************
- Remote Builder
-****************
+**************
+Remote Builder
+**************
 
 The remote builder service can build your container in the cloud
 removing the requirement for root access.

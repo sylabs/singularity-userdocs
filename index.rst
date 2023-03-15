@@ -12,9 +12,9 @@ For a detailed guide to installation and configuration, please see the
 separate Admin Guide for this version of {Singularity} at
 https://sylabs.io/guides/{adminversion}/admin-guide/.
 
-******************************************
- Getting Started & Background Information
-******************************************
+****************************************
+Getting Started & Background Information
+****************************************
 
 .. toctree::
    :maxdepth: 2
@@ -23,9 +23,9 @@ https://sylabs.io/guides/{adminversion}/admin-guide/.
    Quick Start <quick_start>
    Security in {Singularity} <security>
 
-*********************
- Building Containers
-*********************
+*******************
+Building Containers
+*******************
 
 Learn how to write a definition file that can be used to build a
 container. Understand the environment within a build, how to perform
@@ -40,9 +40,9 @@ non-root user.
    Build Environment <build_env>
    Fakeroot feature <fakeroot>
 
-********************************
- Container Signing & Encryption
-********************************
+******************************
+Container Signing & Encryption
+******************************
 
 {Singularity} allows containers to be signed using a PGP key. The
 signature travels with the container image, allowing you to verify that
@@ -57,9 +57,9 @@ decrypting them to disk first.
    Key management commands <key_commands>
    Encrypted Containers <encryption>
 
-***************************
- Sharing & Online Services
-***************************
+*************************
+Sharing & Online Services
+*************************
 
 Sylabs offers a suite of container services, with a free tier and
 on-premise options. Learn how to make use these services to simplify the
@@ -71,9 +71,9 @@ process of building, signing, and sharing your containers.
    Remote Endpoints <endpoint>
    Sylabs Cloud Library <cloud_library>
 
-****************
- Advanced Usage
-****************
+**************
+Advanced Usage
+**************
 
 Once you've understood the basics, explore all the options which
 {Singularity} provides for accessing data, running persistent services
@@ -92,9 +92,9 @@ networking and security configuration.
    Network Options <networking>
    Limiting Container Resources <cgroups>
 
-***************
- Compatibility
-***************
+*************
+Compatibility
+*************
 
 {Singularity} has unique benefits and supports easy access to GPUs and
 other hardware. It also strives for compatibility with Docker/OCI
@@ -109,9 +109,9 @@ Docker, as well as how to use containerized MPI and GPU applications.
    Singularity and MPI applications <mpi>
    GPU Support <gpu>
 
-**************
- Get Involved
-**************
+************
+Get Involved
+************
 
 We'd love you to get involved in the {Singularity} community! Whether
 through contributing feature and fixes, helping to answer questions from
@@ -122,9 +122,9 @@ other users, or simply testing new releases.
 
    Contributing <contributing>
 
-***********
- Reference
-***********
+*********
+Reference
+*********
 
 .. toctree::
    :maxdepth: 2
