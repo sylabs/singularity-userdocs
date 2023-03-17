@@ -946,11 +946,12 @@ variable changes depending on the app we specify:
    $ singularity exec --app bar my_container.sif env | grep SOFTWARE
    SOFTWARE=bar
 
-********************************
-Best Practices for Build Recipes
-********************************
+*******************************************
+Best Practices for Writing Definition Files
+*******************************************
 
-When crafting your recipe, it is best to consider the following:
+When crafting your definition file, it is best to consider the
+following:
 
 #. Always install packages, programs, data, and files into operating
    system locations (e.g. not ``/home``, ``/tmp`` , or any other
@@ -962,8 +963,8 @@ When crafting your recipe, it is best to consider the following:
    how to interact with it.
 
 #. If you require any special environment variables to be defined, add
-   them to the ``%environment`` and ``%appenv`` sections of the build
-   recipe.
+   them to the ``%environment`` and ``%appenv`` sections of the
+   definition file.
 
 #. Files should always be owned by a system account (UID lower than
    500).
