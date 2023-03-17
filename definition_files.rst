@@ -1,8 +1,8 @@
 .. _definition-files:
 
-##################
- Definition Files
-##################
+################
+Definition Files
+################
 
 .. _sec:deffiles:
 
@@ -12,9 +12,9 @@ specifics about the base OS to build or the base container to start
 from, software to install, environment variables to set at runtime,
 files to add from the host system, and container metadata.
 
-**********
- Overview
-**********
+********
+Overview
+********
 
 A {Singularity} Definition file is divided into two parts:
 
@@ -39,9 +39,9 @@ examples repository <https://github.com/sylabs/examples>`_
 For a comparison between Dockerfile and {Singularity} definition file,
 please see: :ref:`this section <sec:deffile-vs-dockerfile>`.
 
-********
- Header
-********
+******
+Header
+******
 
 The header should be written at the top of the def file. It tells
 {Singularity} about the base operating system that it should use to
@@ -160,9 +160,9 @@ in SIF format.
    protect against malicious changes that could be made during the build
    process on a compromised machine.
 
-**********
- Sections
-**********
+********
+Sections
+********
 
 The main content of the bootstrap file is broken into sections.
 Different sections add different content or execute commands at
@@ -721,9 +721,9 @@ After building the help can be displayed like so:
        This is a demo container used to illustrate a def file that uses all
        supported sections.
 
-********************
- Multi-Stage Builds
-********************
+******************
+Multi-Stage Builds
+******************
 
 Starting with {Singularity} v3.2 multi-stage builds are supported where
 one environment can be used for compilation, then the resulting binary
@@ -774,9 +774,9 @@ above definition cannot copy files from the ``final`` stage, but the
 
 .. _apps:
 
-***********
- SCIF Apps
-***********
+*********
+SCIF Apps
+*********
 
 SCIF is a standard for encapsulating multiple apps into a container. A
 container with SCIF apps has multiple entry points, and you can choose
@@ -880,9 +880,9 @@ variable changes depending on the app we specify:
    $ singularity exec --app bar my_container.sif env | grep SOFTWARE
    SOFTWARE=bar
 
-**********************************
- Best Practices for Build Recipes
-**********************************
+********************************
+Best Practices for Build Recipes
+********************************
 
 When crafting your recipe, it is best to consider the following:
 

@@ -9,36 +9,9 @@ __pycache__
 pygments_singularity.pyc
 pygments_json.pyc
 
-_build/doctrees/
-_build/html/.buildinfo
-_build/html/objects.inv
-_build/html/**/*.html
-_build/html/_static/css/theme.css
-_build/html/_static/basic.css
-_build/html/**/*.png
-_build/html/**/*.gif
-_build/html/_images/
-_build/html/_sources/
-_build/html/_templates/
-_build/html/_static/css/theme.css
-_build/html/_static/pygments.css
-_build/html/_static/css/badge_only.css
-_build/html/_static/fonts/
-_build/html/searchindex.js
-_build/html/_static/doctools.js
-_build/html/_static/documentation_options.js
-_build/html/_static/jquery-3.2.1.js
-_build/html/_static/jquery-3.4.1.js
-_build/html/_static/jquery.js
-_build/html/_static/language_data.js
-_build/html/_static/searchtools.js
-_build/html/_static/underscore-1.3.1.js
-_build/html/_static/underscore.js
-_build/html/_static/websupport.js
-_build/html/_static/js/theme.js
-_build/epub/*
-_build/latex/*
+_build/*
 cli/*
+.vscode/*
 
 # go mod pkg cache
 vendor/pkg/

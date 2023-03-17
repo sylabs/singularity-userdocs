@@ -1,8 +1,8 @@
 .. _environment-and-metadata:
 
-##########################
- Environment and Metadata
-##########################
+########################
+Environment and Metadata
+########################
 
 .. _sec:envandmetadata:
 
@@ -22,9 +22,9 @@ details such as the version of {Singularity} used are present as
 :ref:`labels <sec:labels>` on a container. You can also specify your own
 to be recorded against your container.
 
-**********************
- Environment Overview
-**********************
+********************
+Environment Overview
+********************
 
 When you run a program in a container with {Singularity}, the
 environment variables that the program sees are a combination of:
@@ -61,9 +61,9 @@ If you are interested in variables available when you are *building* a
 container, rather than when running a container, see :ref:`build
 environment section <build-environment>`.
 
-*******************************
- Environment From a Base Image
-*******************************
+*****************************
+Environment From a Base Image
+*****************************
 
 When you build a container with {Singularity} you might *bootstrap* from
 a library or Docker image, or using Linux distribution bootstrap tools
@@ -91,9 +91,9 @@ You can override the inherited environment with ``SINGULARITYENV_`` vars, or the
 ``--env / --env-file`` flags (see below), but ``Dockerfile`` ``ENV`` vars will
 not be overridden by host environment variables of the same name.
 
-************************************
- Environment From a Definition File
-************************************
+**********************************
+Environment From a Definition File
+**********************************
 
 Environment variables can be included in your container by adding them
 to your definition file. Use ``export`` in the ``%environment`` section
@@ -144,9 +144,9 @@ Variables set in the ``%post`` section through
 ``$SINGULARITY_ENVIRONMENT`` take precedence over those added via
 ``%environment``.
 
-***************************
- Environment From the Host
-***************************
+*************************
+Environment From the Host
+*************************
 
 If you have environment variables set outside of your container, on the
 host, then by default they will be available inside the container.
@@ -209,9 +209,9 @@ environment variables for correct operation of most software.
    such as ``PYTHONPATH`` that can change the way code runs, and
    consider using ``--cleanenv``.
 
-********************************************
- Environment From the {Singularity} Runtime
-********************************************
+******************************************
+Environment From the {Singularity} Runtime
+******************************************
 
 It can be useful for a program to know when it is running in a
 {Singularity} container, and some basic information about the container
@@ -234,9 +234,9 @@ program running in the container.
       requested, via flags or environment variables, when running the
       container.
 
-**********************************
- Overriding Environment Variables
-**********************************
+********************************
+Overriding Environment Variables
+********************************
 
 You can override variables that have been set in the container image, or
 define additional variables, in various ways as appropriate for your
@@ -514,9 +514,9 @@ environment is constructed in the following order:
 
 .. _sec:umask:
 
-**********************************
- Umask / Default File Permissions
-**********************************
+********************************
+Umask / Default File Permissions
+********************************
 
 The ``umask`` value on a Linux system controls the default permissions
 for newly created files. It is not an environment variable, but
@@ -546,9 +546,9 @@ the value outside, unless:
 
 .. _sec:metadata:
 
-********************
- Container Metadata
-********************
+******************
+Container Metadata
+******************
 
 Each {Singularity} container has metadata describing the container, how
 it was built, etc. This metadata includes the definition file used to
@@ -861,9 +861,9 @@ And the output would look like:
            "type": "container"
    }
 
-***************************
- /.singularity.d directory
-***************************
+*************************
+/.singularity.d directory
+*************************
 
 The ``/.singularity.d`` directory in a container contains scripts and
 environment files that are used when a container is executed.

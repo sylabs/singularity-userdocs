@@ -1,8 +1,8 @@
 .. _singularity-and-docker:
 
-#######################################
- Support for Docker and OCI Containers
-#######################################
+#####################################
+Support for Docker and OCI Containers
+#####################################
 
 The Open Containers Initiative (OCI) container format, which grew out of
 Docker, is the dominant standard for cloud-focused containerized
@@ -35,9 +35,9 @@ improved compatibility in some cases. Special requirements and limitations
 apply, which will be addressed through version 4.0. Please :ref:`consult the
 documentation <oci_mode>` about ``--oci`` mode for more information.
 
-****************************
- Containers From Docker Hub
-****************************
+**************************
+Containers From Docker Hub
+**************************
 
 Docker Hub is the most common place that projects publish public
 container images. At some point, it's likely that you will want to run
@@ -208,9 +208,9 @@ set for both ``singularity`` and ``docker`` operations.
    $ export SINGULARITY_DOCKER_PASSWORD=mytoken
    $ singularity pull docker://sylabsio/private
 
-**********************************
- Containers From Other Registries
-**********************************
+********************************
+Containers From Other Registries
+********************************
 
 You can use ``docker://`` URIs with {Singularity} to pull and run
 containers from OCI registries other than Docker Hub. To do this, you'll
@@ -399,9 +399,9 @@ which details how to use ``az acr token create`` to obtain a token name
 and password pair that can be used to authenticate with the above
 methods.
 
-***************************************
- Building From Docker / OCI Containers
-***************************************
+*************************************
+Building From Docker / OCI Containers
+*************************************
 
 If you wish to use an existing Docker or OCI container as the basis for
 a new container, you will need to specify it as the *bootstrap* source
@@ -631,9 +631,9 @@ filename in the ``From:`` line:
 
 .. _sec:optional_headers_def_files:
 
-***************************************
- Differences and Limitations vs Docker
-***************************************
+*************************************
+Differences and Limitations vs Docker
+*************************************
 
 Though Docker / OCI container compatibility is a goal of {Singularity},
 there are some differences and limitations due to the way {Singularity}
@@ -920,9 +920,9 @@ around this, use the ``--no-init`` flag to disable the shim:
 
 .. _compat-flag:
 
-*******************************
- Docker-like ``--compat`` Flag
-*******************************
+*****************************
+Docker-like ``--compat`` Flag
+*****************************
 
 If Docker-like behavior is important, {Singularity} can be started with
 the ``--compat`` flag. This flag is a convenient short-hand alternative
@@ -956,9 +956,9 @@ execute correctly under {Singularity}. The user namespace and network
 namespace are not used, as these negate benefits of SIF and direct
 access to high performance cluster networks.
 
-****************************
- CMD / ENTRYPOINT Behaviour
-****************************
+**************************
+CMD / ENTRYPOINT Behaviour
+**************************
 
 When a container is run using ``docker``, its default behavior depends
 on the ``CMD`` and/or ``ENTRYPOINT`` set in the ``Dockerfile`` that was
@@ -1078,9 +1078,9 @@ runtimes as there is no evaluated runscript.
 
 .. _sec:best_practices:
 
-*********************************************************
- Best Practices for Docker & {Singularity} Compatibility
-*********************************************************
+*******************************************************
+Best Practices for Docker & {Singularity} Compatibility
+*******************************************************
 
 As detailed previously, {Singularity} can make use of most Docker and
 OCI images without issues, or via simple workarounds. In general,
@@ -1144,9 +1144,9 @@ creating Docker / OCI containers that will also be run using
 
 .. _sec:troubleshooting:
 
-*****************
- Troubleshooting
-*****************
+***************
+Troubleshooting
+***************
 
 Registry Authentication Issues
 ==============================
@@ -1203,9 +1203,9 @@ you believe they are due to a bug in {Singularity}.
 
 .. _sec:deffile-vs-dockerfile:
 
-**********************************************
- {Singularity} Definition file vs. Dockerfile
-**********************************************
+********************************************
+{Singularity} Definition file vs. Dockerfile
+********************************************
 
 An alternative to running Docker containers with {Singularity} is to
 re-write the ``Dockerfile`` as a definition file, and build a native SIF
