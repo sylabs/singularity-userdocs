@@ -53,7 +53,7 @@ The only keyword that is required for every type of build is
 ``Bootstrap``. It determines the *bootstrap agent* that will be used to
 create the base operating system you want to use. For example, the
 ``library`` bootstrap agent will pull a container from the {Singularity}
-`Container Library <https://cloud.sylabs.io/library>`_ as a base.
+`Container Library <https://cloud.sylabs.io/library>`__ as a base.
 Similarly, the ``docker`` bootstrap agent will pull docker layers from
 `Docker Hub <https://hub.docker.com/>`_ as a base OS from which to start
 your image.
@@ -91,7 +91,7 @@ Preferred bootstrap agents
 ==========================
 
 -  :ref:`library <build-library-module>` (images hosted on the
-   {Singularity} `Container Library <https://cloud.sylabs.io/library>`_)
+   {Singularity} `Container Library <https://cloud.sylabs.io/library>`__)
 -  :ref:`docker <build-docker-module>` (images hosted on Docker Hub)
 -  :ref:`shub <build-shub>` (images hosted on Singularity Hub)
 -  :ref:`oras <build-oras>` (images from supported OCI registries)
@@ -536,11 +536,6 @@ it would have to be installed as part of the ``%post`` section for this
 
 %environment
 ============
-
-.. note::
-
-   The sections detailed from this point forward are all applied to the
-   container filesystem in a single step.
 
 The ``%environment`` section allows you to define environment variables
 that will be set at runtime. Note that these variables are made
