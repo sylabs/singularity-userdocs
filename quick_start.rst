@@ -755,8 +755,8 @@ follows:
 -  The ``%environment`` section defines environment variables that will be
    available to the container at runtime.
 
--  The ``%runscript`` section defines actions for the container to take
-   when it is executed. (These commands will therefore not be run at build time.)
+-  The ``%runscript`` section defines actions for the container to take when it
+   is executed. (These commands will therefore not be run at build time.)
 
 -  And finally, the ``%labels`` section allows for custom metadata to be
    added to the container.
@@ -780,9 +780,9 @@ https://www.sylabs.io/contact/
 
 .. _installation-request:
 
-*********************************
+**********************************
 {Singularity} on a shared resource
-*********************************
+**********************************
 
 Perhaps you are a user who wants a few talking points and background to
 share with your administrator. Or maybe you are an administrator who

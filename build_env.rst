@@ -11,8 +11,8 @@ Overview
 ********
 
 You may wish to customize your build environment by doing things such as
-specifying a custom cache directory for images or sending your Docker
-Credentials to the registry endpoint. Here we will discuss these and
+specifying a custom cache directory for images, or sending your Docker
+Credentials to the registry endpoint. In this section, we will discuss these and
 other topics related to the build environment.
 
 .. _sec:cache:
@@ -27,10 +27,10 @@ created at ``$HOME/.singularity/cache`` by default. The location of the
 cache can be changed by setting the ``SINGULARITY_CACHEDIR`` environment
 variable.
 
-When you run builds as root, using ``sudo``, images will be cached in
-root’s home at ``/root`` and not your user’s home. Use the ``-E`` option
-to sudo to pass through the ``SINGULARITY_CACHEDIR`` environment
-variable, if you set it.
+When you run builds as root, using ``sudo``, images will be cached in root's
+home directory at ``/root``, rather than your user's home directory. Use the
+``-E`` option to ``sudo`` to pass through the ``SINGULARITY_CACHEDIR``
+environment variable, if you have set it.
 
 .. code::
 
@@ -296,7 +296,7 @@ the case that the docker image does not have a CMD or ENTRYPOINT.
 **TAG** Is the default tag, ``latest``.
 
 **SINGULARITY_NOHTTPS** This is relevant if you want to use a registry
-that doesn’t have https, and it speaks for itself. If you export the
+that doesn't have https, and it speaks for itself. If you export the
 variable ``SINGULARITY_NOHTTPS`` you can force the software to not use
 https when interacting with a Docker registry. This use case is
 typically for use of a local registry.
