@@ -24,7 +24,7 @@ Cache Folders
 {Singularity} will cache SIF container images generated from remote
 sources, and any OCI/docker layers used to create them. The cache is
 created at ``$HOME/.singularity/cache`` by default. The location of the
-cache can be changed using the ``SINGULARITY_CACHEDIR`` environment
+cache can be changed by setting the ``SINGULARITY_CACHEDIR`` environment
 variable.
 
 When you run builds as root, using ``sudo``, images will be cached in root's
