@@ -151,7 +151,7 @@ example can be used:
 
    %environment
        # Point to MPICH binaries, libraries man pages
-       export MPICH_DIR=/opt/mpich-4.1.1
+       export MPICH_DIR=/opt/mpich
        export PATH="$MPICH_DIR/bin:$PATH"
        export LD_LIBRARY_PATH="$MPICH_DIR/lib:$LD_LIBRARY_PATH"
        export MANPATH=$MPICH_DIR/share/man:$MANPATH
@@ -159,7 +159,7 @@ example can be used:
    %post
        echo "Installing required packages..."
        export DEBIAN_FRONTEND=noninteractive
-       apt-get update && apt-get install -y wget git bash gcc gfortran g++ make
+       apt-get update && apt-get install -y wget git bash gcc gfortran g++ make python3-dev
 
        # Information about the version of MPICH to use
        export MPICH_VERSION=4.1.1
@@ -172,7 +172,7 @@ example can be used:
        # Download
        cd /tmp/mpich && wget -O mpich-$MPICH_VERSION.tar.gz $MPICH_URL && tar xzf mpich-$MPICH_VERSION.tar.gz
        # Compile and install
-       cd /tmp/mpich/mpich-$MPICH_VERSION && ./configure --prefix=$MPICH_DIR && make install
+       cd /tmp/mpich/mpich-$MPICH_VERSION && ./configure --prefix=$MPICH_DIR && make -j$(nproc) install
 
        # Set env variables so we can compile our application
        export PATH=$MPICH_DIR/bin:$PATH
@@ -219,13 +219,13 @@ If the host MPI is Open MPI, the definition file looks like:
        echo "Installing Open MPI"
        export OMPI_DIR=/opt/ompi
        export OMPI_VERSION=4.1.5
-       export OMPI_URL="https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$OMPI_VERSION.tar.bz2"
+       export OMPI_URL="https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-$OMPI_VERSION.tar.bz2"
        mkdir -p /tmp/ompi
        mkdir -p /opt
        # Download
        cd /tmp/ompi && wget -O openmpi-$OMPI_VERSION.tar.bz2 $OMPI_URL && tar -xjf openmpi-$OMPI_VERSION.tar.bz2
        # Compile and install
-       cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --prefix=$OMPI_DIR && make -j8 install
+       cd /tmp/ompi/openmpi-$OMPI_VERSION && ./configure --prefix=$OMPI_DIR && make -j$(nproc) install
 
        # Set env variables so we can compile our application
        export PATH=$OMPI_DIR/bin:$PATH
