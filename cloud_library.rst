@@ -286,7 +286,7 @@ Here's a typical remote build command:
 
 .. code::
 
-   $ singularity build --remote file-out.sif docker://ubuntu:18.04
+   $ singularity build --remote file-out.sif docker://ubuntu:22.04
 
 Building from a definition file:
 ================================
@@ -296,7 +296,7 @@ This is our definition file. Let's call it ``ubuntu.def``:
 .. code:: singularity
 
    bootstrap: library
-   from: ubuntu:18.04
+   from: ubuntu:22.04
 
    %runscript
        echo "hello world from ubuntu container!"

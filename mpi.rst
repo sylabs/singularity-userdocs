@@ -144,14 +144,14 @@ example can be used:
 .. code::
 
    Bootstrap: docker
-   From: ubuntu:18.04
+   From: ubuntu:22.04
 
    %files
        mpitest.c /opt
 
    %environment
        # Point to MPICH binaries, libraries man pages
-       export MPICH_DIR=/opt/mpich-3.3.2
+       export MPICH_DIR=/opt/mpich-4.1.1
        export PATH="$MPICH_DIR/bin:$PATH"
        export LD_LIBRARY_PATH="$MPICH_DIR/lib:$LD_LIBRARY_PATH"
        export MANPATH=$MPICH_DIR/share/man:$MANPATH
@@ -162,7 +162,7 @@ example can be used:
        apt-get update && apt-get install -y wget git bash gcc gfortran g++ make
 
        # Information about the version of MPICH to use
-       export MPICH_VERSION=3.3.2
+       export MPICH_VERSION=4.1.1
        export MPICH_URL="http://www.mpich.org/static/downloads/$MPICH_VERSION/mpich-$MPICH_VERSION.tar.gz"
        export MPICH_DIR=/opt/mpich
 
@@ -200,7 +200,7 @@ If the host MPI is Open MPI, the definition file looks like:
 .. code::
 
    Bootstrap: docker
-   From: ubuntu:18.04
+   From: ubuntu:22.04
 
    %files
        mpitest.c /opt
@@ -214,11 +214,11 @@ If the host MPI is Open MPI, the definition file looks like:
 
    %post
        echo "Installing required packages..."
-       apt-get update && apt-get install -y wget git bash gcc gfortran g++ make file
+       apt-get update && apt-get install -y wget git bash gcc gfortran g++ make file bzip2
 
        echo "Installing Open MPI"
        export OMPI_DIR=/opt/ompi
-       export OMPI_VERSION=4.0.5
+       export OMPI_VERSION=4.1.5
        export OMPI_URL="https://download.open-mpi.org/release/open-mpi/v4.0/openmpi-$OMPI_VERSION.tar.bz2"
        mkdir -p /tmp/ompi
        mkdir -p /opt
@@ -342,7 +342,7 @@ program, which in this case has been compiled on the host to
 .. code::
 
    Bootstrap: docker
-   From: ubuntu:18.04
+   From: ubuntu:22.04
 
    %files
          /tmp/mpitest /opt/mpitest

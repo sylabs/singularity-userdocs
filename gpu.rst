@@ -433,10 +433,6 @@ you must ensure that:
 These requirements can be satisfied by following the requirements on the
 `ROCm web site <https://rocm.github.io/ROCmInstall.html>`__
 
-At time of release, {Singularity} was tested successfully on Debian 10
-with ROCm 2.8/2.9 and the upstream kernel driver, and Ubuntu 18.04 with
-ROCm 2.9 and the DKMS driver.
-
 Example - tensorflow-rocm
 =========================
 
