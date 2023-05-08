@@ -913,9 +913,18 @@ the same container using SCIF modules:
        SOFTWARE=bar
        export SOFTWARE
 
-An ``%appinstall`` section is the equivalent of ``%post`` but for a
-particular app. Similarly, ``%appenv`` equates to the app version of
-``%environment`` and so on.
+An ``%appenv`` section is the app-specific equivalent of ``%environment``.
+
+Similarly, ``%appinstall`` is like ``%post`` but for a particular app. Note that
+just like the general ``%post`` section, ``%appinstall`` sections run at build
+time. Thus, when building a container from a definition file containing
+``%appinstall`` sections, the content of all of these sections will be
+executed—even if later on, the user ends up running only some of the apps
+defined in the file and not others. This is why the
+`SCIF Standard <https://sci-f.github.io/specification>`__ indicates that files &
+directories that are app-specific, and are potentially mutually-exclusive with
+the files & directories of other apps, be placed under the app-specific
+``/scif/apps/<app-name>`` directory to avoid conflicts between different apps.
 
 Installing apps into modules using the ``%app*`` sections enables the
 ``--app`` option, allowing commands like the following:
