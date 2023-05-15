@@ -265,11 +265,10 @@ to investigate ``--remote`` or ``--fakeroot`` builds instead.
 Building encrypted containers
 *****************************
 
-Beginning in {Singularity} 3.4.0, it is possible to build and run
-encrypted containers. The containers are decrypted at runtime entirely
-in kernel space, meaning that no intermediate decrypted data is ever
-written to disk. See :ref:`encrypted containers <encryption>` for more
-details.
+Starting with {Singularity} 3.4.0, it is possible to build and run encrypted
+containers. The containers are decrypted at runtime entirely in kernel space,
+meaning that no intermediate decrypted data is ever written to disk. See
+:ref:`encrypted containers <encryption>` for more details.
 
 *************
 Build options
