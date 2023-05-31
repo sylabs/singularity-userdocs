@@ -51,7 +51,7 @@ hostname within the container.
 .. code::
 
    $ hostname
-   ubuntu-bionic
+   ubuntu
 
    $ sudo singularity exec --hostname hal-9000 my_container.sif hostname
    hal-9000

@@ -22,10 +22,9 @@ at runtime completely within kernel space.
 
 .. note::
 
-   This feature utilizes the Linux ``dm-crypt`` library and
-   ``cryptsetup`` utility and requires cryptsetup version of >= 2.0.0.
-   This version should be standard with recent Linux versions such as
-   Ubuntu 18.04, Debian 10 and CentOS/RHEL 7, but users of older Linux
+   This feature utilizes the Linux ``dm-crypt`` library and ``cryptsetup``
+   utility and requires cryptsetup version of >= 2.0.0. This version should be
+   standard with recent Linux versions such as, but users of older Linux
    versions may have to update.
 
 **********************
