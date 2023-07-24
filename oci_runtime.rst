@@ -31,168 +31,203 @@ tools from the OCI ecosystem.
 Commands and features of {Singularity} that provide OCI compatibility, or direct
 support, are discussed in three areas of this guide:
 
-1. In the :ref:`Support for Docker page <singularity-and-docker>`, limitations,
-   compatibility options, and best practices for running OCI / Docker containers
-   with {Singularity}'s default runtime are explored.
-2. In the :ref:`OCI Mode section <oci_mode>`, the experimental OCI runtime (``--oci``), which runs
-   OCI / Docker containers in their native format is introduced. 
-3. In the :ref:`OCI Command Group section <oci_command>`, the ``singularity oci`` commands, which
-   provides a low-level means to run {Singularity} SIF containers with a command
-   line that matches other OCI runtimes, are documented.
-
-OCI Spec Support
-================
-
-**OCI Image Spec** - {Singularity} can convert container images that satisfy the
-OCI Image Specification into its own SIF format, or a simple sandbox directory.
-Most of the configuration that a container image can specify is supported by the
-{Singularity} runtime, but there are :ref:`some limitations
-<singularity-and-docker>`, and workarounds required for certain container
-images. From 3.11, the experimental ``--oci`` mode :ref:`can run containers OCI
-container images directly <oci_mode>`, to improve compatibility further.
-
-**OCI Distribution Spec** - {Singularity} is able to pull images from registries
-that satisfy the OCI Distribution Specification. Images can be pushed to
-registries that permit arbitrary content types, using ORAS.
-
-**OCI Runtime Spec** - By default, {Singularity} does not follow the OCI Runtime
-Specification closely. Instead, it uses its own runtime that is better matched
-to the requirements and limitations of multi-user shared compute environments.
-From 3.11, the experimental ``--oci`` mode :ref:`can run containers using a true
-OCI runtime <oci_mode>`.
-
-**OCI Runtime CLI** - The ``singularity oci`` commands were added to provide a
-mode of operation in which {Singularity} does implement the OCI runtime
-specification and container lifecycle. These commands are primarily of interest
-to tooling that might use {Singularity} as a container runtime, rather than end
-users. End users will general use the ``--oci`` mode with ``run / shell /
-exec``.
-
-Future Development
-==================
-
-As newer Linux kernels and system software reach production environments, many
-of the limitations that required {Singularity} to operate quite differently from
-OCI runtimes are becoming less-applicable. From 3.11, {Singularity} development
-will focus strongly on greater OCI compliance for typical usage, while
-maintaining the same ease-of-use and application focus.
-
-You can read more about these plans in the following article and open community
-roadmap:
-
-* https://sylabs.io/2022/02/singularityce-4-0-and-beyond/
-* https://github.com/sylabs/singularityce-community
-
-.. _oci_mode:
+1. The :ref:`OCI Mode section <oci_mode>` of this page introduces the OCI
+   runtime (``--oci``), which runs OCI / Docker containers in their native
+   format.
+2. The :ref:`OCI Command Group section <oci_command>` of this page documents the
+   ``singularity oci`` commands, which provide a low-level means to run
+   {Singularity} SIF containers with a command line that matches other OCI
+   runtimes.
+3. The :ref:`Support for Docker <singularity-and-docker>` page discusses
+   limitations, compatibility options, and best practices for running OCI /
+   Docker containers with {Singularity}'s default runtime.
 
 ********************
 OCI Mode (``--oci``)
 ********************
 
-Overview
-========
-
-Beginning in {Singularity} 3.11, users can run an OCI / Docker container in its
-native format by adding the ``--oci`` flag to a ``run / shell /exec`` command:
+Users can run an OCI / Docker container in its native format by adding the
+``--oci`` flag to a ``run / shell /exec`` command:
 
 .. code::
 
-  $ singularity shell --oci docker://ubuntu 
+  $ singularity shell --oci docker://ubuntu
   2023/02/06 11:00:10  info unpack layer: sha256:677076032cca0a2362d25cf3660072e738d1b96fe860409a33ce901d695d7ee8
   Singularity> echo "Hello OCI World!"
   Hello OCI World!
 
 In ``--oci`` mode, the familiar ``singularity`` command line is used, and
-friendly defaults such as auto-mounting of the ``$HOME`` directory are still
-applied. The user experience is similar to when the ``--compat`` flag is used
-with the default runtime mode.
+friendly defaults familiar from the native {Singularity} runtime - such as
+auto-mounting of the ``$HOME`` directory - are still
+applied. By and large, the user experience is similar to using the ``--compat``
+flag with the native runtime, without the need to translate the OCI spec into an
+approximately equivalent {Singularity} definition file.
 
-The ``--oci`` mode only works with OCI containers, i.e. those from sources
+.. note::
+
+  Like ``--compat`` mode in the native runtime, ``--oci`` mode provides a
+  writable container by default by using a tmpfs overlay.
+
+  See discussion of the ``--overlay`` flag, below, for other options, including
+  how to use persistent writable storage in OCI mode.
+
+The ``--oci`` mode only works with OCI containers, i.e., those from sources
 beginning with ``docker`` or ``oci``. {Singularity} retrieves and prepares the
-container image, before instructing a low-level OCI runtime (either ``runc`` or
-``crun``) to execute the container. When running containers in this way OCI
-image compatibility is improved. For example, the ``Dockerfile`` ``USER``
-directive can now be honored:
+container image, and then executes the container in a low-level OCI runtime
+(either ``runc`` or ``crun``). Running containers in this fashion greatly
+improves compatibility between {Singularity}'s features and the OCI
+specification. For example, when running in ``--oci`` mode, Singularity honors
+the Dockerfile ``USER`` directive:
 
-.. code:: 
+.. code::
 
-  # I am dtrudg-sylabs outside of the container
+  # I am joeuser outside of the container
   $ whoami
-  dtrudg-sylabs
+  joeuser
 
   # The Dockerfile adds a `testuser`
-  $ cat Dockerfile 
+  $ cat Dockerfile
   FROM alpine
-  MAINTAINER David Trudgian
+  MAINTAINER Joe User
   RUN addgroup -g 2000 testgroup
   RUN adduser -D -u 2000 -G testgroup testuser
   USER testuser
   CMD id
 
-  # I am testuser inside the container
-  $ singularity shell --oci docker-archive:docker-user.tar 
-  2023/02/06 11:05:38  info unpack layer: sha256:2815b02d45841c8d883e7b46b390e60fdfed11a471cccc85254595147e8e4588
-  2023/02/06 11:05:38  info unpack layer: sha256:bc1572635922ace72233986284e0b371556e9a985a642e70c339f58ea4f8548a
-  2023/02/06 11:05:38  info unpack layer: sha256:c93fe14ead6e5ea5328756a33aa9020d4d2bee5c2b974a95ae55b7412ee7e31a
-  Singularity> whoami
-  testuser
+  # Create and save a docker archive from this Dockerfile
+  $ docker build --tag docker-user-demo .
+  $ docker save docker-user-demo > docker-user-demo.tar
 
-.. warning::
+  # Run the docker archive from singularity
+  $ singularity run --oci docker-archive:./docker-user-demo.tar
+  Getting image source signatures
+  Copying blob 3f8df8c11beb done
+  Copying blob 78a822fe2a2d done
+  Copying blob f7cb6364f42b done
+  Copying config 59af11197a done
+  Writing manifest to image destination
+  INFO:    Converting OCI image to OCI-SIF format
+  INFO:    Squashing image to single layer
+  INFO:    Writing OCI-SIF image
+  INFO:    Cleaning up.
+  uid=2000(testuser) gid=2000(testgroup)
 
-  In {Singularity} 3.11, ``--oci`` mode is designated an experimental feature.
-  It has requirements and limitations that will be addressed when full OCI
-  support is introduced in 4.0.
+As the last line of output shows, the user inside the container run by
+``singularity run --oci`` is ``testuser`` (the user added as part of the
+Dockerfile) rather than ``joeuser`` (the user on the host).
 
-  Due to its experimental status, features may be added to ``--oci`` mode in
-  3.11.x patch releases, and small behavior changes may occur.
-
-  Use of ``--oci`` mode is appropriate where the default runtime does not
-  support execution of a particular Docker / OCI container image. At this time,
-  the default runtime should be preferred for general usage.
-
-Requirements
-============
+System Requirements
+===================
 
 To use OCI mode, the following requirements must be met by the host system:
 
 * Unprivileged user namespace creation is supported by the kernel, and enabled.
-* Subuid and subgid mappings are configured for users who require ``--oci`` mode.
+* Subuid and subgid mappings are configured for users who plan to run ``--oci``
+  mode.
 * The ``TMPDIR`` / ``SINGULARITY_TMPDIR`` is located on a filesystem that
   supports subuid/subgid mapping.
 * ``crun`` or ``runc`` are available on the ``PATH``.
 
-The majority of these requirements are in common with an unprivileged
-installation of {Singularity}, as ``--oci`` mode does not use setuid. See the
-admin guide for further information on configuring a system appropriately.
+The majority of these requirements are shared with the requirements of an
+unprivileged installation of {Singularity}, as OCI mode does not use
+setuid. See the admin guide for further information on configuring a system
+appropriately.
 
-Limitations
+Feature set
 ===========
 
-The ``--oci`` functionality is implemented on the existing ``run / shell /
-exec`` commands. These commands can be used in ``--oci`` mode in the same manner
-as with the default runtime, discussed elsewhere in this guide. However, not
-all flags or options for ``run / shell / exec`` are supported at this time.
+With the release of {Singularity} 4.0, the functionality available in OCI mode -
+that is, when running {Singularity} ``shell`` / ``exec`` / ``run`` commands with
+the ``--oci`` flag - is approaching feature-parity with the native {Singularity}
+runtime, with a couple of important exceptions (noted below).
+
+.. note::
+
+  {Singularity}'s OCI mode also supports the `Container Device Interface (CDI)
+  <https://github.com/container-orchestrated-devices/container-device-interface>`_
+  standard for making GPUs and other devices from the host available inside the
+  container. See the :ref:`CDI section <sec:cdi>`, below, for details.
 
 The following features are supported in ``--oci`` mode:
 
 * ``docker://``, ``docker-archive:``, ``docker-daemon:``, ``oci:``,
   ``oci-archive:`` image sources.
+
 * ``--fakeroot`` for effective root in the container.
-* Additional namespace requests with ``--net``, ``--uts``, ``--user``.
+
 * Bind mounts via ``--bind`` or ``--mount``.
+
+* ``--overlay`` to mount a SquashFS image (read-only), an EXT3 (read-only or
+  writable), or a directory (read-only or writable), as overlays within the
+  container.
+
+  * Allows changes to the filesystem to persist across runs of the OCI container
+
+  * Multiple simultaneous overlays are supported (though all but one must be
+    mounted as read-only).
+
+* ``--cwd`` (synonym: ``--pwd``) to set a custom starting working-directory for
+  the container.
+
+* ``--home`` to set the in-container user's home directory. Supplying a single
+  location (e.g. ``--home /myhomedir``) will result in a new tmpfs directory
+  being created at the specified location inside the container, and that dir
+  being set as the in-container user's home dir. Supplying two locations
+  separated by a colon (e.g. ``--home /home/user:/myhomedir``) will result in
+  the first location on the host being bind-mounted as the second location
+  in-container, and set as the in-container user's home dir.
+
+* ``--scratch`` (shorthand: ``-S``) to mount a tmpfs scratch directory in the
+  container.
+
+* `--workdir <workdir>`: if specified, will map `/tmp` and `/var/tmp` in the
+  container to `<workdir>/tmp` and `<workdir>/var_tmp`, respectively, on the
+  host (rather than to tmpfs storage, which is the default). If `--scratch
+  <scratchdir>` is used in conjunction with `--workdir`, scratch directories
+  will be mapped to subdirectories nested under `<workdir>/scratch` on the host,
+  rather than to tmpfs storage.
+
+* ``--no-home`` to prevent the container home directory from being mounted.
+
+* ``--no-mount`` to disable the mounting of ``proc``, ``sys``, ``devpts``,
+  ``tmp``, and ``home`` mounts in the container. Note: ``dev`` cannot be
+  disabled in OCI-mode, and ``bind-path`` mounts are not supported.
+
+* Support for the ``SINGULARITY_CONTAINLIBS`` environment variable, to specify
+  libraries to bind into ``/.singularity.d/libs/`` in the container.
+
+* ``--hostname`` to set a custom hostname inside the container. (This requires a
+  UTS namespace, therefore this flag will infer ``--uts``.)
+
+* Handling ``--dns`` and ``resolv.conf`` on a par with native mode: the
+  ``--dns`` flag can be used to pass a comma-separated list of DNS servers that
+  will be used in the container; if this flag is not used, the container will
+  use the same ``resolv.conf`` settings as the host.
+
+* Additional namespace requests with ``--net``, ``--uts``, ``--user``.
+
+* ``--no-privs`` to drop all capabilities from the container process and enable
+  the ``NoNewPrivileges`` flag.
+
+* ``--keep-privs`` to keep effective capabilities for the container process
+  (bounding set only for non-root container users).
+
+* ``--add-caps`` and ``--drop-caps``, to modify capabilities of the container
+  process.
+
 * ``--rocm`` to bind ROCm GPU libraries and devices into the container.
-* ``--nv`` to bind Nvidia driver / basic CUDA libraries and devices into the container.
+
+* ``--nv`` to bind NVIDIA driver / basic CUDA libraries and devices into the
+  container.
+
 * ``--apply-cgroups``, and the ``--cpu*``, ``--blkio*``, ``--memory*``,
   ``--pids-limit`` flags to apply resource limits.
 
-Other features are not supported, including but not limited to:
+Features that are not yet supported include but not limited to:
 
-* No support running Singularity SIF, SquashFS, or EXT3 images.
-* No mounts from image files (SIF, EXT3, etc.).
-* No support for overlays.
-* No CNI networking configuration.
-* No custom ``--security`` options.
-* No support for instances (starting containers in the background).
+* Custom ``--security`` options.
+
+* Support for instances (starting containers in the background).
 
 Future Development
 ==================
@@ -202,6 +237,62 @@ with the default native runtime. It will be possible to execute existing SIF
 format {Singularity} images using the OCI low-level runtime. In addition, SIF
 will support encapsulation of OCI images in their native format, without
 translation in to a {Singularity} image.
+
+.. _sec:cdi:
+
+********************************
+Container Device Interface (CDI)
+********************************
+
+Beginning in {Singularity} 4.0, ``--oci`` mode supports the `Container Device
+Interface (CDI)
+<https://github.com/container-orchestrated-devices/container-device-interface>`_
+standard for making GPUs and other devices from the host available inside the
+container. It offers an alternative to previous approaches that were vendor
+specific, and unevenly supported across different container runtimes. Users of
+NVIDIA GPUs, and other devices with CDI configurations, will benefit from a
+consistent way of using them in containers that spans the cloud native and HPC
+fields.
+
+{Singularity}'s "action" commands (``run`` / ``exec`` / ``shell``), when run in
+OCI mode, now support a ``--device`` flag:
+
+.. code::
+
+  --device strings                fully-qualified CDI device name(s).
+                                  A fully-qualified CDI device name
+                                  consists of a VENDOR, CLASS, and
+                                  NAME, which are combined as follows:
+                                  <VENDOR>/<CLASS>=<NAME> (e.g.
+                                  vendor.com/device=mydevice).
+                                  Multiple fully-qualified CDI device
+                                  names can be given as a comma
+                                  separated list.
+
+This allows device from the host to be mapped into the container with the added
+benefits of the CDI standard, including:
+
+* Exposing multiple nodes on ``/dev`` as part of what is, notionally, a single
+  "device".
+* Mounting files from the runtime namespace required to support the device.
+* Hiding procfs entries.
+* Performing compatibility checks between the container and the device to
+  determine whether to make it available in-container.
+* Performing runtime-specific operations (e.g. VM vs Linux container-based
+  runtimes).
+* Performing device-specific operations (e.g. scrubbing the memory of a GPU or
+  reconfiguring an FPGA).
+
+In addition, {Singularity}'s OCI mode provides a ``--cdi-dirs`` flag, which
+enables the user to override the default search directory for CDI definition
+files:
+
+.. code::
+
+  --cdi-dirs strings              comma-separated list of directories
+                                  in which CDI should look for device
+                                  definition JSON files. If omitted,
+                                  default will be: /etc/cdi,/var/run/cdi
 
 .. _oci_command:
 
@@ -285,7 +376,7 @@ For simple interactive use, the ``oci run`` command will create and start a
 container instance, attaching to it in the foreground. This is similar to the
 way ``singularity run`` works, with {Singularity}'s native runtime engine:
 
-.. code:: 
+.. code::
 
   $ sudo singularity oci run -b /var/tmp/busybox busybox1
   / # echo "Hello"
@@ -334,7 +425,7 @@ Check the state of the container using the ``oci state`` subcommand:
 Start the container's ``CMD/ENTRYPOINT`` or ``runscript`` with the ``oci
 start`` command:
 
-.. code:: 
+.. code::
 
   $ singularity start busybox1
 
@@ -343,13 +434,13 @@ There is no output, but if you check the container state it will now be
 will need to attach to its input and output streams. with the ``oci attach``
 command:
 
-.. code:: 
+.. code::
 
   $ sudo singularity oci attach busybox1
   / # date
   date
   Wed Apr 27 15:45:27 UTC 2022
-  / # 
+  / #
 
 When finished with the container, first ``oci kill`` running processes, than
 ``oci delete`` the container instance:
@@ -384,3 +475,49 @@ In {Singularity} 3.9 and prior, {Singularity}'s own low-level runtime was
 employed for ``oci`` operations. This was retired to simplify maintenance,
 improve OCI compliance, and make possible future development in the roadmap to
 4.0.
+
+OCI Spec Support
+================
+
+**OCI Image Spec** - {Singularity} can convert container images that satisfy the
+OCI Image Specification into its own SIF format, or a simple sandbox directory.
+Most of the configuration that a container image can specify is supported by the
+{Singularity} runtime, but there are :ref:`some limitations
+<singularity-and-docker>`, and workarounds are required for certain container
+images. From 3.11, the experimental ``--oci`` mode :ref:`can run containers OCI
+container images directly <oci_mode>`, to improve compatibility further.
+
+**OCI Distribution Spec** - {Singularity} is able to pull images from registries
+that satisfy the OCI Distribution Specification. Images can be pushed to
+registries that permit arbitrary content types, using ORAS.
+
+**OCI Runtime Spec** - By default, {Singularity} does not follow the OCI Runtime
+Specification closely. Instead, it uses its own runtime that is better matched
+to the requirements and limitations of multi-user shared compute environments.
+From 3.11, the experimental ``--oci`` mode :ref:`can run containers using a true
+OCI runtime <oci_mode>`.
+
+**OCI Runtime CLI** - The ``singularity oci`` commands were added to provide a
+mode of operation in which {Singularity} does implement the OCI runtime
+specification and container lifecycle. These commands are primarily of interest
+to tooling that might use {Singularity} as a container runtime, rather than end
+users. End users will general use the ``--oci`` mode with ``run / shell /
+exec``.
+
+Future Development
+==================
+
+As newer Linux kernels and system software reach production environments, many
+of the limitations that required {Singularity} to operate quite differently from
+OCI runtimes are becoming less-applicable. From 3.11, {Singularity} development
+will focus strongly on greater OCI compliance for typical usage, while
+maintaining the same ease-of-use and application focus.
+
+You can read more about these plans in the following article and open community
+roadmap:
+
+* https://sylabs.io/2022/02/singularityce-4-0-and-beyond/
+* https://github.com/sylabs/singularityce-community
+
+.. _oci_mode:
+

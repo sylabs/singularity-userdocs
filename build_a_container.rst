@@ -398,7 +398,7 @@ The ``--update`` option is only valid when used with sandbox containers.
 ``--nv``
 ========
 
-This flag allows you to mount the Nvidia CUDA libraries from your host
+This flag allows you to mount the NVIDIA CUDA libraries from your host
 environment into your build environment. Libraries are mounted during
 the execution of ``post`` and ``test`` sections.
 
