@@ -1,19 +1,25 @@
-##################
- Remote Endpoints
-##################
+.. _remote:
+
+################
+Remote Endpoints
+################
 
 ********
 Overview
 ********
 
-The ``remote`` command group allows users to manage the service
-endpoints {Singularity} will interact with for many common command
-flows. This includes managing credentials for image storage services,
-remote builders, and keyservers used to locate public keys for SIF
-image verification. Currently, there are three main types of remote
-endpoints managed by this command group: the public Sylabs Cloud (or
-local {Singularity} Enterprise installation), OCI registries, and
-keyservers.
+The ``remote`` command group allows users to manage the remote endpoint(s) that
+{Singularity} interacts with (the public Sylabs Cloud, or a local Singularity
+Enterprise installation).
+
+.. note::
+
+   In previous versions of {Singularity}, the ``remote`` command group also
+   included subcommands for interacting with OCI registries (for image storage
+   services), as well as keyservers (used to locate public keys for SIF image
+   verification). Beginning with version 4.0, this functionality has been moved
+   to dedicated top-level command groups: :ref:`registry<registry>` and
+   :ref:`keyserver<keyserver>`, respectively.
 
 *******************
 Public Sylabs Cloud
