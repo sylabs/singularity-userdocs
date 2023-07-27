@@ -16,5 +16,5 @@ culpa qui officia deserunt mollit anim id est laborum.
    In previous versions of {Singularity}, the functionality described here was
    grouped together with :ref:`remote endpoint management<remote>` under the
    ``remote`` command group. Beginning with version 4.0, this functionality has
-   been given its own top-level command group, `keyserver`.
+   been given its own top-level command group, ``keyserver``.
 
