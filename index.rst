@@ -69,6 +69,8 @@ process of building, signing, and sharing your containers.
    :maxdepth: 1
 
    Remote Endpoints <endpoint>
+   Keyserver Management <keyserver>
+   OCI Registries <registry>
    Sylabs Cloud Library <cloud_library>
 
 **************
