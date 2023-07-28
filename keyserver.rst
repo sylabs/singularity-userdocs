@@ -30,7 +30,7 @@ configured keyservers:
    $ singularity keyserver list
 
    SylabsCloud*^
-      #1  https://keys.sylabs.io  🔒
+      #1  https://keys.sylabs.io  TLS
 
    (* = system endpoint, ^ = default endpoint,
     + = user is logged in directly to this keyserver)
@@ -38,9 +38,9 @@ configured keyservers:
 We can see in the output of the ``list`` subcommand that "SylabsCloud" is the
 *default* remote endpoint (in other words, the endpoint that will be used by all
 {SingularityCE} commands unless otherwise specified), and that it is a *global*
-(in other words, system-level) endpoint. Furthermore, the lock icon next to
-``https://keys.sylabs.io`` indicates that TLS will be used when communicating
-with this keyserver.
+(in other words, system-level) endpoint. As can be seen above, the output also
+indicates that TLS will be used when communicating with the
+``https://keys.sylabs.io`` keyserver.
 
 We can add a key server to list of keyservers as follows:
 
@@ -50,8 +50,8 @@ We can add a key server to list of keyservers as follows:
    $ singularity keyserver list
 
    SylabsCloud*^
-      #1  https://keys.sylabs.io   🔒
-      #2  https://pgp.example.com  🔒
+      #1  https://keys.sylabs.io   TLS
+      #2  https://pgp.example.com  TLS
 
    (* = system endpoint, ^ = default endpoint,
     + = user is logged in directly to this keyserver)
@@ -66,8 +66,8 @@ should be added, by using the ``--order`` flag:
    $ singularity keyserver list
 
    SylabsCloud*^
-      #1  https://pgp.example.com  🔒
-      #2  https://keys.sylabs.io   🔒
+      #1  https://pgp.example.com  TLS
+      #2  https://keys.sylabs.io   TLS
 
    (* = system endpoint, ^ = default endpoint,
     + = user is logged in directly to this keyserver)
@@ -96,8 +96,8 @@ The output of `keyserver list` will now show that we are logged in to
    $ singularity keyserver list
 
    SylabsCloud *^
-      #1  https://pgp.example.com          🔒  +
-      #2  https://keys.sylabs.io           🔒
+      #1  https://pgp.example.com          TLS  +
+      #2  https://keys.sylabs.io           TLS
 
    (* = system endpoint, ^ = default endpoint,
     + = user is logged in directly to this keyserver)
