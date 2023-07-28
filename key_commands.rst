@@ -59,16 +59,15 @@ The output will look as it follows:
 
    Private key listing (/home/joana/.singularity/sypgp/pgp-secret):
 
-   0) U: Johnny Cash (none) <cash@sylabs.io>
-   C: 2019-04-11 22:22:28 +0200 CEST
-   F: 47282BDC661F58FA4BEBEF47CA576CBD8EF1A2B4
-   L: 3072
-   --------
-   1) U: John Green (none) <john@sylabs.io>
-   C: 2019-04-11 13:08:45 +0200 CEST
-   F: 5720799FE7B048CF36FAB8445EE1E2BD7B6342C5
-   L: 1024
-   --------
+   0)  User:              Johnny Cash (none) <cash@sylabs.io>
+       Creation time:     2019-04-11 22:22:28 +0200 CEST
+       Fingerprint:       47282BDC661F58FA4BEBEF47CA576CBD8EF1A2B4
+       Length (in bits):  3072
+
+   1)  User:              John Green (none) <john@sylabs.io>
+       Creation time:     2019-04-11 13:08:45 +0200 CEST
+       Fingerprint:       5720799FE7B048CF36FAB8445EE1E2BD7B6342C5
+       Length (in bits):  1024
 
 .. note::
 
@@ -108,21 +107,20 @@ keystore by running ``singularity key list -s`` command:
 
    Private key listing (/home/joana/.singularity/sypgp/pgp-secret):
 
-     0) U: Johnny Cash (none) <cash@sylabs.io>
-     C: 2019-04-11 22:22:28 +0200 CEST
-     F: 47282BDC661F58FA4BEBEF47CA576CBD8EF1A2B4
-     L: 3072
-     --------
-     1) U: John Green (none) <john@sylabs.io>
-     C: 2019-04-11 13:08:45 +0200 CEST
-     F: 5720799FE7B048CF36FAB8445EE1E2BD7B6342C5
-     L: 1024
-     --------
-     2) U: Pinkie Pie (Eternal chaos comes with chocolate rain!) <balloons@sylabs.io>
-     C: 2019-04-26 12:07:07 +0200 CEST
-     F: 8C10B902F438E4D504C3ACF689FCFFAED5F34A77
-     L: 1024
-     --------
+   1)  User:              Johnny Cash (none) <cash@sylabs.io>
+       Creation time:     2019-04-11 22:22:28 +0200 CEST
+       Fingerprint:       47282BDC661F58FA4BEBEF47CA576CBD8EF1A2B4
+       Length (in bits):  3072
+
+   2)  User:              John Green (none) <john@sylabs.io>
+       Creation time:     2019-04-11 13:08:45 +0200 CEST
+       Fingerprint:       5720799FE7B048CF36FAB8445EE1E2BD7B6342C5
+       Length (in bits):  1024
+
+   3)  User:              Pinkie Pie (Eternal chaos comes with chocolate rain!) <balloons@sylabs.io>
+       Creation time:     2019-04-26 12:07:07 +0200 CEST
+       Fingerprint:       8C10B902F438E4D504C3ACF689FCFFAED5F34A77
+       Length (in bits):  1024
 
 You will see the imported key at the bottom of the list. Remember you
 can also import an ``ascii`` armored key and this will be automatically

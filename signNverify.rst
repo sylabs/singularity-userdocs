@@ -128,19 +128,10 @@ or saved locally.`
 
    Public key listing (/home/dave/.singularity/sypgp/pgp-public):
 
-   0) U: David Trudgian (demo) <david.trudgian@sylabs.io>
-      C: 2019-11-15 09:54:54 -0600 CST
-      F: E5F780B2C22F59DF748524B435C3844412EE233B
-      L: 4096
-      --------
-
-In the output above the index of my key is ``0`` and the letters stand
-for the following:
-
-   -  U: User
-   -  C: Creation date and time
-   -  F: Fingerprint
-   -  L: Key length
+   0)  User:              David Trudgian (demo) <david.trudgian@sylabs.io>
+       Creation time:     2019-11-15 09:54:54 -0600 CST
+       Fingerprint:       E5F780B2C22F59DF748524B435C3844412EE233B
+       Length (in bits):  4096
 
 If you chose not to push your key to the keystore during the ``newpair``
 process, but later wish to, you can push it to a keystore configured
