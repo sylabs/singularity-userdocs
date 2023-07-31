@@ -240,7 +240,7 @@ specifying the ``--insecure`` flag:
    INFO:    Remote "test" added.
    INFO:    Global option detected. Will not automatically log into remote.
 
-This flag causes HTTP used instead of HTTPS *for service discovery only*. The
+This flag causes HTTP to be used instead of HTTPS *for service discovery only*. The
 protocol used to access individual library-, build- and keyservice-URLs is
 determined by the contents of the service discovery file.
 
