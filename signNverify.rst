@@ -104,8 +104,8 @@ command group like so:.
 
    $ singularity key newpair
 
-   Enter your name (e.g., John Doe) : David Trudgian
-   Enter your email address (e.g., john.doe@example.com) : david.trudgian@sylabs.io
+   Enter your name (e.g., John Doe) : Joe User
+   Enter your email address (e.g., john.doe@example.com) : myuser@example.com
    Enter optional comment (e.g., development keys) : demo
    Enter a passphrase :
    Retype your passphrase :
@@ -128,7 +128,7 @@ or saved locally.`
 
    Public key listing (/home/dave/.singularity/sypgp/pgp-public):
 
-   0)  User:              David Trudgian (demo) <david.trudgian@sylabs.io>
+   0)  User:              Joe User (demo) <myuser@example.com>
        Creation time:     2019-11-15 09:54:54 -0600 CST
        Fingerprint:       E5F780B2C22F59DF748524B435C3844412EE233B
        Length (in bits):  4096
@@ -153,7 +153,7 @@ download it again like so.
    Showing 1 results
 
    KEY ID    BITS  NAME/EMAIL
-   12EE233B  4096  David Trudgian (demo) <david.trudgian@sylabs.io>
+   12EE233B  4096  Joe User (demo) <myuser@example.com>
 
    $ singularity key pull 12EE233B
 
@@ -208,7 +208,7 @@ without needing to contact the Keystore.
 
    $ singularity verify my_container.sif
    Verifying image: my_container.sif
-   [LOCAL]   Signing entity: David Trudgian (Demo keys) <david.trudgian@sylabs.io>
+   [LOCAL]   Signing entity: Joe User (Demo keys) <myuser@example.com>
    [LOCAL]   Fingerprint: 65833F473098C6215E750B3BDFD69E5CEE85D448
    Objects verified:
    ID  |GROUP   |LINK    |TYPE
@@ -229,7 +229,7 @@ command again.
 
    $ singularity verify my_container.sif
    Verifying image: my_container.sif
-   [REMOTE]   Signing entity: David Trudgian (Demo keys) <david.trudgian@sylabs.io>
+   [REMOTE]   Signing entity: Joe User (Demo keys) <myuser@example.com>
    [REMOTE]   Fingerprint: 65833F473098C6215E750B3BDFD69E5CEE85D448
    Objects verified:
    ID  |GROUP   |LINK    |TYPE
@@ -286,7 +286,7 @@ option to ``sign`` and ``verify``.
 
    $ singularity verify --sif-id 1 my_container.sif
    Verifying image: my_container.sif
-   [LOCAL]   Signing entity: David Trudgian (Demo keys) <david.trudgian@sylabs.io>
+   [LOCAL]   Signing entity: Joe User (Demo keys) <myuser@example.com>
    [LOCAL]   Fingerprint: 65833F473098C6215E750B3BDFD69E5CEE85D448
    Objects verified:
    ID  |GROUP   |LINK    |TYPE
@@ -303,7 +303,7 @@ knowledge.
 
    $ singularity verify my_container.sif
    Verifying image: my_container.sif
-   [LOCAL]   Signing entity: David Trudgian (Demo keys) <david.trudgian@sylabs.io>
+   [LOCAL]   Signing entity: Joe User (Demo keys) <myuser@example.com>
    [LOCAL]   Fingerprint: 65833F473098C6215E750B3BDFD69E5CEE85D448
 
    Error encountered during signature verification: object 2: object not signed
@@ -327,7 +327,7 @@ the same ``--group-id`` option.
 
    $ singularity verify --group-id 1 my_container.sif
    Verifying image: my_container.sif
-   [LOCAL]   Signing entity: David Trudgian (Demo keys) <david.trudgian@sylabs.io>
+   [LOCAL]   Signing entity: Joe User (Demo keys) <myuser@example.com>
    [LOCAL]   Fingerprint: 65833F473098C6215E750B3BDFD69E5CEE85D448
    Objects verified:
    ID  |GROUP   |LINK    |TYPE
@@ -345,7 +345,7 @@ specifying ``--group-id`` can also verify the container:
 
    $ singularity verify my_container.sif
    Verifying image: my_container.sif
-   [LOCAL]   Signing entity: David Trudgian (Demo keys) <david.trudgian@sylabs.io>
+   [LOCAL]   Signing entity: Joe User (Demo keys) <myuser@example.com>
    [LOCAL]   Fingerprint: 65833F473098C6215E750B3BDFD69E5CEE85D448
    Objects verified:
    ID  |GROUP   |LINK    |TYPE
