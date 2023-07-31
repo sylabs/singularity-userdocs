@@ -371,17 +371,17 @@ Signing with a PEM key
 To sign a container using a private key in PEM format, provide the key material
 to the ``sign`` command using the ``--key`` flag:
 
-.. code:: 
+.. code::
 
-   $ singularity sign --key mykey.pem lolcow.sif 
+   $ singularity sign --key mykey.pem lolcow.sif
    INFO:    Signing image with key material from 'mykey.pem'
    INFO:    Signature created and applied to image 'lolcow.sif'
 
 The DSSE signature descriptor can now be seen by inspecting the SIF file:
 
-.. code:: 
+.. code::
 
-   $ singularity sif list lolcow.sif 
+   $ singularity sif list lolcow.sif
    ------------------------------------------------------------------------------
    ID   |GROUP   |LINK    |SIF POSITION (start-end)  |TYPE
    ------------------------------------------------------------------------------
@@ -396,15 +396,17 @@ The DSSE signature descriptor can now be seen by inspecting the SIF file:
    "payloadType": "application/vnd.sylabs.sif-metadata+json",
    ...
 
-Attempting to ``verify`` the image without options will fail, as it is not signed with a PGP key:
+Attempting to ``verify`` the image without options will fail, as it is not
+signed with a PGP key:
 
-.. code:: 
+.. code::
 
-   $ singularity verify lolcow.sif 
+   $ singularity verify lolcow.sif
    INFO:    Verifying image with PGP key material
    FATAL:   Failed to verify container: integrity: key material not provided for DSSE envelope signature
 
-Note that the error message shows that the container image has a DSSE signature present.
+Note that the error message shows that the container image has a DSSE signature
+present.
 
 Verifying with a PEM key
 ========================
@@ -412,9 +414,9 @@ Verifying with a PEM key
 To verify a container using a PEM public key directly, provide the key material
 to the ``verify`` command using the ``key`` flag:
 
-.. code:: 
+.. code::
 
-   $ singularity verify --key mypublic.pem lolcow.sif 
+   $ singularity verify --key mypublic.pem lolcow.sif
    INFO:    Verifying image with key material from 'mypublic.pem'
    Objects verified:
    ID  |GROUP   |LINK    |TYPE
@@ -428,11 +430,11 @@ to the ``verify`` command using the ``key`` flag:
 Verifying with an X.509 certificate
 ===================================
 
-To verify a container that was signed with a PEM private key, using an X.509 certificate,
-pass the certificate to the ``verify`` command using the ``--certificate`` flag.
-If the certificate is part of a chain, provide intermediate and valid root
-certificates with the ``--certificate-intermediates`` and
-``--certificate-roots`` flags:
+To verify a container that was signed with a PEM private key, using an X.509
+certificate, pass the certificate to the ``verify`` command using the
+``--certificate`` flag. If the certificate is part of a chain, provide
+intermediate and valid root certificates with the
+``--certificate-intermediates`` and ``--certificate-roots`` flags:
 
 .. code::
 
@@ -440,9 +442,9 @@ certificates with the ``--certificate-intermediates`` and
       --certificate leaf.pem \
       --certificate-intermediates intermediate.pem \
       --certificate-roots root.pem \
-      lolcow.sif 
+      lolcow.sif
 
-.. note:: 
+.. note::
 
    The certificate must have a usage field that allows code signing in order to
    verify container images.
@@ -454,14 +456,14 @@ When verifying a container using X.509 certificates, {Singularity} can perform
 online revocation checks using the Online Certificate Status Protocol (OCSP). To
 enable OCSP checks, add the ``--ocsp-verify`` flag to your ``verify`` command:
 
-.. code:: 
+.. code::
 
    $ singularity verify \
       --certificate leaf.pem \
       --certificate-intermediates intermediate.pem \
       --certificate-roots root.pem \
       --ocsp-verify
-      lolcow.sif 
+      lolcow.sif
 
 {Singularity} will then attempt to contact the prescribed OCSP responder for
 each certificate in the chain, in order to check that the relevant certificate
@@ -469,7 +471,7 @@ has not been revoked. In the event that an OCSP responder cannot be contacted,
 or a certificate has been revoked, verification will fail with a validation
 error:
 
-.. code:: 
+.. code::
 
    INFO:    Validate: cert:leaf  issuer:intermediate
    FATAL:   Failed to verify container: OCSP verification has failed

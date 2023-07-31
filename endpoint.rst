@@ -1,29 +1,34 @@
-##################
- Remote Endpoints
-##################
+.. _endpoint:
+
+################
+Remote Endpoints
+################
 
 ********
 Overview
 ********
 
-The ``remote`` command group allows users to manage the service
-endpoints {Singularity} will interact with for many common command
-flows. This includes managing credentials for image storage services,
-remote builders, and keyservers used to locate public keys for SIF
-image verification. Currently, there are three main types of remote
-endpoints managed by this command group: the public Sylabs Cloud (or
-local {Singularity} Enterprise installation), OCI registries, and
-keyservers.
+The ``remote`` command group allows users to manage the remote endpoint(s) that
+{Singularity} interacts with (the public Sylabs Cloud, or a local Singularity
+Enterprise installation).
+
+.. note::
+
+   In previous versions of {Singularity}, the ``remote`` command group also
+   included subcommands for interacting with OCI registries (for image storage
+   services), as well as keyservers (used to locate public keys for SIF image
+   verification). Beginning with version 4.0, this functionality has been moved
+   to dedicated top-level command groups: :ref:`registry<registry>` and
+   :ref:`keyserver<keyserver>`, respectively.
 
 *******************
 Public Sylabs Cloud
 *******************
 
-Sylabs introduced the online `Sylabs Cloud
-<https://cloud.sylabs.io/home>`_ to enable users to `Create
-<https://cloud.sylabs.io/builder>`_, `Secure
-<https://cloud.sylabs.io/keystore?sign=true>`_, and `Share
-<https://cloud.sylabs.io/library>`_ their container images with others.
+Sylabs introduced the online `Sylabs Cloud <https://cloud.sylabs.io/home>`_ to
+enable users to `Create <https://cloud.sylabs.io/builder>`_ container images,
+`Secure <https://cloud.sylabs.io/keystore?sign=true>`_ them, and `Share
+<https://cloud.sylabs.io/library>`_ them with others.
 
 A fresh, default installation of {Singularity} is configured to connect to the
 public services available at `cloud.sylabs.io <https://cloud.sylabs.io>`__. If
@@ -42,7 +47,7 @@ authentication token, which you then provide to ``singularity remote login``:
       prompted.
 
 Once your token is stored, you can check that you are able to connect to
-the services with the ``status`` subcommand:
+the services by using the ``status`` subcommand:
 
 .. code:: console
 
@@ -61,12 +66,12 @@ the services with the ``status`` subcommand:
 
    Valid authentication token set (logged in).
 
-If you see any errors you may need to check if your system requires the setting
+If you see any errors, you may need to check if your system requires the setting
 of environment variables for a network proxy, or if a firewall may be blocking
-access to ``*.sylabs.io``. Talk to your system administrator.
+access to ``*.sylabs.io``. Consult your system administrator.
 
-You can interact with the public Sylabs Cloud using various
-{Singularity} commands:
+You can interact with the public Sylabs Cloud using various {Singularity}
+commands:
 
 `pull
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_pull.html>`__,
@@ -91,16 +96,16 @@ You can interact with the public Sylabs Cloud using various
 
 .. note::
 
-   Using the commands listed above will not interact with the Sylabs cloud if
+   Using the commands listed above will *not* interact with the Sylabs Cloud if
    given URIs beginning with ``docker://``, ``oras://`` or ``shub://``.
 
 *************************
 Managing Remote Endpoints
 *************************
 
-Users can setup and switch between multiple remote endpoints, which are
-stored in their ``~/.singularity/remote.yaml`` file. Alternatively,
-remote endpoints can be set system-wide by an administrator.
+Users can set up and switch between multiple remote endpoints, which will be
+stored in their ``~/.singularity/remote.yaml`` file. Alternatively, remote
+endpoints can be set on a system-wide basis by an administrator.
 
 A remote endpoint may be the public Sylabs Cloud, a private installation of
 Singularity Enterprise, or any community-developed service that is
@@ -110,32 +115,23 @@ Generally, users and administrators should manage remote endpoints using
 the ``singularity remote`` command, and avoid editing ``remote.yaml``
 configuration files directly.
 
-List and Login to Remotes
-=========================
+Listing and Logging In to Remote Endpoints
+==========================================
 
-To ``list`` existing remote endpoints, run this:
+To ``list`` existing remote endpoints, run the following:
 
 .. code:: console
 
    $ singularity remote list
 
-   Cloud Services Endpoints
-   ========================
+   NAME         URI              DEFAULT?  GLOBAL?  EXCLUSIVE?  SECURE?
+   SylabsCloud  cloud.sylabs.io  ✓         ✓                    ✓
 
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                     GLOBAL  INSECURE  ORDER
-   https://keys.sylabs.io  YES     NO        1*
-
-The ``YES`` in the ``ACTIVE`` column for ``SylabsCloud`` shows that this
+The ``✓`` in the ``DEFAULT?`` column for ``SylabsCloud`` shows that this
 is the current default remote endpoint.
 
-To ``login`` to a remote for the first time, or when a token
-needs to be replaced (if it has expired or been revoked):
+To ``login`` to a remote for the first time, or when a token needs to be
+replaced (if it has expired or been revoked), run the following:
 
 .. code:: console
 
@@ -145,13 +141,13 @@ needs to be replaced (if it has expired or been revoked):
    # Login to another remote endpoint
    $ singularity remote login <remote_name>
 
-   # example...
+   # example:
    $ singularity remote login SylabsCloud
-   singularity remote login SylabsCloud
-   INFO:    Authenticating with remote: SylabsCloud
-   Generate an API Key at https://cloud.sylabs.io/auth/tokens, and paste here:
-   API Key:
-   INFO:    API Key Verified!
+   Generate an access token at https://cloud.sylabs.io/auth/tokens, and paste it here.
+   Token entered will be hidden for security.
+   Access Token:
+   INFO:    Access Token Verified!
+   INFO:    Token stored in /home/myuser/.singularity/remote.yaml
 
 If you ``login`` to a remote that you already have a valid token for, you will
 be prompted for confirmation that you indeed want to replace the current token,
@@ -161,7 +157,7 @@ If you enter an incorrect token your existing token will not be replaced,
 .. code:: console
 
    $ singularity remote login
-   An access token is already set for this remote. Replace it? [N/y] y
+   An access token is already set for this remote. Replace it? [y/N] y
    Generate an access token at https://cloud.sylabs.io/auth/tokens, and paste it here.
    Token entered will be hidden for security.
    Access Token:
@@ -172,10 +168,12 @@ If you enter an incorrect token your existing token will not be replaced,
 .. note::
 
    It is important for users to be aware that the ``remote login`` command will
-   store the supplied credentials or tokens unencrypted in your home directory.
+   store the supplied credentials or tokens **unencrypted** in your home
+   directory. Please ensure that the access permissions on your home directory
+   are set accordingly, to protect your credentials from unwanted access.
 
-Add & Remove Remotes
-====================
+Adding and Removing Remote Endpoints
+====================================
 
 To ``add`` a remote endpoint (for the current user only):
 
@@ -189,33 +187,32 @@ hosted at enterprise.example.com:
 .. code:: console
 
    $ singularity remote add myremote https://enterprise.example.com
-
    INFO:    Remote "myremote" added.
-   INFO:    Authenticating with remote: myremote
-   Generate an API Key at https://enterprise.example.com/auth/tokens, and paste here:
-   API Key:
+   Generate an access token at https://enterprise.example.com/auth/tokens, and paste it here.
+   Token entered will be hidden for security.
+   Access Token:
 
-You will be prompted to setup an API key as the remote is added. The ``add``
-subcommand will provide you with the web address you need to visit to generate
-your new key.
+You will be prompted to setup an API key as the remote is added. As the example
+above shows, the output of the ``add`` subcommand will provide you with the web
+address you need to visit in order to generate your new access token.
 
 To ``add`` a global remote endpoint (available to all users on the
-system) an administrative user should run:
+system), an administrative user should run:
 
 .. code:: console
 
    $ sudo singularity remote add --global <remote_name> <remote_uri>
 
    # example...
-   $ sudo singularity remote add --global company-remote https://enterprise.example.com
+   $ sudo singularity remote add --global company-remote https://enterprise7.example.com
    INFO:    Remote "company-remote" added.
    INFO:    Global option detected. Will not automatically log into remote.
 
 .. note::
 
-   Global remote configurations can only be modified by the root user and are
+   Global remote configurations can only be modified by the root user, and are
    stored in the ``etc/singularity/remote.yaml`` file under the {Singularity}
-   installation location.
+   installation directory.
 
 Conversely, to ``remove`` an endpoint:
 
@@ -243,7 +240,7 @@ specifying the ``--insecure`` flag:
    INFO:    Remote "test" added.
    INFO:    Global option detected. Will not automatically log into remote.
 
-This flag controls HTTP vs HTTPS only for service discovery. The
+This flag causes HTTP to be used instead of HTTPS *for service discovery only*. The
 protocol used to access individual library-, build- and keyservice-URLs is
 determined by the contents of the service discovery file.
 
@@ -263,41 +260,49 @@ column in the output of ``remote list``:
 .. code:: console
 
    $ singularity remote list
-   Cloud Services Endpoints
-   ========================
 
-   NAME            URI                     ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud     cloud.sylabs.io         YES     YES     NO
-   company-remote  enterprise.example.com  NO      YES     NO
-   myremote        enterprise.example.com  NO      NO      NO
+   NAME            URI                      DEFAULT?  GLOBAL?  EXCLUSIVE?  SECURE?
+   SylabsCloud     cloud.sylabs.io                    ✓                    ✓
+   company-remote  enterprise7.example.com            ✓                    ✓
+   myremote        enterprise.example.com   ✓                              ✓
+   test            test.example.com                   ✓                    ✓
 
-   Keyservers
-   ==========
-
-   URI                     GLOBAL  INSECURE  ORDER
-   https://keys.sylabs.io  YES     NO        1*
-
-   * Active cloud services keyserver
-
-   $ singularity remote use myremote
-   INFO:    Remote "myremote" now in use.
+   $ singularity remote use SylabsCloud
+   INFO:    Remote "SylabsCloud" now in use.
 
    $ singularity remote list
-   Cloud Services Endpoints
-   ========================
 
-   NAME            URI                     ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud     cloud.sylabs.io         NO      YES     NO
-   company-remote  enterprise.example.com  NO      YES     NO
-   myremote        enterprise.example.com  YES     NO      NO
+   NAME            URI                      DEFAULT?  GLOBAL?  EXCLUSIVE?  SECURE?
+   SylabsCloud     cloud.sylabs.io          ✓         ✓                    ✓
+   company-remote  enterprise7.example.com            ✓                    ✓
+   myremote        enterprise.example.com                                  ✓
+   test            test.example.com                   ✓                    ✓
 
-   Keyservers
-   ==========
+In the example above, the default remote at the start (before being changed to
+``SylabsCloud``) was ``myremote``. That is because adding a new remote endpoint
+automatically makes the newly-added endpoint the default one, and the same user
+had previously used the ``remote add`` command to add the ``myremote`` endpoint.
+This behavior can be suppressed by passing the ``--no-default`` flag to the
+``remote add`` command, which will then add a new remote endpoint but leave the
+default endpoint unchanged:
 
-   URI                       GLOBAL  INSECURE  ORDER
-   https://keys.example.com  YES     NO        1*
+.. code:: console
 
-   * Active cloud services keyserver
+   $ singularity remote add --no-default myotherremote https://enterprise2.example.com
+   INFO:    Remote "myotherremote" added.
+   Generate an access token at https://enterprise2.example.com/auth/tokens, and paste it here.
+   Token entered will be hidden for security.
+   Access Token:
+
+  $ singularity remote list
+
+   NAME            URI                      DEFAULT?  GLOBAL?  EXCLUSIVE?  SECURE?
+   SylabsCloud     cloud.sylabs.io          ✓         ✓                    ✓
+   company-remote  enterprise7.example.com            ✓                    ✓
+   myotherremote   enterprise2.example.com                                 ✓
+   myremote        enterprise.example.com                                  ✓
+   test            test.example.com                   ✓                    ✓
+
 
 {Singularity} 3.7 introduces the ability for an administrator to make a remote
 the only usable remote for the system, using the ``--exclusive`` flag:
@@ -306,22 +311,15 @@ the only usable remote for the system, using the ``--exclusive`` flag:
 
    $ sudo singularity remote use --exclusive company-remote
    INFO:    Remote "company-remote" now in use.
+
    $ singularity remote list
-   Cloud Services Endpoints
-   ========================
 
-   NAME            URI                     ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud     cloud.sylabs.io         NO      YES     NO
-   company-remote  enterprise.example.com  YES     YES     YES
-   myremote        enterprise.example.com  NO      NO      NO
-
-   Keyservers
-   ==========
-
-   URI                       GLOBAL  INSECURE  ORDER
-   https://keys.example.com  YES     NO        1*
-
-   * Active cloud services keyserver
+   NAME            URI                      DEFAULT?  GLOBAL?  EXCLUSIVE?  SECURE?
+   SylabsCloud     cloud.sylabs.io                    ✓                    ✓
+   company-remote  enterprise7.example.com  ✓         ✓        ✓           ✓
+   myotherremote   enterprise2.example.com                                 ✓
+   myremote        enterprise.example.com                                  ✓
+   test            test.example.com                   ✓                    ✓
 
 This, in turn, prevents users from changing the remote they use:
 
@@ -342,237 +340,4 @@ If you do not want to switch remote with ``remote use``, you can:
 -  Instruct certain subcommands of the ``key`` command to use an alternative
    keyserver using the ``--url`` option (for example:
    ``singularity key search --url https://keys.example.com foobar``).
-
-************************
-Keyserver Configurations
-************************
-
-By default, {Singularity} will use the keyserver defined by the active remote's
-service discovery file. This behavior can be changed or supplemented via the
-``add-keyserver`` and ``remove-keyserver`` subcommands. These commands allow an
-administrator to create a global list of keyservers that will be used to verify
-container signatures by default, where ``order 1`` will be the first in the
-list. Other operations performed by {Singularity} that reach out to a keyserver
-will only use the first, or ``order 1``, keyserver.
-
-When listing the default remotes, we can see that the default keyserver is
-``https://keys.sylabs.io`` and the asterisk next to its order indicates that it
-is the keyserver associated with the current remote endpoint. We can also see
-the ``INSECURE`` column indicating that {Singularity} will use TLS when
-communicating with the keyserver.
-
-.. code:: console
-
-   $ singularity remote list
-   Cloud Services Endpoints
-   ========================
-
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                     GLOBAL  INSECURE  ORDER
-   https://keys.sylabs.io  YES     NO        1*
-
-   * Active cloud services keyserver
-
-We can add a key server to list of keyservers as follows:
-
-.. code:: console
-
-   $ sudo singularity remote add-keyserver https://pgp.example.com
-   $ singularity remote list
-   Cloud Services Endpoints
-   ========================
-
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                      GLOBAL  INSECURE  ORDER
-   https://keys.sylabs.io   YES     NO        1*
-   https://pgp.example.com  YES     NO        2
-
-   * Active cloud services keyserver
-
-Here, we see that the ``https://pgp.example.com`` keyserver was
-added to the list. We can specify the order in the list in which this keyserver
-should be added, by using the ``--order`` flag:
-
-.. code:: console
-
-   $ sudo singularity remote add-keyserver --order 1 https://pgp.example.com
-   $ singularity remote list
-   Cloud Services Endpoints
-   ========================
-
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                      GLOBAL  INSECURE  ORDER
-   https://pgp.example.com  YES     NO        1
-   https://keys.sylabs.io   YES     NO        2*
-
-   * Active cloud services keyserver
-
-Since we specified ``--order 1``, the ``https://pgp.example.com`` keyserver was
-added as the first entry in the list, and the default keyserver was moved to
-second in the list. With this keyserver configuration, all default image
-verification performed by {Singularity} will, when searching for public keys,
-reach out to ``https://pgp.example.com`` first, and only then to
-``https://keys.sylabs.io``.
-
-If a keyserver requires authentication prior to being used, users can login
-as follows, supplying the password or an API token at the prompt:
-
-.. code:: console
-
-   $ singularity remote login --username myname https://pgp.example.com
-   Password (or token when username is empty):
-   INFO:    Token stored in /home/myname/.singularity/remote.yaml
-
-The output of `remote list` will now show that we are logged in to
-``https://pgp.example.com``:
-
-.. code:: console
-
-   $ singularity remote list
-   Cloud Services Endpoints
-   ========================
-
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                      GLOBAL  INSECURE  ORDER
-   https://pgp.example.com  YES     NO        1
-   https://keys.sylabs.io   YES     NO        2*
-
-   * Active cloud services keyserver
-
-   Authenticated Logins
-   =================================
-
-   URI                     INSECURE
-   https://pgp.example.com NO
-
-.. note::
-
-   It is important for users to be aware that the ``remote login`` command will
-   store the supplied credentials or tokens unencrypted in your home directory.
-
-***********************
-Managing OCI Registries
-***********************
-
-It is common for users of {Singularity} to use
-`OCI <https://opencontainers.org/>`__ registries as sources for their container
-images. Some registries require credentials to access certain images or even the
-registry itself. Previously, the only method in {Singularity} to supply
-credentials to registries was to supply credentials for each command or set
-environment variables to contain the credentials for a single registry. See
-:ref:`Authentication via Interactive Login
-<sec:authentication_via_docker_login>` and :ref:`Authentication via Environment
-Variables <sec:authentication_via_environment_variables>`.
-
-Starting with {Singularity} 3.7, users can supply credentials
-on a per-registry basis with the ``remote`` command.
-
-Users can login to an OCI registry with the ``remote login`` command by
-specifying a ``docker://`` prefix to the registry hostname:
-
-.. code:: console
-
-   $ singularity remote login --username myname docker://docker.io
-   Password (or token when username is empty):
-   INFO:    Token stored in /home/myname/.singularity/remote.yaml
-
-   $ singularity remote list
-   Cloud Services Endpoints
-   ========================
-
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                     GLOBAL  INSECURE  ORDER
-   https://keys.sylabs.io  YES     NO        1*
-
-   * Active cloud services keyserver
-
-   Authenticated Logins
-   =================================
-
-   URI                 INSECURE
-   docker://docker.io  NO
-
-An entry for ``docker://docker.io`` now shows up under ``Authenticated Logins``,
-and {Singularity} will automatically supply the configured credentials when
-interacting with DockerHub. We can also see the ``INSECURE`` column indicating
-that {Singularity} will use TLS when communicating with the registry.
-
-We can be logged-in to multiple OCI registries at the same time:
-
-.. code:: console
-
-   $ singularity remote login --username myname docker://registry.example.com
-   Password (or token when username is empty):
-   INFO:    Token stored in /home/myname/.singularity/remote.yaml
-
-   $ singularity remote list
-   Cloud Services Endpoints
-   ========================
-
-   NAME         URI              ACTIVE  GLOBAL  EXCLUSIVE
-   SylabsCloud  cloud.sylabs.io  YES     YES     NO
-
-   Keyservers
-   ==========
-
-   URI                     GLOBAL  INSECURE  ORDER
-   https://keys.sylabs.io  YES     NO        1*
-
-   * Active cloud services keyserver
-
-   Authenticated Logins
-   =================================
-
-   URI                            INSECURE
-   docker://docker.io             NO
-   docker://registry.example.com  NO
-
-{Singularity} will supply the correct credentials for the registry based
-on the hostname used, whenever using the following commands with a
-``docker://`` or ``oras://`` URI:
-
-`pull
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_pull.html>`__,
-`push
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_push.html>`__,
-`build
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_build.html>`__,
-`exec
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_exec.html>`__,
-`shell
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`__,
-`run
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__,
-`instance
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__
-
-.. note::
-
-   It is important for users to be aware that the ``remote login`` command will
-   store the supplied credentials or tokens unencrypted in your home directory.
 
