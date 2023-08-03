@@ -58,18 +58,20 @@ Users can run an OCI / Docker container in its native format by adding the
 
 In ``--oci`` mode, the familiar ``singularity`` command line is used, and
 friendly defaults familiar from the native {Singularity} runtime - such as
-auto-mounting of the ``$HOME`` directory - are still
-applied. By and large, the user experience is similar to using the ``--compat``
-flag with the native runtime, without the need to translate the OCI spec into an
-approximately equivalent {Singularity} definition file.
+auto-mounting of the ``$HOME`` directory - are still applied. By and large, the
+user experience is similar to using the ``--compat`` flag with the native
+runtime, without the need to translate the OCI image into an approximately
+equivalent {Singularity} image, that contains {Singularity}-specific metadata
+and scripts.
 
 .. note::
 
   Like ``--compat`` mode in the native runtime, ``--oci`` mode provides a
-  writable container by default by using a tmpfs overlay.
+  writable container by default by using a tmpfs overlay. This means that, by
+  default, changes to the filesystem are lost when the container exits.
 
-  See discussion of the ``--overlay`` flag, below, for other options, including
-  how to use persistent writable storage in OCI mode.
+  For a discussion of persistent writable storage in OCI mode, see discussion of
+  the ``--overlay`` flag, below.
 
 The ``--oci`` mode only works with OCI containers, i.e., those from sources
 beginning with ``docker`` or ``oci``. {Singularity} retrieves and prepares the
@@ -151,7 +153,8 @@ runtime, with a couple of important exceptions (noted below).
 The following features are supported in ``--oci`` mode:
 
 * ``docker://``, ``docker-archive:``, ``docker-daemon:``, ``oci:``,
-  ``oci-archive:`` image sources.
+  ``oci-archive:``, ``library://``, ``oras://``, ``http://``, and ``https://``
+  image sources.
 
 * ``--fakeroot`` for effective root in the container.
 
@@ -223,7 +226,7 @@ The following features are supported in ``--oci`` mode:
 * ``--apply-cgroups``, and the ``--cpu*``, ``--blkio*``, ``--memory*``,
   ``--pids-limit`` flags to apply resource limits.
 
-Features that are not yet supported include but not limited to:
+Features that are not yet supported include but are not limited to:
 
 * Custom ``--security`` options.
 
