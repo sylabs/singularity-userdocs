@@ -275,7 +275,7 @@ below with their respective functionality.
    ``singularity.conf``. Accepts ``proc / sys / dev / devpts / home / tmp /
    hostfs / cwd``, or the source path for a system specifc bind.
 
-#. **SINGULARITY_NO_NV**: Flag to disable Nvidia support. Opposite of
+#. **SINGULARITY_NO_NV**: Flag to disable NVIDIA support. Opposite of
    ``SINGULARITY_NV``.
 
 #. **SINGULARITY_NO_PRIVS**: To drop all the privileges from root user
@@ -284,7 +284,7 @@ below with their respective functionality.
 #. **SINGULARITY_NO_UMASK**: Set to true to prevent host umask propagating
    to container, and use a default 0022 unmask instead. Default is false.
 
-#. **SINGULARITY_NV**: To enable Nvidia GPU support. Default is
+#. **SINGULARITY_NV**: To enable NVIDIA GPU support. Default is
    set to false.
 
 #. **SINGULARITY_NVCCLI**: To use nvidia-container-cli for container GPU setup

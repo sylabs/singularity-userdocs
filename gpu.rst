@@ -16,7 +16,7 @@ Applications that support OpenCL for compute acceleration can also be
 used easily, with an additional bind option.
 
 With {Singularity} 3.9 experimental support has been introduced to use
-Nvidia's ``nvidia-container-cli`` tooling for GPU container setup. This
+NVIDIA's ``nvidia-container-cli`` tooling for GPU container setup. This
 functionality, accessible via the new ``--nvccli`` flag, improves
 compatibility with OCI runtimes and exposes additional container
 configuration options.
