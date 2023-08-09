@@ -68,6 +68,39 @@ support for 'unprivileged user namespace creation'. This means a normal
 user can create a user namespace, in which most setup operations needed
 to run a container can be run, unprivileged.
 
+Security Implications of Unprivileged User Namespaces
+=====================================================
+
+.. warning::
+
+   **If you rely on the ECL or other container execution limits, you must
+   disable unprivileged user namespace creation on your systems.**
+
+When unprivileged user namespace creation is allowed on a system, a user can
+supply and use their own unprivileged installation of Singularity or another
+container runtime. They may also be able to use standard system tools such as
+``unshare``, ``nsenter``, and FUSE mounts to access / execute arbitrary
+containers without installing any runtime. Both of these approaches will allow
+users to bypass any restrictions that have been set in a system-wide
+installation of {Singularity}. These include:
+
+* The ``allow container`` and ``limit container`` directives in
+  ``singularity.conf``.
+* The Execution Control List, which restricts execution of SIF container images
+  via signature checks.
+
+Note also that {Singularity}'s `--oci` mode is an unprivileged runtime that
+requires unprivileged user namespace creation. It does not implement the
+container restrictions that cannot be effectively enforced when unprivileged
+user namespaces are available.
+
+If your primary security concern is that of restricting the containers which
+users can execute, you should use singularity in setuid mode, and ensure
+unprivileged user namespace creation is disabled on the host.
+
+Configuration and Limitations of User Namespace Mode
+====================================================
+
 {Singularity} supports running containers without setuid, using user
 namespaces. It can be compiled with the ``--without-setuid`` option, or
 ``allow setuid = no`` can be set in ``singularity.conf`` to enable this.
@@ -104,6 +137,9 @@ approach:
    code could have greater impact than vulnerabilities confined to a
    single piece of setuid software, and are therefore reluctant to
    enable unprivileged user namespace creation.
+
+-  Limitations on container execution by location, valid signatures, user/group
+   cannot be enforced.
 
 Because of the points above, the default mode of operation of
 {Singularity} uses a setuid binary. Sylabs aims to reduce the
@@ -168,12 +204,12 @@ against the Sylabs Cloud Container Library. A keystore in the Sylabs
 Cloud makes it easier to share and obtain public keys for container
 verification.
 
-A container could be signed once, by a trusted individual who approves
-its use. It could also be signed with multiple keys, to signify it has
-passed each step in a CI/CD QA & Security process. {Singularity} can be
-configured with an execution control list (ECL), which requires the
-presence of one or more valid signatures, to limit execution to approved
-containers.
+A container may be signed once, by a trusted individual who approves its use. It
+could also be signed with multiple keys to signify it has passed each step in a
+CI/CD QA & Security process. In setuid mode, {Singularity} can be configured
+with an execution control list (ECL). The ECL requires the presence of one or
+more valid signatures, to limit execution to approved containers on systems that
+have unprivileged user namespace creation disabled.
 
 In {Singularity} 3.4 and above, the root filesystem of a container
 (stored in the SquashFS partition of SIF) can be encrypted. As a result,
