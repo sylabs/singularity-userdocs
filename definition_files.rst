@@ -722,7 +722,7 @@ line of text to the ``%labels`` section. The portion of text up to the
 first space will be taken as the label's name, and the portion following
 it will be taken as the label's value.
 
-In the previous example, the first label name is ``Author``` with a
+In the previous example, the first label name is ``Author`` with a
 value of ``myuser@example.com``. The second label name is ``Version`` with a
 value of ``v0.0.1``. Finally, the third label name is ``MyLabel`` with a
 value of ``Hello World``.
