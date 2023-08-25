@@ -99,6 +99,19 @@ plugin, use the ``inspect`` command.
    Author: Sylabs Team
    Version: 0.1.0
 
+To compile a plugin, use the ``compile`` command.
+
+.. code::
+
+    $ singularity plugin compile examples/plugins/log-plugin/
+    INFO:    Plugin built to: /home/myuser/singularity/examples/plugins/log-plugin/log-plugin.sif
+
+.. note::
+
+    Before using the ``plugin compile`` subcommand, make sure that you trust the
+    origin of the plugin, and that you are certain it does not contain any
+    malicious code.
+
 To install a plugin, use the ``install`` command. This operation
 requires root privilege.
 
@@ -108,6 +121,15 @@ requires root privilege.
    $ singularity plugin list
    ENABLED  NAME
        yes  sylabs.io/cli-plugin
+
+.. note::
+
+    Before using the ``plugin install`` subcommand, make sure that you trust the
+    origin of the plugin, and that you are certain it does not contain any
+    malicious code.
+
+    For further information on verifying the contents of SIF files using
+    cryptographic signatures, see the :ref:`Sign and Verify section <signNverify>`.
 
 After successful installation, the plugin will automatically be enabled.
 Any plugin can be disabled with the ``disable`` command and re-enabled
