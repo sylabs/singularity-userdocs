@@ -74,7 +74,9 @@ different kinds of data that are cached:
    $HOME/.singularity/cache/blob
    $HOME/.singularity/cache/library
    $HOME/.singularity/cache/net
+   $HOME/.singularity/cache/oci-sif
    $HOME/.singularity/cache/oci-tmp
+   $HOME/.singularity/cache/oras
    $HOME/.singularity/cache/shub
 
 You can safely delete these directories, or content within them.
@@ -124,8 +126,8 @@ To view a summary of cache usage, use ``singularity cache list``:
 .. code::
 
    $ singularity cache list
-   There are 4 container file(s) using 59.45 MB and 23 oci blob file(s) using 379.10 MB of space
-   Total space used: 438.55 MB
+   There are 5 container file(s) using 74.80 MiB and 18 oci blob file(s) using 71.70 MiB of space
+   Total space used: 146.50 MiB
 
 To view more detailed information, use ``singularity cache list -v``:
 
@@ -133,47 +135,53 @@ To view more detailed information, use ``singularity cache list -v``:
 
    $ singularity cache list -v
    NAME                     DATE CREATED           SIZE             TYPE
-   0ed5a98249068fe0592edb   2020-05-27 12:57:22    192.21 MB        blob
-   1d9cd1b99a7eca56d8f2be   2020-05-28 15:19:07    0.35 kB          blob
-   219c332183ec3800bdfda4   2020-05-28 12:22:13    0.35 kB          blob
-   2adae3950d4d0f11875568   2020-05-27 12:57:16    51.83 MB         blob
-   376057ac6fa17f65688c56   2020-05-27 12:57:12    50.39 MB         blob
-   496548a8c952b37bdf149a   2020-05-27 12:57:14    10.00 MB         blob
-   5a63a0a859d859478f3046   2020-05-27 12:57:13    7.81 MB          blob
-   5efaeecfa72afde779c946   2020-05-27 12:57:25    0.23 kB          blob
-   6154df8ff9882934dc5bf2   2020-05-27 08:37:22    0.85 kB          blob
-   70d0b3967cd8abe96c9719   2020-05-27 12:57:24    26.61 MB         blob
-   8f5af4048c33630473b396   2020-05-28 15:19:07    0.57 kB          blob
-   95c3f3755f37380edb2f8f   2020-05-28 14:07:20    2.48 kB          blob
-   96878229af8adf91bcbf11   2020-05-28 14:07:20    0.81 kB          blob
-   af88fdb253aac46693de78   2020-05-28 12:22:13    0.58 kB          blob
-   bb94ffe723890b4d62d742   2020-05-27 12:57:23    6.15 MB          blob
-   c080bf936f6a1fdd2045e3   2020-05-27 12:57:25    1.61 kB          blob
-   cbdbe7a5bc2a134ca8ec91   2020-05-28 12:22:13    2.81 MB          blob
-   d51af753c3d3a984351448   2020-05-27 08:37:21    28.56 MB         blob
-   d9cbbca60e5f0fc028b13c   2020-05-28 15:19:06    760.85 kB        blob
-   db8816f445487e48e1d614   2020-05-27 12:57:25    1.93 MB          blob
-   fc878cd0a91c7bece56f66   2020-05-27 08:37:22    32.30 kB         blob
-   fee5db0ff82f7aa5ace634   2020-05-27 08:37:22    0.16 kB          blob
-   ff110406d51ca9ea722112   2020-05-27 12:57:25    7.78 kB          blob
-   sha256.02ee8bf9dc335c2   2020-05-29 13:45:14    28.11 MB         library
-   sha256.5111f59250ac94f   2020-05-28 13:14:39    782.34 kB        library
-   747d2dbbaaee995098c979   2020-05-28 14:07:22    27.77 MB         oci-tmp
-   9a839e63dad54c3a6d1834   2020-05-28 12:22:13    2.78 MB          oci-tmp
+   07a18d51e256ea8c9e8de0   2023-08-14 16:09:04    1.75 KiB         blob
+   278d875d73f02153bf7ed2   2023-08-14 16:09:03    0.15 KiB         blob
+   332c15a4bec38b7947aec0   2023-08-14 16:09:03    0.13 KiB         blob
+   553345aafebc934b169982   2023-08-14 12:14:24    0.95 KiB         blob
+   7176c5ea9d28ae84d6accb   2023-08-14 16:09:03    0.20 KiB         blob
+   7264a8db6415046d36d16b   2023-08-11 17:13:59    3.24 MiB         blob
+   913cf3a39d377faf89ed38   2023-08-11 17:13:59    0.57 KiB         blob
+   9fda8d8052c61740409c4b   2023-08-14 16:09:04    3.18 MiB         blob
+   a1d08a2769560809bf03ba   2023-08-14 16:09:04    0.20 KiB         blob
+   b3283fa64ecd626e391440   2023-08-14 12:14:39    0.99 KiB         blob
+   b9e0aa7145707602cfc584   2023-08-14 16:09:03    0.12 KiB         blob
+   c5c5fda71656f28e49ac9c   2023-08-11 17:13:53    1.60 KiB         blob
+   cc82f5d421a1914e2ce2a8   2023-08-14 12:14:39    0.40 KiB         blob
+   cf4e5bc0709f07284518b2   2023-08-11 17:13:59    0.40 KiB         blob
+   deb9cd9f829fea30353f8c   2023-08-14 12:14:39    65.27 MiB        blob
+   eb9556ecd24f1fa496f2f7   2023-08-14 16:09:03    0.15 KiB         blob
+   f1dc9184bcff6fbdfd18dc   2023-08-14 16:09:04    0.15 KiB         blob
+   fd4ed8f3240239c3dde6dc   2023-08-14 16:09:04    2.59 KiB         blob
+   sha256.9a6ee1f8fdecb21   2023-08-31 09:54:44    2.65 MiB         library
+   sha256:07a18d51e256ea8   2023-08-14 16:09:05    3.11 MiB         oci-tmp
+   sha256:c5c5fda71656f28   2023-08-16 14:00:27    3.19 MiB         oci-tmp
+   sha256:553345aafebc934   2023-08-14 12:14:55    62.68 MiB        oci-sif
+   sha256:c5c5fda71656f28   2023-08-15 09:02:11    3.18 MiB         oci-sif
 
-   There are 4 container file(s) using 59.45 MB and 23 oci blob file(s) using 379.10 MB of space
-   Total space used: 438.55 MB
+   There are 5 container file(s) using 74.80 MiB and 18 oci blob file(s) using 71.70 MiB of space
+   Total space used: 146.50 MiB
 
 All cache entries are named using a content hash, so that identical
 layers or images that are pulled from different URIs do not result in
 duplication within the cache.
 
-Entries marked ``blob`` are OCI/docker layers and manifests, which are used to
-create SIF format images in the ``oci-tmp`` cache. Other caches are named for
-the source of the image, e.g. ``library`` or ``oras``.
-
 You can limit the cache list to a specific cache type with the ``--type`` /
-``-t`` option.
+``-t`` option. The cache types are:
+
+- **blob**: Configuration and filesystem layers for OCI containers that have
+  been retrieved from a registry or other source.
+- **library**: SIF images retrieved from a ``library://`` source.
+- **net**: SIF, squashfs, and extfs images retrieved from ``http/https`` URIs.
+- **oci-sif**: OCI-SIF images created from OCI blobs. These are cached to avoid
+  multiple conversions when a container is run repeatedly from an OCI URI
+  (``singularity run --oci docker://alpine``).
+- **oci-tmp**: SIF images created from OCI blobs. These are cached to avoid
+  multiple conversions when a container is run repeatedly from an OCI URI
+  (``singularity run docker://alpine``).
+- **oras**: SIF images retrieved from an OCI registry via the ``oras://``
+  protocol.
+- **shub**: SIF, squashfs, and extfs images retrieved from a ``shub://`` source.
 
 Cleaning the Cache
 ==================
