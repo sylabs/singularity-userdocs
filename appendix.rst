@@ -29,11 +29,18 @@ below with their respective functionality.
    or not be allowed in the container. (root only) Default is set to
    false.
 
+#. **SINGULARITY_ALLOW_UNSIGNED**: Set to true to allow pushing unsigned SIF
+   images to a ``library://`` destination. Default is false.
+
 #. **SINGULARITY_APP** and **SINGULARITY_APPNAME**: Sets the name of an
    application to be run inside a container.
 
 #. **SINGULARITY_APPLY_CGROUPS**: Used to apply cgroups from an input
    file for container processes. (it requires root privileges)
+
+#. **SINGULARITY_ARCH** and **SINGULARITY_PULL_ARCH**: Set the architecture
+   (e.g. ``arm64``) of an image to pull from a ``library://`` or OCI source.
+   Defaults to the host architecture.
 
 ``B``
 =====
@@ -52,6 +59,9 @@ below with their respective functionality.
 #. **SINGULARITY_BOOT**: Set to false by default, considers if executing
    ``/sbin/init`` when container boots (root only).
 
+#. **SINGULARITY_BUILD_ARCH**: Specify an architecture to use when building a
+   container via the remote build service (`--remote`).
+
 #. **SINGULARITY_BUILDER**: To specify the remote builder service URL.
    Defaults to our remote builder.
 
@@ -61,12 +71,22 @@ below with their respective functionality.
 #. **SINGULARITY_CACHEDIR**: Specifies the directory for image downloads
    to be cached in. See :ref:`sec:cache`.
 
+#. **SINGULARITY_CAP_GROUP**: Specify a group to modify when managing permitted
+   capabilities with the ``capability`` command.
+
+#. **SINGULARITY_CAP_USER**: Specify a user to modify when managing permitted
+   capabilities with the ``capability`` command.
+
 #. **SINGULARITY_CLEANENV**: Specifies if the environment should be
    cleaned or not before running the container. Default is set to false.
 
 #. **SINGULARITY_COMPAT**: Set to true to enable Docker/OCI compatibility mode.
    Equivalent to setting ``--containall --no-eval --no-init --no-umask
-   --writable-tmpfs``. Default is false.
+   --writable-tmpfs``. Default is false for the native runtime, true in
+   OCI-mode.
+
+#. **SINGULARITY_CONFIG_FILE**: Use a custom ``singularity.conf`` configuration
+   file. Only supported for non-root users in non-setuid mode.
 
 #. **SINGULARITY_CONTAIN**: To use minimal ``/dev`` and empty other
    directories (e.g. ``/tmp`` and ``$HOME``) instead of sharing
@@ -90,6 +110,9 @@ below with their respective functionality.
 
 #. **SINGULARITY_CPUSET_MEMS**: Specify a list or range of memory nodes
    available to the container. Default is unset.
+
+#. **SINGULARITY_CWD** (deprecated **SINGULARITY_PWD** and **SINGULARITY_TARGET_PWD**): The initial
+   working directory for payload process inside the container.
 
 ``D``
 =====
@@ -143,15 +166,19 @@ below with their respective functionality.
 ``E``
 =====
 
-#. **SINGULARITY_ENVIRONMENT**: Contains all the environment variables
-   that have been exported in your container.
-
 #. **SINGULARITY_ENCRYPTION_PASSPHRASE**: Used to specify the plaintext
    passphrase to encrypt the container.
 
 #. **SINGULARITY_ENCRYPTION_PEM_PATH**: Used to specify the path of the
    file containing public or private key to encrypt the container in PEM
    format.
+
+#. **SINGULARITY_ENV_FILE**: Specify a file containing ``KEY=VAL`` environment
+   variables that should be set in the container.
+
+#. **SINGULARITY_ENVIRONMENT**: Set during a build to the path to a file into
+   which ``KEY=VAL`` environment variables can be added. The file is evaluated
+   at container startup.
 
 #. **SINGULARITYENV_\***: Allows you to transpose variables into the
    container at runtime. You can see more in detail how to use this
@@ -169,22 +196,24 @@ below with their respective functionality.
    section <environment-and-metadata>`.
 
 #. **SINGULARITYENV_PREPEND_PATH**: Used to prepend directories to the
-   beginning of `$PATH`` environment variable. You can see more in
+   beginning of ``$PATH`` environment variable. You can see more in
    detail on how to use this variable in our :ref:`environment and
    metadata section <environment-and-metadata>`.
 
 ``F``
 =====
 
-#. **SINGULARITY_FAKEROOT**: Set to false by default, considers running
-   the container in a new user namespace as uid 0 (experimental).
-#. **SINGULARITY_FORCE**: Forces to kill the instance.
+#. **SINGULARITY_FAKEROOT**: Run or build a container using a user namespace
+   with a root uid/gid mapping.
 
-``G``
-=====
+#. **SINGULARITY_FIXPERMS**: Set to true to ensure owner has ``rwX`` permissions on
+   all files in a container built from an OCI source.
 
-#. **SINGULARITY_GROUP**: Used to specify a string of capabilities for
-   the given group.
+#. **SINGULARITY_FORCE**: Skip confirmation for destructive actions, e.g.
+   overwriting a container image or killing an instance.
+
+#. **SINGULARITY_FUSESPEC**: A FUSE filesystem mount specification of the form
+   '<type>:<fuse command> <mountpoint>', that will be mounted in the container.
 
 ``H``
 =====
@@ -207,8 +236,8 @@ below with their respective functionality.
 ``J``
 =====
 
-#. **SINGULARITY_JSON**: Specifies the structured json of the def file,
-   every node as each section in the def file.
+#. **SINGULARITY_JSON**: Use JSON as an input or output format. Applies to the
+   ``build`` and ``instance list`` commands. Default is false.
 
 ``K``
 =====
@@ -223,6 +252,22 @@ below with their respective functionality.
    image.
 #. **SINGULARITY_LIBRARY**: Specifies the library to pull from. Default
    is set to our Cloud Library.
+
+#. **SINGULARITY_LOCAL_VERIFY**: Set to true to only use the local keyring when
+   verifying PGP signed SIF images. Disables retrieval of public keys from
+   configured keyservers. Default is false.
+
+#. **SINGULARITY_LOGIN_USERNAME**: Set the username to use when logging in to a
+   remote endpoint, registry, or keyserver.
+
+#. **SINGULARITY_LOGIN_PASSWORD**: Set the password to use when logging in to a
+   remote endpoint, registry, or keyserver.
+
+#. **SINGULARITY_LOGIN_INSECURE**: Set to true to use HTTP (not HTTPS) when
+   logging in to a remote endpoint. Default is false.
+
+#. **SINGULARITY_LOGS**: Set to true to show the path to instance log files in
+   ``instance list`` output. Default is false.
 
 ``M``
 =====
@@ -256,9 +301,11 @@ below with their respective functionality.
 #. **SINGULARITY_NOCLEANUP**: To not clean up the bundle after a failed
    build, this can be helpful for debugging. Default is set to false.
 
-#. **SINGULARITY_NOHTTPS**: Sets to either false or true to avoid using
-   HTTPS for communicating with the local docker registry. Default is
-   set to false.
+#. **SINGULARITY_NO_COMPAT**: Set to true to emulate traditional Singularity
+   behavior (e.g. home, cwd mounts) when running in OCI mode.
+
+#. **SINGULARITY_NO_HTTPS** and **SINGULARITY_NOHTTPS**: Set to true to use HTTP
+   (not HTTPS) to communicate with registry servers. Default is false.
 
 #. **SINGULARITY_NO_EVAL**: Set to true in order to prevent {Singularity}
    performing shell evaluation on environment variables / runscript
@@ -278,8 +325,17 @@ below with their respective functionality.
 #. **SINGULARITY_NO_NV**: Flag to disable NVIDIA support. Opposite of
    ``SINGULARITY_NV``.
 
+#. **SINGULARITY_NO_PID**: Set to true to disable the PID namespace, when it is
+   inferred by other options (e.g.``--containall`` )
+
 #. **SINGULARITY_NO_PRIVS**: To drop all the privileges from root user
-   in the container. Default is set to false.
+   in the container. Default is false.
+
+#. **SINGULARITY_NO_SETGROUPS**: When set to true, do not clear supplementary
+   group membership when entering a fakeroot user namespace. Default is false.
+
+#. **SINGULARITY_NOTEST**: Set to true to disable execution of ``%test`` sections
+   when building a container.
 
 #. **SINGULARITY_NO_UMASK**: Set to true to prevent host umask propagating
    to container, and use a default 0022 unmask instead. Default is false.
@@ -290,8 +346,21 @@ below with their respective functionality.
 #. **SINGULARITY_NVCCLI**: To use nvidia-container-cli for container GPU setup
    (experimental).
 
+#. **SINGULARITY_NO_TMP_SANDBOX**: Set to true to disable fall-back approach of
+   extracting a container to a temporary sandbox when SIF / OCI-SIF mounts
+   cannot be used. Default is false. Also configurable via ``tmp sandbox`` in
+   ``singularity.conf``.
+
 ``O``
 =====
+
+#. **SINGULARITY_OCI**: Set to true to run containers in OCI mode, and pull OCI
+   images to the OCI-SIF format. Default is taken from ``oci mode`` directive in
+   ``singularity.conf``.
+
+#. **SINGULARITY_NO_OCI**: Set to true to disable OCI mode, and pull OCI images
+   to the native SIF format, when ``oci mode`` is enabled in
+   ``singularity.conf``.
 
 #. **SINGULARITY_OOM_KILL_DISABLE**: Set to true to disable OOM killer for
    container processes, if possible. Default is false.
@@ -303,31 +372,46 @@ below with their respective functionality.
 ``P``
 =====
 
+
+#. **SINGULARITY_PULLDIR** and **SINGULARITY_PULLFOLDER**: Specify destination
+   directory when pulling a container image.
+
+#. **SINGULARITY_PID_FILE**: When starting an instance, write the instance PID
+   to the specified file.
+
 #. **SINGULARITY_PIDS_LIMIT**: Specify maximum number of processes that
    the container may spawne. Default is 0 (no limit).
 
-#. **SINGULARITY_PWD** and **SINGULARITY_TARGET_PWD**: The initial
-   working directory for payload process inside the container.
+#. **SINGULARITY_PLATFORM**: Set the platform (e.g. ``linux/arm/v7``) of an image
+   to pull from a ``library://`` or OCI source. Defaults to the host platform.
+   Note that ``library://`` pulls ignore the platform variant.
 
 ``R``
 =====
 
-#. **SINGULARITY_REMOTE**: To build an image remotely. (Does not require
-   root) Default is set to false.
-#. **SINGULARITY_ROOTFS**: To reference the system file location.
+#. **SINGULARITY_REMOTE**: Set to true to build an image remotely using a remote
+   build service. Default is set to false.
+
+#. **SINGULARITY_ROOTFS**: During a build ``SINGULARITY_ROOTFS`` is set to the
+   path of the rootfs for the container. It can be used within a definition file
+   to manipulate the rootfs (e.g. from the ``%setup`` section).
+
+#. **SINGULARITY_ROCM**: Set to true to expose ROCm devices and libraries inside
+   the container. Default is false.
+
 #. **SINGULARITY_RUNSCRIPT**: Specifies the runscript of the image.
 
 ``S``
 =====
 
-#. **SINGULARITY_SANDBOX**: To specify that the format of the image
+#. **SINGULARITY_SANDBOX**: Set to true to specify that the format of the image
    should be a sandbox. Default is set to false.
 
 #. **SINGULARITY_SCRATCH** and **SINGULARITY_SCRATCHDIR**: Used to
    include a scratch directory within the container that is linked to a
    temporary directory. (use -W to force location)
 
-#. **SINGULARITY_SECTION**: To specify a comma separated string of all
+#. **SINGULARITY_SECTION**: Set to specify a comma separated string of all
    the sections to be run from the deffile (setup, post, files,
    environment, test, labels, none)
 
@@ -344,14 +428,22 @@ below with their respective functionality.
    mount SIF images with ``squashfuse`` in unprivileged user namespace
    workflows.
 
-#. **SINGULARITY_SIGNAL**: Specifies a signal sent to the instance.
+#. **SINGULARITY_SIGNAL**: Specifies the signal to send to an instance with
+   ``singularity instance stop``.
+
+#. **SINGULARITY_SIGN_KEY**: Set the path to a key file to be used when signing
+   a SIF image.
+
+#. **SINGULARITY_SPARSE**: Set to true to create sparse overlay image files with
+   the overlay command.
 
 ``T``
 =====
 
 #. **SINGULARITY_TEST**: Specifies the test script for the image.
-#. **SINGULARITY_TMPDIR**: Used with the ``build`` command, to consider
-   a temporary location for the build. See :ref:`sec:temporaryfolders`.
+
+#. **SINGULARITY_TMPDIR**: Specify a location for temporary files to be used
+   when pulling and building container images. See :ref:`sec:temporaryfolders`.
 
 ``U``
 =====
@@ -374,14 +466,33 @@ below with their respective functionality.
 
 #. **SINGULARITY_URL**: Specifies the key server ``URL``.
 
-#. **SINGULARITY_USER**: Used to specify a string of capabilities for
-   the given user.
+#. **SINGULARITY_USER**: As root, specify a user to manage that user's instances
+   with the ``instance`` commands.
 
 #. **SINGULARITY_USERNS** and **SINGULARITY_UNSHARE_USERNS**: To specify
    that the container will run in a new user namespace, allowing
    {Singularity} to run completely unprivileged on recent kernels. This
    may not support every feature of {Singularity}. (Sandbox image only).
    Default is set to false.
+
+``V``
+=====
+
+#. **SINGULARITY_VERIFY_CERTIFICATE**: Set the path to a PEM file containing the
+   certificate to be used when verifying an x509 signed SIF image.
+
+#. **SINGULARITY_VERIFY_INTERMEDIATES**: Set the path to a PEM file containing
+   an intermediate certificate / chain to be used when verifying an x509 signed
+   SIF image.
+
+#. **SINGULARITY_VERIFY_KEY**: Set the path to a key file to be used when
+   verifying a key signed SIF image.
+
+#. **SINGULARITY_VERIFY_OCSP**: Set to true to enable OCSP verification of
+   certificates. Default is false.
+
+#. **SINGULARITY_VERIFY_ROOTS**: Set the path to a PEM file containing root
+   certificate(s) to be used when verifying an x509 signed SIF image.
 
 ``W``
 =====
