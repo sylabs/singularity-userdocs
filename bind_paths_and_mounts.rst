@@ -27,15 +27,27 @@ system-defined bind paths and user-defined bind paths.
 System-defined bind paths
 *************************
 
-The system administrator has the ability to define what bind paths will
-be included automatically inside each container. Some bind paths are
-automatically derived (e.g. a user’s home directory) and some are
-statically defined (e.g. bind paths in the {Singularity} configuration
-file). In the default configuration, the system default bind points are
-``$HOME`` , ``/sys:/sys`` , ``/proc:/proc``, ``/tmp:/tmp``,
-``/var/tmp:/var/tmp``, ``/etc/resolv.conf:/etc/resolv.conf``,
-``/etc/passwd:/etc/passwd``, and ``$PWD``. Where the first path before
-``:`` is the path from the host and the second path is the path in the
+The system administrator has the ability to define which bind paths will be
+included automatically inside each container. Some bind paths are derived (e.g.
+a user's home directory), and some are statically defined with a ``bind path``
+entry in ``singularity.conf``.
+
+In the default configuration, the default bind mounts are:
+
+- The user's home directory (``$HOME``)
+- The current working directory (``CWD``), unless its path contains symlinks
+  resolving to different locations on the host vs inside the container.
+- ``/dev``
+- ``/etc/hosts``
+- ``/etc/localtime`` 
+- ``/proc``
+- ``/sys``
+- ``/tmp``
+- ``/var/tmp``
+
+Additionally, customized system configuration files ``/etc/resolv.conf``,
+``/etc/group``, and ``/etc/passwd`` are mounted into the container. These are
+adapted at container startup to match the requested configuration of the
 container.
 
 Disabling System Binds
@@ -239,32 +251,58 @@ Using ``--no-home`` and ``--containall`` flags
 ``--no-home``
 -------------
 
-When shelling into your container image, {Singularity} allows you to
-mount your current working directory (``CWD``) without mounting your
-host ``$HOME`` directory with the ``--no-home`` flag.
+When starting a container, {Singularity} allows you to mount your current
+working directory (``CWD``) without mounting your host ``$HOME`` directory by
+using the ``--no-home`` flag. This is equivalent to ``--no-mount home``:
 
 .. code::
 
    $ singularity shell --no-home my_container.sif
 
+   -or-
+
+   $ singularity shell --no-mount home my_container.sif
+
+Disabling the mount of ``$HOME`` may be useful if your container image has files
+at ``$HOME``, which would otherwise be hidden by the bind mount from the host.
+
 .. note::
 
-   Beware that if it is the case that your ``CWD`` is your ``$HOME``
-   directory, it will still mount your ``$HOME`` directory.
+  If your current working directory is under ``$HOME``, and you do not want to
+  mount it, you will need to disable both ``cwd`` and ``home`` mounts:
 
-``--containall``
-----------------
+  .. code::
 
-   Using the ``--containall`` (or ``-C`` for short) flag, ``$HOME`` is
-   not mounted and a dummy bind mount is created at the ``$HOME`` point.
-   You cannot use ``-B``` (or ``--bind``) to bind your ``$HOME``
-   directory because it creates an empty mount. So if you have files
-   located in the image at ``/home/user``, the ``--containall`` flag
-   will hide them all.
+    $ singularity shell --no-mount home,cwd my_container.sif
+
+``--contain`` / ``--containall``
+--------------------------------
+
+When using the ``--contain`` / ``--containall`` (or ``-c`` / ``-C`` for short)
+flags, ``$HOME`` from the host is not mounted, and an in-memory temporary
+directory is created at the ``$HOME`` point inside the container instead. An
+in-memory temporary directory is also used for ``/tmp`` and ``/var/tmp`` inside
+the container.
+
+If the container image includes files within ``$HOME``, the mounted temporary
+directory will hide them unless you also specify ``--no-home`` or ``--no-mount
+home``:
 
 .. code::
 
    $ singularity shell --containall my_container.sif
+   Singularity> ls -lah $HOME
+   total 4K
+   drwxr-xr-x    2 user group      60 Sep  1 11:45 .
+   drwxr-xr-x    1 user group      60 Sep  1 11:44 ..
+
+   $ singularity shell --containall --no-home my_container.sif
+   Singularity> ls -lah $HOME
+   total 52K
+   drwxr-xr-x    2 user group        60 Sep  1 11:45 .
+   drwxr-xr-x    1 user group        60 Sep  1 11:44 ..
+   drwxr-xr-x    1 user group     38672 Sep  1 11:44 mydata.csv
+   drwxr-xr-x    1 user group     14235 Sep  1 11:44 myimage.jpg
 
 ***********
 FUSE mounts
