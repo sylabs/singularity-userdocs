@@ -793,6 +793,8 @@ After building the help can be displayed like so:
        This is a demo container used to illustrate a def file that uses all
        supported sections.
 
+.. _sec:templating:
+
 ****************************************************
 Templating: How to Pass Values into Definition Files
 ****************************************************

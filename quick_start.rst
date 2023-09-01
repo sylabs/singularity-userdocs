@@ -6,16 +6,16 @@ Quick Start
 
 .. _sec:quickstart:
 
-This guide is intended for running {Singularity} on a computer where you
-have root (administrative) privileges, and will install {Singularity}
-from source code. Other installation options, including building an RPM
-package and installing {Singularity} without root privileges are
-discussed in the `installation section of the admin guide
+This guide is intended for running {Singularity} on a computer where you have
+root (administrative) privileges, and will install {Singularity} from source
+code. Other installation options, including building an RPM package and
+installing {Singularity} without root privileges, are discussed in the
+`installation section of the admin guide
 <https://sylabs.io/guides/{adminversion}/admin-guide/installation.html>`__.
 
-If you need to request an installation on your shared resource, see the
-:ref:`requesting an installation section <installation-request>` for
-information to send to your system administrator.
+If you need to request an installation on your shared resource, see the section
+on :ref:`requesting an installation <installation-request>` for information to
+send to your system administrator.
 
 For any additional help or support contact the Sylabs team:
 https://www.sylabs.io/contact/
@@ -32,8 +32,13 @@ Linux installation options, are discussed in the `installation section of
 the admin guide
 <https://sylabs.io/guides/{adminversion}/admin-guide/installation.html>`__.
 
+Prerequisites
+=============
+
+.. _sec:sysdeps:
+
 Install system dependencies
-===========================
+---------------------------
 
 You must first install development tools and libraries to your host.
 
@@ -45,16 +50,23 @@ On Debian-based systems, including Ubuntu:
    sudo apt-get update
    # Install debian packages for dependencies
    sudo apt-get install -y \
-      wget \
-      build-essential \
-      libseccomp-dev \
-      libglib2.0-dev \
-      pkg-config \
-      squashfs-tools \
+      autoconf \
+      automake \
       cryptsetup \
-      runc
+      git \
+      libfuse-dev \
+      libglib2.0-dev \
+      libseccomp-dev \
+      libtool \
+      pkg-config \
+      runc \
+      squashfs-tools \
+      squashfs-tools-ng \
+      uidmap \
+      wget \
+      zlib1g-dev
 
-On CentOS/RHEL:
+On versions 8 or later of RHEL / Alma Linux / Rocky Linux, as well as on Fedora:
 
 .. code::
 
@@ -62,14 +74,131 @@ On CentOS/RHEL:
    sudo yum groupinstall -y 'Development Tools'
    # Install RPM packages for dependencies
    sudo yum install -y \
-      wget \
-      libseccomp-devel \
-      glib2-devel \
-      squashfs-tools \
+      autoconf \
+      automake \
+      crun \
       cryptsetup \
-      runc
+      fuse3-devel \
+      git \
+      glib2-devel \
+      libseccomp-devel \
+      libtool \
+      squashfs-tools \
+      wget \
+      zlib-devel
 
-There are 3 broad steps to installing {Singularity}:
+On version 7 of RHEL / CentOS:
+
+.. code::
+
+   # Install basic tools for compiling
+   sudo yum groupinstall -y 'Development Tools'
+   # Install RPM packages for dependencies
+   sudo yum install -y \
+      autoconf \
+      automake \
+      cryptsetup \
+      fuse3-devel \
+      git \
+      glib2-devel \
+      libseccomp-devel \
+      libtool \
+      runc \
+      squashfs-tools \
+      wget \
+      zlib-devel
+
+On SLES / openSUSE Leap:
+
+.. code::
+
+   # Install RPM packages for dependencies
+   sudo zypper in \
+    autoconf \
+    automake \
+    cryptsetup \
+    fuse3-devel \
+    gcc \
+    gcc-c++ \
+    git \
+    glib2-devel \
+    libseccomp-devel \
+    libtool \
+    make \
+    pkg-config \
+    runc \
+    squashfs \
+    wget \
+    zlib-devel
+
+Install sqfstar / tar2sqfs for OCI-mode
+---------------------------------------
+
+If you intend to use the :ref:`OCI mode <oci_runtime>` of {Singularity}, your
+system must provide either:
+
+* ``squashfs-tools`` / ``squashfs`` >= 4.5, which provides the ``sqfstar``
+  utility. Note that older versions of these packages, provided by many
+  distributions, do not include ``sqfstar``.
+* ``squashfs-tools-ng``, which provides the ``tar2sqfs`` utility. This is not
+  packaged by all distributions.
+
+Below are instructions on how to obtain one of these two utilities on various
+distributions.
+
+Debian / Ubuntu
+^^^^^^^^^^^^^^^
+
+On Debian/Ubuntu ``squashfs-tools-ng`` is available in the distribution
+repositories. It has been included in the :ref:`Install system dependencies
+<sec:sysdeps>` step above. No further action is necessary.
+
+Fedora
+^^^^^^
+
+On Fedora, the ``squashfs-tools`` package, included in the :ref:`Install system
+dependencies <sec:sysdeps>` step above, includes `sqfstar`. No further action is
+necessary.
+
+RHEL / Alma Linux / Rocky Linux / CentOS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+On RHEL and derivatives, a COPR is available at:
+https://copr.fedorainfracloud.org/coprs/dctrud/squashfs-tools-ng/
+
+This COPR provides ``squashfs-tools-ng``, which will not replace any standard EL or
+EPEL packages. To use it:
+
+EL 8 / 9
+""""""""
+
+.. code::
+
+  sudo dnf install dnf-plugins-core
+  sudo dnf copr enable dctrud/squashfs-tools-ng 
+  sudo dnf install squashfs-tools-ng
+
+EL 7
+####
+
+.. code::
+
+  sudo yum install yum-plugin-copr 
+  sudo yum copr enable dctrud/squashfs-tools-ng 
+  sudo yum install squashfs-tools-ng
+
+SLES / openSUSE Leap
+^^^^^^^^^^^^^^^^^^^^
+
+On SLES/openSUSE, follow the instructions at the `filesystems
+project <https://software.opensuse.org//download.html?project=filesystems&package=squashfs>`_
+to obtain a more recent ``squashfs`` package, which provides `sqfstar`.
+
+Next steps
+----------
+
+You are now ready to install {Singularity}. There are 3 broad steps to
+installing {Singularity} itself:
 
 #. :ref:`Installing Go <install>`
 #. :ref:`Downloading {Singularity} <download>`
@@ -92,25 +221,24 @@ supported language versions.
 .. note::
 
    If you have previously installed Go from a download, rather than an operating
-   system package, you should remove your ``go`` directory, e.g.
+   system package, it is important that you remove your ``go`` directory, e.g.
    ``rm -r /usr/local/go``, before installing a newer version. Extracting a new
    version of Go over an existing installation can lead to errors when building
    Go programs, as it may leave behind old files, which have been removed or
    replaced in newer versions.
 
-Visit the `Go Downloads page <https://golang.org/dl/>`_ and pick a
-package archive suitable to the environment you are in. Once the
-Download is complete, extract the archive to ``/usr/local`` (or use
-other instructions on go installation page). Alternatively, follow the
-commands here (make sure to replace the values as needed):
+Visit the `Go Downloads page <https://golang.org/dl/>`_ and pick a package
+archive suitable to the environment you are in. Once the download is complete,
+extract the archive to ``/usr/local`` (or follow other instructions on the Go
+installation page). Alternatively, follow the commands here, making sure to
+replace specific values as needed:
 
 .. code::
 
-   $ export VERSION=1.17.2 OS=linux ARCH=amd64 && \
+   $ export VERSION=1.21.0 OS=linux ARCH=amd64 && \
      wget https://dl.google.com/go/go$VERSION.$OS-$ARCH.tar.gz && \
      sudo tar -C /usr/local -xzvf go$VERSION.$OS-$ARCH.tar.gz && \
      rm go$VERSION.$OS-$ARCH.tar.gz
-
 
 Set the Environment variable ``PATH`` to point to Go:
 
@@ -137,14 +265,22 @@ the installation.
        tar -xzf singularity-ce-${VERSION}.tar.gz && \
        cd singularity-ce-${VERSION}
 
+.. note::
+
+   Do not attempt to build {Singularity} from the *Source code (zip)* or *Source
+   code (tar.gz)* archives that are auto-generated by GitHub. These do not
+   include some of the required internal dependencies needed to build
+   {Singularity}. Instead, to build {Singularity} from source, use the archive
+   named **singularity-ce-${VERSION}.tar.gz**.
+
 .. _compile:
 
 Compile the {Singularity} source code
 =====================================
 
-Now you are ready to build {Singularity}. Dependencies will be
-automatically downloaded. You can build {Singularity} using the
-following commands:
+Now you are ready to build {Singularity}. Internal dependencies will be
+automatically downloaded. You can build {Singularity} using the following
+commands:
 
 .. code::
 
@@ -160,108 +296,131 @@ following commands:
 Overview of the {Singularity} Interface
 ***************************************
 
-{Singularity}’s :ref:`command line interface <cli>` allows you to build
-and interact with containers transparently. You can run programs inside
-a container as if they were running on your host system. You can easily
-redirect IO, use pipes, pass arguments, and access files, sockets, and
-ports on the host system from within a container.
+{Singularity}'s :ref:`command line interface <cli>` allows you to build and
+interact with containers transparently. You can run programs inside a container
+as if they were running on your host system. You can easily redirect I/O, use
+pipes, pass arguments, and access files, sockets, and ports on the host system
+from within a container.
 
-The ``help`` command gives an overview of {Singularity} options and
-subcommands as follows:
+The ``help`` command gives an overview of {Singularity} options and subcommands
+as follows:
 
 .. code::
 
-   $ singularity help
+  $ singularity help
 
-   Linux container platform optimized for High Performance Computing (HPC) and
-   Enterprise Performance Computing (EPC)
+  Linux container platform optimized for High Performance Computing (HPC) and
+  Enterprise Performance Computing (EPC)
 
-   Usage:
-     singularity [global options...]
+  Usage:
+    singularity [global options...]
 
-   Description:
-     {Singularity} containers provide an application virtualization layer enabling
-     mobility of compute via both application and environment portability. With
-     {Singularity} one is capable of building a root file system that runs on any
-     other Linux system where {Singularity} is installed.
+  Description:
+    Singularity containers provide an application virtualization layer enabling
+    mobility of compute via both application and environment portability. With
+    Singularity one is capable of building a root file system that runs on any
+    other Linux system where Singularity is installed.
 
-   Options:
-     -d, --debug     print debugging information (highest verbosity)
-     -h, --help      help for singularity
-         --nocolor   print without color output (default False)
-     -q, --quiet     suppress normal output
-     -s, --silent    only print errors
-     -v, --verbose   print additional information
+  Options:
+    -c, --config string   specify a configuration file (for root or
+                          unprivileged installation only) (default
+                          "/usr/local/etc/singularity/singularity.conf")
+    -d, --debug           print debugging information (highest verbosity)
+    -h, --help            help for singularity
+        --nocolor         print without color output (default False)
+    -q, --quiet           suppress normal output
+    -s, --silent          only print errors
+    -v, --verbose         print additional information
+        --version         version for singularity
 
-   Available Commands:
-     build       Build a {Singularity} image
-     cache       Manage the local cache
-     capability  Manage Linux capabilities for users and groups
-     exec        Run a command within a container
-     help        Help about any command
-     inspect     Show metadata for an image
-     instance    Manage containers running as services
-     key         Manage OpenPGP keys
-     oci         Manage OCI containers
-     plugin      Manage singularity plugins
-     pull        Pull an image from a URI
-     push        Upload image to the provided library (default is "cloud.sylabs.io")
-     remote      Manage singularity remote endpoints
-     run         Run the user-defined default command within a container
-     run-help    Show the user-defined help for an image
-     search      Search a Container Library for images
-     shell       Run a shell within a container
-     sif         siftool is a program for Singularity Image Format (SIF) file manipulation
-     sign        Attach a cryptographic signature to an image
-     test        Run the user-defined tests within a container
-     verify      Verify cryptographic signatures attached to an image
-     version     Show the version for {Singularity}
+  Available Commands:
+    build       Build a Singularity image
+    cache       Manage the local cache
+    capability  Manage Linux capabilities for users and groups
+    completion  Generate the autocompletion script for the specified shell
+    config      Manage various singularity configuration (root user only)
+    delete      Deletes requested image from the library
+    exec        Run a command within a container
+    help        Help about any command
+    inspect     Show metadata for an image
+    instance    Manage containers running as services
+    key         Manage OpenPGP keys
+    keyserver   Manage singularity keyservers
+    oci         Manage OCI containers
+    overlay     Manage an EXT3 writable overlay image
+    plugin      Manage Singularity plugins
+    pull        Pull an image from a URI
+    push        Upload image to the provided URI
+    registry    Manage authentication to OCI/Docker registries
+    remote      Manage singularity remote endpoints
+    run         Run the user-defined default command within a container
+    run-help    Show the user-defined help for an image
+    search      Search a Container Library for images
+    shell       Run a shell within a container
+    sif         Manipulate Singularity Image Format (SIF) images
+    sign        Add digital signature(s) to an image
+    test        Run the user-defined tests within a container
+    verify      Verify digital signature(s) within an image
+    version     Show the version for Singularity
 
-   Examples:
-     $ singularity help <command> [<subcommand>]
-     $ singularity help build
-     $ singularity help instance start
+  Examples:
+    $ singularity help <command> [<subcommand>]
+    $ singularity help build
+    $ singularity help instance start
 
 
-   For additional help or support, please visit https://www.sylabs.io/docs/
+  For additional help or support, please visit https://www.sylabs.io/docs/
 
 Information about individual subcommands can also be viewed by using the
 ``help`` command:
 
 .. code::
 
-   $ singularity help verify
-   Verify cryptographic signatures attached to an image
+  $ singularity help verify
+  Verify digital signature(s) within an image
 
-   Usage:
-     singularity verify [verify options...] <image path>
+  Usage:
+    singularity verify [verify options...] <image path>
 
-   Description:
-     The verify command allows a user to verify cryptographic signatures on SIF
-     container files. There may be multiple signatures for data objects and
-     multiple data objects signed. By default the command searches for the primary
-     partition signature. If found, a list of all verification blocks applied on
-     the primary partition is gathered so that data integrity (hashing) and
-     signature verification is done for all those blocks.
+  Description:
+    The verify command allows a user to verify one or more digital signatures
+    within a SIF image.
 
-   Options:
-     -a, --all               verify all objects
-     -g, --group-id uint32   verify objects with the specified group ID
-     -h, --help              help for verify
-     -j, --json              output json
-         --legacy-insecure   enable verification of (insecure) legacy signatures
-     -l, --local             only verify with local keys
-     -i, --sif-id uint32     verify object with the specified ID
-     -u, --url string        key server URL (default "https://keys.sylabs.io")
+    Key material can be provided via PEM-encoded file, or via the PGP keyring. To
+    manage the PGP keyring, see 'singularity help key'.
+
+  Options:
+    -a, --all                                verify all objects
+        --certificate string                 path to the certificate
+        --certificate-intermediates string   path to pool of intermediate
+                                             certificates
+        --certificate-roots string           path to pool of root certificates
+    -g, --group-id uint32                    verify objects with the
+                                             specified group ID
+    -h, --help                               help for verify
+    -j, --json                               output json
+        --key string                         path to the public key file
+        --legacy-insecure                    enable verification of
+                                             (insecure) legacy signatures
+    -l, --local                              only verify with local key(s)
+                                             in keyring
+        --ocsp-verify                        enable online revocation check
+                                             for certificates
+    -i, --sif-id uint32                      verify object with the specified ID
+    -u, --url string                         specify a URL for a key server
 
 
-   Examples:
-     $ singularity verify container.sif
+  Examples:
+    Verify with a public key:
+    $ singularity verify --key public.pem container.sif
+
+    Verify with PGP:
+    $ singularity verify container.sif
 
 
-   For additional help or support, please visit https://www.sylabs.io/docs/
+  For additional help or support, please visit https://www.sylabs.io/docs/
 
-{Singularity} uses positional syntax (i.e. the order of commands and options
+{Singularity} uses positional syntax (i.e., the order of commands and options
 matters). Global options affecting the behavior of all commands follow
 immediately after the main ``singularity`` command. Then come subcommands,
 followed by their options and arguments.
@@ -287,17 +446,17 @@ follows:
 
 .. code::
 
-   $ singularity capability list dave
+   $ singularity capability list myuser
 
-Container authors might also write help docs specific to a container, or
-for an internal module called an ``app``. If those help docs exist for a
-particular container, you can view them as follows:
+Container authors might also write help docs specific to a container, or for an
+internal module called an "app". If those help docs exist for a particular
+container, you can view them as follows:
 
 .. code::
 
    $ singularity inspect --helpfile container.sif  # See the container's help, if provided
 
-   $ singularity inspect --helpfile --app=foo foo.sif  # See the help for foo, if provided
+   $ singularity inspect --helpfile --app=foo foo.sif  # See the help for the app foo, if provided
 
 *************************
 Download pre-built images
@@ -335,20 +494,16 @@ containers of interest on the `Container Library
 
        ...
 
-You can use the `pull
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_pull.html>`_
-and `build
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_build.html>`_
-commands to download pre-built images from an external resource like the
-`Container Library <https://cloud.sylabs.io/library>`_ or `Docker Hub
-<https://hub.docker.com/>`_.
+You can use the :ref:`pull <singularity_pull>` and :ref:`build
+<singularity_build>` commands to download pre-built images from an external
+resource like the `Container Library <https://cloud.sylabs.io/library>`_ or
+`Docker Hub <https://hub.docker.com/>`_.
 
 Using the ``pull`` subcommand
 =============================
 
-When called on a native {Singularity} image like those provided by the
-Container Library, ``pull`` simply downloads the image file to your
-system:
+When called on a native {Singularity} image like those provided by the Container
+Library, ``pull`` simply downloads the image file to your system:
 
 .. code::
 
@@ -382,9 +537,9 @@ digest*, as follows:
    identical, even if they are created from docker images that were
    pulled by digest.
 
-If reproducibility is a priority for you, the best option is to always
-build your images from the `Container Library
-<https://cloud.sylabs.io/library>`_ if possible.
+If reproducibility is a priority for you, the best option is to always build
+your images from the `Container Library <https://cloud.sylabs.io/library>`_ if
+possible.
 
 Using the ``build`` subcommand
 ===============================
@@ -399,14 +554,13 @@ your container like so:
 
    $ singularity build lolcow.sif docker://sylabsio/lolcow
 
-Unlike ``pull``, ``build`` will convert your image to the latest
-{Singularity} image format after downloading it. ``build`` is like a
-“Swiss Army knife” for container creation. In addition to downloading
-images, you can use ``build`` to create images from other images or from
-scratch using a :ref:`definition file <definition-files>`. You can also
-use ``build`` to convert an image between the container formats
-supported by {Singularity}. To see a comparison of the {Singularity}
-definition file with Dockerfile, please see: :ref:`this section
+Unlike ``pull``, ``build`` will convert your image to the latest {Singularity}
+image format after downloading it. ``build`` is like a “Swiss Army knife” for
+container creation. In addition to downloading images, you can use ``build`` to
+create images from other images, or from scratch using a :ref:`definition file
+<definition-files>`. You can also use ``build`` to convert an image between the
+container formats supported by {Singularity}. To see a comparison of the
+{Singularity} definition file with Dockerfile, please see: :ref:`this section
 <sec:deffile-vs-dockerfile>`.
 
 .. _cowimage:
@@ -415,8 +569,8 @@ definition file with Dockerfile, please see: :ref:`this section
 Interacting with images
 ***********************
 
-You can interact with images in several ways, each of which can accept
-image URIs in addition to a local image path.
+You can interact with images in several ways, each of which can accept image
+URIs in addition to local image paths.
 
 As an example, the following command will pull a ``lolcow_latest.sif`` image
 from the Container Library:
@@ -428,35 +582,32 @@ from the Container Library:
 Shell
 =====
 
-The `shell
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`_
-command allows you to spawn a new shell within your container and
-interact with it as though it were a virtual machine.
+The :ref:`shell <singularity_shell>` command allows you to spawn a new shell
+within your container and interact with it as though it were a virtual machine.
 
 .. code::
 
    $ singularity shell lolcow_latest.sif
+   Singularity>
 
-   {Singularity} lolcow_latest.sif:~>
+The change in prompt indicates that you have entered the container (though you
+should not rely on prompt forms to determine whether you are in a container or
+not).
 
-The change in prompt indicates that you have entered the container
-(though you should not rely on prompt forms to determine whether you are in
-a container or not).
-
-Once inside of a {Singularity} container, you are the same user as you
-are on the host system.
+Once inside of a {Singularity} container, you are the same user as you are on
+the host system.
 
 .. code::
 
-   {Singularity} lolcow_latest.sif:~> whoami
+   Singularity> whoami
    david
 
-   {Singularity} lolcow_latest.sif:~> id
+   Singularity> id
    uid=1000(david) gid=1000(david) groups=1000(david),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lpadmin),126(sambashare)
 
-``shell`` also works with the ``library://``, ``docker://``, and
-``shub://`` URIs. This creates an ephemeral container that disappears
-when the shell is exited.
+``shell`` also works with the ``library://``, ``docker://``, and ``shub://``
+URIs. This creates an ephemeral container that disappears when the shell is
+exited.
 
 .. code::
 
@@ -465,11 +616,9 @@ when the shell is exited.
 Executing Commands
 ==================
 
-The `exec
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_exec.html>`_
-command allows you to execute a custom command within a container by
-specifying the image file. For instance, to execute the ``cowsay``
-program within the ``lolcow_latest.sif`` container:
+The :ref:`exec <singularity_exec>` command allows you to execute a custom
+command within a container by specifying the image file. For instance, to
+execute the ``cowsay`` program within the ``lolcow_latest.sif`` container:
 
 .. code::
 
@@ -504,13 +653,11 @@ command and disappears.
 Running a container
 ===================
 
-{Singularity} containers contain :ref:`runscripts <runscript>`. These
-are user-defined scripts that define the actions a container should
-perform when someone runs it. The runscript can be triggered with the
-`run
-<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`_
-command, or simply by calling the container as though it were an
-executable.
+{Singularity} containers contain :ref:`runscripts <runscript>`. These are
+user-defined scripts that define the actions a container should perform when
+someone runs it. The runscript can be triggered with the :ref:`run
+<singularity_run>` command, or simply by calling the container as though it were
+an executable.
 
 .. code::
 
@@ -534,9 +681,8 @@ executable.
                    ||----w |
                    ||     ||
 
-``run`` also works with the ``library://``, ``docker://``, and
-``shub://`` URIs. This creates an ephemeral container that runs and then
-disappears.
+``run`` also works with the ``library://``, ``docker://``, and ``shub://`` URIs.
+This creates an ephemeral container that runs and then disappears.
 
 .. code::
 
@@ -554,18 +700,17 @@ disappears.
 Arguments to ``run``
 --------------------
 
-You can pass arguments to the runscript of a container, if it accepts
-them. For example, the default runscript of the ``library://alpine``
-container passes any arguments to a shell. We can ask the container
-to run ``echo`` command in this shell as follows:
+You can pass arguments to the runscript of a container. For example, the default
+runscript of the ``library://alpine`` container passes any arguments to a shell.
+We can ask the container to run ``echo`` command in this shell as follows:
 
 .. code::
 
    $ singularity run library://alpine echo "hello"
    hello
 
-Because {Singularity} runscripts are evaluated shell scripts, arguments
-can behave slightly differently than in Docker/OCI runtimes, if they
+Because {Singularity} runscripts are evaluated shell scripts, arguments can
+behave slightly differently than in Docker/OCI runtimes, in the event that they
 contain expressions that have special meaning to the shell. Here is an
 illustrative example:
 
@@ -580,11 +725,11 @@ illustrative example:
    $ singularity run docker://alpine echo "\\\$HOSTNAME"
    $HOSTNAME
 
-To replicate Docker/OCI behavior, you may need additional escaping or
-quoting of arguments.
+To replicate Docker/OCI behavior, you may need additional escaping or quoting of
+arguments.
 
-Unlike the ``run`` command, the ``exec`` command replicates the Docker/OCI
-behavior, as it calls the specified executable directly:
+Unlike the ``run`` command, the ``exec`` command does behave in the same manner
+as Docker/OCI, because it calls the specified executable directly:
 
 .. code::
 
@@ -612,10 +757,9 @@ This example works because ``hostfile.txt`` exists in the user's home directory
 working directory, and additional system locations from the host into the
 container.
 
-You can specify additional directories to bind mount into your container
-with the ``--bind`` option. In this example, the ``data`` directory on
-the host system is bind mounted to the ``/mnt`` directory inside the
-container.
+You can specify additional directories to bind mount into your container with
+the ``--bind`` option. In the following example, the ``data`` directory on the
+host system is bind mounted to the ``/mnt`` directory inside the container.
 
 .. code::
 
@@ -629,7 +773,7 @@ do with normal Linux commands:
 
 .. code::
 
-   $ cat /data/cow_advice.txt | singularity exec lolcow_latest.sif cowsay
+   $ echo "Drink milk (and never eat hamburgers)." | singularity exec lolcow_latest.sif cowsay
     ________________________________________
    < Drink milk (and never eat hamburgers). >
     ----------------------------------------
@@ -647,16 +791,16 @@ Building images from scratch
 
 .. _sec:buildimagesfromscratch:
 
-{Singularity} v3.0 and above produces immutable images in the
-Singularity Image File (SIF) format. This ensures reproducible and
-verifiable images and allows for many extra benefits such as the ability
-to sign and verify your containers.
+{Singularity} versions 3.0 and above produce immutable images in the Singularity
+Image File (SIF) format. This ensures reproducible and verifiable images, and
+allows for many extra benefits such as the ability to sign and verify your
+containers.
 
-However, during testing and debugging you may want an image format that
-is writable. This way you can ``shell`` into the image and install
-software and dependencies until you are satisfied that your container
-will fulfill your needs. For these scenarios, {Singularity} also
-supports the ``sandbox`` format (which is really just a directory).
+However, during testing and debugging, you may want an image format that is
+writable. This way you can ``shell`` into the image and install software and
+dependencies until you are satisfied that your container will fulfill your
+needs. For these scenarios, {Singularity} also supports the ``sandbox`` format
+(which is really just a directory).
 
 Sandbox Directories
 ===================
@@ -691,15 +835,15 @@ Converting images from one format to another
 The ``build`` command allows you to build a new container from an existing
 container. This means that you can use it to convert a container from one format
 to another. For instance, if you have already created a sandbox (directory) and
-want to convert it to the Singularity Image Format you can do so:
+want to convert it to the Singularity Image Format, you can do so as follows:
 
 .. code::
 
    $ singularity build new.sif sandbox
 
-Doing so may break reproducibility if you have altered your sandbox outside of
-the context of a :ref:`definition file <qs-def-files>`, so you are advised
-to exercise care.
+Note, however, that this approach may break reproducibility, in the event that
+you have altered your sandbox outside of the context of a :ref:`definition file
+<qs-def-files>`, so you are advised to exercise care.
 
 .. _qs-def-files:
 
@@ -767,7 +911,9 @@ This is a very small example of the things that you can do with a
 from the Container Library, you can start with base images from Docker Hub and
 use images directly from official repositories such as Ubuntu, Debian, CentOS,
 Arch, and BusyBox. You can also use an existing container on your host system as
-a base.
+a base. Definition files also support :ref:`"templating" <sec:templating>`: the
+ability to pass values from the command-line, or from a definitions file, that
+will replace placeholders in the definition file at build time.
 
 If you want to build {Singularity} images but you don't have
 administrative (root) access on your build system, you can build images

@@ -37,7 +37,7 @@ configured keyservers:
 
 We can see in the output of the ``list`` subcommand that "SylabsCloud" is the
 *default* remote endpoint (in other words, the endpoint that will be used by all
-{SingularityCE} commands unless otherwise specified), and that it is a *global*
+{Singularity} commands unless otherwise specified), and that it is a *global*
 (in other words, system-level) endpoint. As can be seen above, the output also
 indicates that TLS will be used when communicating with the
 ``https://keys.sylabs.io`` keyserver.
