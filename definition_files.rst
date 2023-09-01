@@ -793,15 +793,327 @@ After building the help can be displayed like so:
        This is a demo container used to illustrate a def file that uses all
        supported sections.
 
+****************************************************
+Templating: How to Pass Values into Definition Files
+****************************************************
+
+Starting with version 4.0, {Singularity} definition files support *templating*:
+definition files can include placeholders for values that will be passed at
+build time, either using command-line options or by specifying a file that
+contains the relevant values.
+
+Basics
+======
+
+To use templating, include a ``{{ placeholder }}`` at the point in your
+definition file where you'd like the passed-in value to go. For example:
+
+.. code:: singularity
+
+   Bootstrap: library
+   From: ubuntu:22.04
+   Stage: build
+
+   %runscript
+       echo {{ some_text }}
+
+When building a container from this definition file, a concrete value for
+``{{ some_text }}`` can be passed via the ``--build-arg`` flag to the ``build``
+command. This flag accepts a ``varname=value`` pair, as shown here:
+
+.. code::
+
+   $ sudo singularity build --build-arg some_text="Hello world" ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   Hello world
+
+Alternatively, the ``varname=value`` assignments can be placed in a file, and
+the path to that file specified using the ``--build-arg-file`` flag to the
+``build`` command, as shown here:
+
+.. code::
+
+   $ cat << EOF > ./my_args_file.txt
+   some_text="Hello again, world"
+   EOF
+
+   $ sudo singularity build -F --build-arg-file ./my_args_file.txt ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   Hello again, world
+
+Working with multiple variables
+===============================
+
+A single definition file can use multiple different templating variables, use a
+single variable more than once, and use variables in different sections of the
+definition file, as shown here:
+
+.. code:: singularity
+
+   Bootstrap: library
+   From: ubuntu:22.04
+   Stage: build
+
+   %setup
+       echo {{ file_contents }} > /tmp/test_file
+
+   %environment
+       export CUSTOM_VAR_ONE={{ var_value1 }}
+       export CUSTOM_VAR_TWO={{ var_value2 }}
+
+   %runscript
+       echo "file contents:" `cat /tmp/test_file`
+       echo "--> this should, if I'm not mistaken, equal:" {{ file_contents }}
+       echo ""
+       echo "env var: ${CUSTOM_VAR_ONE}"
+       echo "--> this should, if I'm not mistaken, equal:" {{ var_value1 }}
+       echo ""
+       echo "env var: ${CUSTOM_VAR_TWO}"
+       echo "--> this should, if I'm not mistaken, equal:" {{ var_value2 }}
+       echo ""
+       echo "and finally, here's some text:" {{ some_text}}
+
+To use this definition file, one can pass values for all the different variables
+using ``--build-arg`` flags:
+
+.. code::
+
+   $ sudo singularity build -F --build-arg file_contents="'I am in a file'" --build-arg var_value1="'I am in an env var'" --build-arg var_value2="'I am also in an env var'" --build-arg some_text="'I am just some text'" ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Running setup scriptlet
+   + echo 'I am in a file'
+   INFO:    Adding environment to container
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   file contents: I am in a file
+   --> this should, if I'm not mistaken, equal: I am in a file
+
+   env var: I am in an env var
+   --> this should, if I'm not mistaken, equal: I am in an env var
+
+   env var: I am also in an env var
+   --> this should, if I'm not mistaken, equal: I am also in an env var
+
+   and finally, here's some text: I am just some text
+
+Or one can place the values for the different values in a file, and pass the
+path to that file using the ``--build-arg-file`` flag:
+
+.. code::
+
+   $ cat << EOF > ./my_args_file.txt
+   file_contents="I am in a file"
+   var_value1="I am in an env var"
+   var_value2="I am also in an env var"
+   some_text="I am just some text"
+   EOF
+
+   $ sudo singularity build -F --build-arg-file ./my_args_file.txt ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Running setup scriptlet
+   + echo 'I am in a file'
+   INFO:    Adding environment to container
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   file contents: I am in a file
+   --> this should, if I'm not mistaken, equal: I am in a file
+
+   env var: I am in an env var
+   --> this should, if I'm not mistaken, equal: I am in an env var
+
+   env var: I am also in an env var
+   --> this should, if I'm not mistaken, equal: I am also in an env var
+
+   and finally, here's some text: I am just some text
+
+Or one can use a combination of both strategies:
+
+.. code::
+
+   $ cat << EOF > ./my_args_file.txt
+   var_value1="I am in an env var"
+   some_text="I am just some text"
+   EOF
+
+   $ sudo singularity build -F --build-arg file_contents="'I am in a file'" --build-arg var_value2="'I am also in an env var'" --build-arg-file ./my_args_file.txt ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Running setup scriptlet
+   + echo 'I am in a file'
+   INFO:    Adding environment to container
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   file contents: I am in a file
+   --> this should, if I'm not mistaken, equal: I am in a file
+
+   env var: I am in an env var
+   --> this should, if I'm not mistaken, equal: I am in an env var
+
+   env var: I am also in an env var
+   --> this should, if I'm not mistaken, equal: I am also in an env var
+
+   and finally, here's some text: I am just some text
+
+Precedence among multiple value sources
+=======================================
+
+In the event that an argument is passed via ``--build-arg`` more than once, the
+last occurrence will take precedence:
+
+.. code::
+
+   $ sudo singularity build -F --build-arg file_contents="'I am in a file (1st time)'" --build-arg var_value2="'I am also in an env var'" --build-arg file_contents="'I am in a file (2nd time)'" --build-arg-file ./my_args_file.txt ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Running setup scriptlet
+   + echo 'I am in a file (2nd time)'
+   INFO:    Adding environment to container
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   file contents: I am in a file (2nd time)
+   --> this should, if I'm not mistaken, equal: I am in a file (2nd time)
+
+   env var: I am in an env var
+   --> this should, if I'm not mistaken, equal: I am in an env var
+
+   env var: I am also in an env var
+   --> this should, if I'm not mistaken, equal: I am also in an env var
+
+   and finally, here's some text: I am just some text
+
+In the event that a variable is defined both in the file passed to
+``--build-arg-file`` and via the command line using ``--build-arg`` flag, the value passed via the
+command line will take precedence:
+
+.. code::
+
+   $ cat << EOF > ./my_args_file.txt
+   var_value1="I am in an env var"
+   var_value2="I am also in an env var (from build arg file)"
+   some_text="I am just some text"
+   EOF
+
+   $ sudo singularity build -F --build-arg file_contents="'I am in a file'" --build-arg var_value2="'I am also in an env var (from command line)'" --build-arg-file ./my_args_file.txt ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Running setup scriptlet
+   + echo 'I am in a file'
+   INFO:    Adding environment to container
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   file contents: I am in a file
+   --> this should, if I'm not mistaken, equal: I am in a file
+
+   env var: I am in an env var
+   --> this should, if I'm not mistaken, equal: I am in an env var
+
+   env var: I am also in an env var (from command line)
+   --> this should, if I'm not mistaken, equal: I am also in an env var (from command line)
+
+   and finally, here's some text: I am just some text
+
+Default variable values: the %arguments section
+===============================================
+
+If a definition file contains a variable placeholder and no value for that
+variable is provided (via either ``--build-arg`` or ``--build-arg-file``),
+{Singularity} will generate an error:
+
+.. code:: singularity
+
+   Bootstrap: library
+   From: ubuntu:22.04
+   Stage: build
+
+   %runscript
+      echo "Here is some text:" {{ some_text }}
+      echo "And here is some more text:" {{ some_more_text }}
+
+.. code::
+
+   $ sudo singularity build -F --build-arg some_more_text="more more more" ./my_container.sif ./my_container.def
+   FATAL:   Unable to build from ./my_container.def: build var some_text is not defined through either --build-arg (--build-arg-file) or 'arguments' section
+
+However, definition files can provide default values for some or all variables
+using the ``%arguments`` section, as shown here:
+
+.. code:: singularity
+
+   Bootstrap: library
+   From: ubuntu:22.04
+   Stage: build
+
+   %runscript
+      echo "Here is some text:" {{ some_text }}
+      echo "And here is some more text:" {{ some_more_text }}
+
+   %arguments
+      some_text="Some default text"
+      some_more_text="Some more default text"
+
+.. code::
+
+   $ sudo singularity build -F --build-arg some_more_text="more more more" ./my_container.sif ./my_container.def
+   INFO:    Starting build...
+   INFO:    Using cached image
+   INFO:    Verifying bootstrap image /root/.singularity/cache/library/sha256.7a63c14842a5c9b9c0567c1530af87afbb82187444ea45fd7473726ca31a598b
+   INFO:    Adding runscript
+   INFO:    Creating SIF file...
+   INFO:    Build complete: ./my_container.sif
+
+   $ singularity run ./my_container.sif
+   Here is some text: Some default text
+   And here is some more text: more more more
+
+Note that in the event of a variable having both a default value *and* a value
+explicitly set via ``--build-arg`` or ``--build-arg-file``, the explicitly-set
+value will take precedence (as the example above shows).
+
 ******************
 Multi-Stage Builds
 ******************
 
-Starting with v3.2, {Singularity} supports multi-stage builds, where one
-environment can be used for compilation, and the resulting binary can
-then be copied into a different final environment. One of the important
-advantages of this approach is that it allows for a slimmer final image
-that does not require the entire development stack.
+Starting with version 3.2, {Singularity} supports multi-stage builds, where one
+environment can be used for compilation, and the resulting binary can then be
+copied into a different final environment. One of the important advantages of
+this approach is that it allows for a slimmer final image that does not require
+the entire development stack.
 
 .. code:: singularity
 
