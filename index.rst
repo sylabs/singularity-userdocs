@@ -71,7 +71,7 @@ process of building, signing, and sharing your containers.
    Remote Endpoints <endpoint>
    Keyserver Management <keyserver>
    OCI Registries <registry>
-   Sylabs Cloud Library <cloud_library>
+   SCS Library <cloud_library>
 
 **************
 Advanced Usage

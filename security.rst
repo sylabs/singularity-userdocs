@@ -197,12 +197,11 @@ signed. The signature travels as part of the SIF image itself so that it
 is always possible to verify that the image has not been tampered with
 or corrupted.
 
-We use private PGP keys to create a container signature, and the
-corresponding public keys to verify the container. Verification of
-signed containers happens automatically in ``singularity pull`` commands
-against the Sylabs Cloud Container Library. A keystore in the Sylabs
-Cloud makes it easier to share and obtain public keys for container
-verification.
+We use private PGP keys to create a container signature, and the corresponding
+public keys to verify the container. Verification of signed containers happens
+automatically in ``singularity pull`` commands against the Singularity Container
+Services (SCS) Library. The SCS keystore makes it easier to share and obtain
+public keys for container verification.
 
 A container may be signed once, by a trusted individual who approves its use. It
 could also be signed with multiple keys to signify it has passed each step in a

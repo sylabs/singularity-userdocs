@@ -1,21 +1,20 @@
 .. _cloud_library:
 
-#############
-Cloud Library
-#############
+###########
+SCS Library
+###########
 
 ********
 Overview
 ********
 
-The Sylabs Cloud Library is the place to :ref:`push <push>` your
-containers to the cloud so other users can :ref:`pull <pull>`,
+The Singularity Container Services (SCS) Library is the place to :ref:`push
+<push>` your containers to the cloud so other users can :ref:`pull <pull>`,
 :ref:`verify <signNverify>`, and use them.
 
-The Sylabs Cloud also provides a :ref:`Remote Builder <remote_builder>`,
-allowing you to build containers on a secure remote service. This is
-convenient so that you can build containers on systems where you do not
-have root privileges.
+SCS also provides a :ref:`Remote Builder <remote_builder>`, allowing you to
+build containers on a secure remote service. This is convenient so that you can
+build containers on systems where you do not have root privileges.
 
 .. _make_a_account:
 
@@ -104,6 +103,92 @@ Note that when you push to a library that supports it, {Singularity} 3.7
 and above will report your quota usage and the direct URL to view the
 container in your web browser.
 
+OCI-SIF Images
+==============
+
+If you are using {Singularity} 4's new OCI-mode, you may wish to push OCI-SIF
+images to a ``library://`` destination. The standard ``push`` command can be
+used, and {Singularity} will perform the push as an OCI image.
+
+Instead of uploading the container as a single SIF file, the OCI configuration
+and layer blobs that are encapsulated in the OCI-SIF will be uploaded to the OCI
+registry that sits behind the SCS / Singularity Enterprise Library. 
+
+.. note::
+
+   The OCI image specification doesn't support SIF signatures, or any additional
+   partitions that can be added to SIF (including OCI-SIF) files by
+   {Singularity}.
+
+   If you have signed an OCI-SIF image locally, the signature(s) will not be
+   pushed to the library. You may wish to push the OCI-SIF, as a single file, to
+   an OCI registry using the ``oras://`` protocol instead.
+
+Pushing OCI-SIF containers to the library in this manner means that they can be
+accessed by other OCI tools. For example, you can use the `Skopeo CLI tool
+<https://github.com/containers/skopeo>`__ to examine the image in the registry
+after it has been pushed. First, ``push`` an OCI-SIF to the SCS ``library://``.
+The ``-U`` option is needed because the image is unsigned.
+
+.. code::
+
+   $ singularity push -U alpine_latest.oci.sif library://example/userdoc/alpine:latest
+   WARNING: Skipping container verification
+   INFO:    Pushing an OCI-SIF to the library OCI registry. Use `--oci` to pull this image.
+
+Now use ``skopeo`` to access the image in the library. This requires
+authentication, which is handled automatically when you use ``singularity
+push``. For other tools, {Singularity} provides a command ``singularity remote
+get-login-password`` that will provide a token that we can use to login to
+``registry.sylabs.io``, which is the address of the OCI registry backing the SCS
+library.
+
+.. code::
+
+   $ singularity remote get-login-password | \
+       skopeo login -u example --password-stdin registry.sylabs.io
+   Login Succeeded!
+
+Finally, use ``skopeo inspect`` to examine the image pushed earlier:
+
+ .. code::
+
+   $ skopeo inspect docker://registry.sylabs.io/example/userdoc/alpine:latest
+   {
+      "Name": "registry.sylabs.io/example/userdoc/alpine",
+      "Digest": "sha256:d08ad9745675812310727c0a99a4472b82fb1cc81e5c42ceda023f1bc35ca34a",
+      "RepoTags": [
+         "latest"
+      ],
+      "Created": "2023-08-07T20:16:26.309461618Z",
+      "DockerVersion": "",
+      "Labels": null,
+      "Architecture": "amd64",
+      "Os": "linux",
+      "Layers": [
+         "sha256:a0c5ced3a57bd1d0d71aaf4a0ea6131d5f163a4a8c5355468c18d4ef006f5d7d"
+      ],
+      "LayersData": [
+         {
+               "MIMEType": "application/vnd.sylabs.image.layer.v1.squashfs",
+               "Digest": "sha256:a0c5ced3a57bd1d0d71aaf4a0ea6131d5f163a4a8c5355468c18d4ef006f5d7d",
+               "Size": 3248128,
+               "Annotations": null
+         }
+      ],
+      "Env": [
+         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      ]
+   }
+
+Because the OCI-SIF was pushed as an OCI image, ``skopeo inspect`` is able to
+show the image configuration. This is not possible for non-OCI-SIF images:
+
+.. code::
+
+   $ skopeo inspect docker://registry.sylabs.io/library/default/alpine:latest
+   FATA[0001] unsupported image-specific operation on artifact with type "application/vnd.sylabs.sif.config.v1+json"
+
 .. _pull:
 
 *******************
@@ -164,6 +249,45 @@ etc...
    You *don't* have to specify a output file, one will be created
    automatically, but it's good practice to always specify your output
    file.
+
+OCI-SIF Images
+==============
+
+If you are using {Singularity} 4's new OCI-mode and have pushed OCI-SIF
+containers to the SCS library, they are stored as OCI images in the OCI registry
+that backs the library. You can pull these images with the standard ``pull``
+command:
+
+.. code::
+
+   $ singularity pull library://sylabs/test/alpine-oci-sif:latest
+   INFO:    sylabs/test/alpine-oci-sif:latest is an OCI image, attempting to fetch as an OCI-SIF
+   Getting image source signatures
+   Copying blob af32528d4445 done  
+   Copying config a5d222bd0d done  
+   Writing manifest to image destination
+   INFO:    Writing OCI-SIF image
+   INFO:    Cleaning up.
+   WARNING: integrity: signature not found for object group 1
+   WARNING: Skipping container verification
+
+Note that {Singularity} detects the image is an OCI image, and automatically
+retrieves it to an OCI-SIF file.
+
+If the image was a non-OCI-SIF, built for {Singularity}'s default native mode,
+then it would be retrieved as-is. To ensure that an image retrieved from a
+``library://`` URI is an OCI-SIF, use the ``--oci`` flag. This will produce an
+error if a non-OCI-SIF is pulled:
+
+.. code::
+
+   $ singularity pull --oci library://sylabs/examples/ruby
+   Getting image source signatures
+   Copying blob a21814eefb7f done  
+   Copying config 5211e7986c done  
+   Writing manifest to image destination
+   INFO:    Cleaning up.
+   FATAL:   While pulling library image: error fetching image: while creating OCI-SIF: while checking OCI image: json: cannot unmarshal string into Go struct field ConfigFile.rootfs of type v1.RootFS
 
 **************************
 Verify/Sign your Container
