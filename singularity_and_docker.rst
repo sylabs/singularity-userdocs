@@ -10,9 +10,16 @@ deployments of software. Although {Singularity}'s own container format
 has many unique advantages, it's likely you will need to work with
 Docker/OCI containers at some point.
 
-{Singularity} aims for maximum compatibility with Docker, within the
-constraints on a runtime that is well suited for use on shared systems
-and especially in HPC environments.
+{Singularity}'s default native mode aims for maximum compatibility with Docker,
+within the constraints on a runtime that is well suited for use on shared
+systems and especially in HPC environments that often employ older LTS Linux
+distributions.
+
+{Singularity}'s optional OCI-mode (``--oci``) uses a true OCI low-level runtime,
+and encapsulates OCI images into an OCI-SIF file, rather than converting them to
+{Singularity}'s own container format. It offers improved OCI compatibility but
+has additional requirements. Please :ref:`consult the documentation <oci_mode>`
+about OCI-mode for more information.
 
 Using {Singularity} you can:
 
@@ -23,17 +30,9 @@ Using {Singularity} you can:
 -  Pull and build from OCI containers in archive formats, or cached in a
    local Docker daemon.
 
-Behind the scenes, {Singularity} automatically translates the Docker / OCI
-container into its native format. This section will highlight these workflows,
-and discuss the limitations and best practices to keep in mind when creating
-containers targeting both Docker and {Singularity}.
-
-{Singularity} 3.11 introduces an alternative, experimental, :ref:`oci mode
-<oci_mode>`, to run Docker / OCI containers natively, without translation. This
-is accessed using the ``--oci`` flag for ``run / shell / exec`` and offers
-improved compatibility in some cases. Special requirements and limitations
-apply, which will be addressed through version 4.0. Please :ref:`consult the
-documentation <oci_mode>` about ``--oci`` mode for more information.
+This section will highlight these workflows, and discuss the limitations and
+best practices to keep in mind when creating containers targeting both Docker
+and {Singularity}.
 
 **************************
 Containers From Docker Hub
@@ -103,6 +102,46 @@ from the cache.
    from the conversion will vary. This differs from pulling a SIF
    container (e.g. from a ``library://`` URI), which always give you an
    exact copy of the image.
+
+OCI-Mode
+========
+
+To use {Singularity} 4's new OCI-mode, add the ``--oci`` option when you ``run /
+shell / exec`` or ``pull`` an OCI container:
+
+.. code::
+
+   $ singularity run --oci docker://sylabsio/lolcow:latest
+   INFO:    Converting OCI image to OCI-SIF format
+   INFO:    Squashing image to single layer
+   INFO:    Writing OCI-SIF image
+   INFO:    Cleaning up.
+   _____________________________
+   < Tue Sep 5 10:36:58 UTC 2023 >
+   -----------------------------
+         \   ^__^
+            \  (oo)\_______
+               (__)\       )\/\
+                  ||----w |
+                  ||     ||
+
+
+Note that in this case, the log messages show that {Singularity} is converting
+the image to OCI-SIF format. This is closer to the original OCI image than a SIF
+created in native (non-OCI) mode. You can read more in the
+:ref:`OCI-SIF section <oci_sif>` of this documentation. 
+
+When you ``pull`` an image with ``--oci``, the OCI-SIF file will have an
+``.oci.sif`` extension by default:
+
+.. code::
+
+   $ singularity pull --oci docker://sylabsio/lolcow
+   INFO:    Using cached OCI-SIF image
+
+   $ ls -l lolcow_latest.oci.sif 
+   -rwxr-xr-x. 1 myuser myuser 74728057 Sep  5 11:39 lolcow_latest.oci.sif
+
 
 Docker Hub Limits
 =================
@@ -412,6 +451,13 @@ Just as you can run or pull containers from different registries using a
 instruct {Singularity} where to find the container you want to use as
 the starting point for your build.
 
+.. note::
+
+   OCI-mode doesn't yet support ``singularity build``. When you build from an
+   OCI container with {Singularity}, you are always creating a non-OCI
+   {Singularity} container as output.
+
+
 Registries In Definition Files
 ==============================
 
@@ -635,12 +681,15 @@ filename in the ``From:`` line:
 Differences and Limitations vs Docker
 *************************************
 
-Though Docker / OCI container compatibility is a goal of {Singularity},
-there are some differences and limitations due to the way {Singularity}
-was designed to work well on shared systems and HPC clusters. If you are
-having difficulty running a specific Docker container, check through the
-list of differences below. There are workarounds for many of the issues
-that you are most likely to face.
+Though Docker / OCI container compatibility is a goal of {Singularity}, there
+are some differences and limitations due to the way {Singularity} was designed
+to work well on shared systems and HPC clusters, particularly for the native
+(non-OCI) mode.
+
+If you are having difficulty running a specific Docker container, without
+``--oci``, check through the list of differences below. There are workarounds
+for many of the issues that you are most likely to face. You may also wish to
+use OCI-mode for improved compatibility.
 
 Read-only by Default
 ====================
@@ -707,15 +756,21 @@ The ``Dockerfile`` used to build a Docker container may contain a
 ``USER`` statement. This tells the container runtime that it should run
 the container under the specified user account.
 
-Because {Singularity} is designed to provide easy and safe access to
-data on the host system, work under batch schedulers, etc., it does not
-permit changing the user account the container is run as.
+Because {Singularity} was designed to provide easy and safe access to data on
+the host system, in a manner that supports older Linux distributions, it does
+not permit changing the user account the container is run as.
 
-Any ``USER`` statement in a ``Dockerfile`` will be ignored by
-{Singularity} when the container is run. In practice, this often does
-not affect the execution of the software in the container. Software that
-is written in a way that requires execution under a specific user
-account will generally require modification for use with {Singularity}.
+In the default native mode, any ``USER`` statement in a ``Dockerfile`` will be
+ignored by {Singularity} when the container is run. In practice, this often does
+not affect the execution of the software in the container. Software that is
+written in a way that requires execution under a specific user account will
+generally require modification for use with {Singularity}.
+
+.. note::
+
+   The new OCI-mode (``--oci``) supports running containers with the ``USER``
+   requested in a ``Dockerfile``. It uses newer kernel features to achieve this.
+   You may wish to use OCI-mode if your system supports it.
 
 {Singularity}'s ``--fakeroot`` mode will start a container as a fake
 ``root`` user, mapped to the user's real account outside of the
@@ -955,6 +1010,10 @@ These options will allow most, but not all, Docker / OCI containers to
 execute correctly under {Singularity}. The user namespace and network
 namespace are not used, as these negate benefits of SIF and direct
 access to high performance cluster networks.
+
+Note that behavior in OCI-mode (``--oci``) follows that of ``--compat``, by
+default. To emulate traditional {Singularity} behavior in OCI-mode use the
+``--no-compat`` option.
 
 **************************
 CMD / ENTRYPOINT Behaviour
@@ -1258,7 +1317,7 @@ Section          Description                 Section          Description
                  | build-time.                                | build-time.
 
 
-``%runscript```  | Commands that will
+``%runscript``  | Commands that will
                  | be run when you           ``ENTRYPOINT``   | Commands / arguments
                  | ``singularity run``       ``CMD``          | that will run in the
                  | the container image.                       | container image.

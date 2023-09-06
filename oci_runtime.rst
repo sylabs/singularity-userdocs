@@ -304,6 +304,8 @@ Environment and action scripts are run using the container's shell, rather than
 an embedded shell interpreter. Complex environment scripts may exhibit different
 behavior. Bare images that do not contain ``/bin/sh`` cannot be run.
 
+.. _oci_sif:
+
 OCI-SIF Images
 ==============
 
