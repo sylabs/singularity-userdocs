@@ -179,7 +179,7 @@ EL 8 / 9
   sudo dnf install squashfs-tools-ng
 
 EL 7
-####
+""""
 
 .. code::
 
@@ -192,7 +192,7 @@ SLES / openSUSE Leap
 
 On SLES/openSUSE, follow the instructions at the `filesystems
 project <https://software.opensuse.org//download.html?project=filesystems&package=squashfs>`_
-to obtain a more recent ``squashfs`` package, which provides `sqfstar`.
+to obtain a more recent ``squashfs`` package, which provides ``sqfstar``.
 
 Next steps
 ----------
