@@ -875,15 +875,21 @@ For example, the ``docker://openjdk:latest`` container sets ``JAVA_HOME``:
 Environment Variable Escaping / Evaluation
 ==========================================
 
-The default behavior of {Singularity} differs from Docker/OCI handling of
-environment variables as {Singularity} uses a shell interpreter to process
-environment on container startup, in a manner that evaluates environment
+The default behavior of {Singularity}, in native mode, differs from Docker/OCI
+handling of environment variables as {Singularity} uses a shell interpreter to
+process environment on container startup, in a manner that evaluates environment
 variables. To avoid the extra evaluation of variables that {Singularity}
 performs you can:
 
 * Follow the instructions in the :ref:`escaping-environment` section to
   explictly escape environment variables.
-* Use the ``--no-eval`` flag.
+* Use the ``--no-eval`` flag, or ``--compat`` (which enables ``--no-eval``).
+
+.. note::
+
+   When running a container in OCI-mode (``--oci``), {Singularity} follows
+   Docker/OCI behaviour by default. You do not need to enable the ``--no-eval``
+   or ``--compat`` options.
 
 ``--no-eval`` prevents {Singularity} from evaluating environment variables on
 container startup, so that they will take the same value as with a Docker/OCI

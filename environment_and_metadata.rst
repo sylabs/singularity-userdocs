@@ -355,23 +355,31 @@ Alternatively you could use the ``--env`` option to set a
 Escaping and Evaluation of Environment Variables
 ************************************************
 
-{Singularity} uses an embedded shell interpreter to process the container
-startup scripts and environment. When this processing is performed, by default a
-single step of shell evaluation happens in the container context. The shell from
-which you are running {Singularity} may also evaluate variables on your command
-line before passing them to {Singularity}.
+In its default native mode, {Singularity} uses an embedded shell interpreter to
+process the container startup scripts and environment. When this processing is
+performed, by default a single step of shell evaluation happens in the container
+context. The shell from which you are running {Singularity} may also evaluate
+variables on your command line before passing them to {Singularity}.
+
+In OCI-mode (``--oci``), {Singularity} follows OCI behavior and does not shell
+evaluate environment.
 
 Docker / OCI Compatibility
 ==========================
 
-This default behavior of {Singularity} differs from Docker/OCI handling of
-environment variables / ``ENV`` directives. To avoid the extra evaluation of
-variables that {Singularity} performs you can:
+This default behavior of {Singularity}, in its native mode, differs from
+Docker/OCI handling of environment variables / ``ENV`` directives. To avoid the
+extra evaluation of variables that {Singularity} performs you can:
 
 * Follow the instructions about escaping in the sections below, to add
   additional escape characters and/or quoting.
 * Use the ``--no-eval`` or ``--compat`` flags.
 
+.. note::
+
+   When running a container in OCI-mode (``--oci``), {Singularity} follows
+   Docker/OCI behaviour by default. You do not need to enable the ``--no-eval``
+   or ``--compat`` options.
 
 ``--no-eval`` prevents {Singularity} from evaluating environment variables on
 container startup, so that they will take the same value as with a Docker/OCI
