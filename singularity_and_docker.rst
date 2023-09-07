@@ -1323,7 +1323,7 @@ Section          Description                 Section          Description
                  | build-time.                                | build-time.
 
 
-``%runscript``  | Commands that will
+``%runscript``   | Commands that will
                  | be run when you           ``ENTRYPOINT``   | Commands / arguments
                  | ``singularity run``       ``CMD``          | that will run in the
                  | the container image.                       | container image.
