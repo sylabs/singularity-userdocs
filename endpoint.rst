@@ -9,7 +9,7 @@ Overview
 ********
 
 The ``remote`` command group allows users to manage the remote endpoint(s) that
-{Singularity} interacts with (the public Sylabs Cloud, or a local Singularity
+{Singularity} interacts with (Singularity Container Services, or a local Singularity
 Enterprise installation).
 
 .. note::
@@ -21,11 +21,11 @@ Enterprise installation).
    to dedicated top-level command groups: :ref:`registry<registry>` and
    :ref:`keyserver<keyserver>`, respectively.
 
-*******************
-Public Sylabs Cloud
-*******************
+******************************
+Singularity Container Services
+******************************
 
-Sylabs introduced the online `Sylabs Cloud <https://cloud.sylabs.io/home>`_ to
+Sylabs introduced `Singularity Container Services (SCS) <https://cloud.sylabs.io/home>`_ to
 enable users to `Create <https://cloud.sylabs.io/builder>`_ container images,
 `Secure <https://cloud.sylabs.io/keystore?sign=true>`_ them, and `Share
 <https://cloud.sylabs.io/library>`_ them with others.
@@ -70,7 +70,7 @@ If you see any errors, you may need to check if your system requires the setting
 of environment variables for a network proxy, or if a firewall may be blocking
 access to ``*.sylabs.io``. Consult your system administrator.
 
-You can interact with the public Sylabs Cloud using various {Singularity}
+You can interact with Singularity Container Services using various {Singularity}
 commands:
 
 `pull
@@ -96,7 +96,7 @@ commands:
 
 .. note::
 
-   Using the commands listed above will *not* interact with the Sylabs Cloud if
+   Using the commands listed above will *not* interact with SCS if
    given URIs beginning with ``docker://``, ``oras://`` or ``shub://``.
 
 *************************
@@ -107,7 +107,7 @@ Users can set up and switch between multiple remote endpoints, which will be
 stored in their ``~/.singularity/remote.yaml`` file. Alternatively, remote
 endpoints can be set on a system-wide basis by an administrator.
 
-A remote endpoint may be the public Sylabs Cloud, a private installation of
+A remote endpoint may be Singularity Container Services, a private installation of
 Singularity Enterprise, or any community-developed service that is
 API-compatible.
 
