@@ -289,6 +289,39 @@ error if a non-OCI-SIF is pulled:
    INFO:    Cleaning up.
    FATAL:   While pulling library image: error fetching image: while creating OCI-SIF: while checking OCI image: json: cannot unmarshal string into Go struct field ConfigFile.rootfs of type v1.RootFS
 
+Specifying a platform / architecture
+====================================
+
+By default, ``singularity pull`` from a ``library://`` URI will attempt to fetch
+a container that matches the architecture of your host system. If you need to
+retrieve a container that does not have the same architecture as your host (e.g.
+an ``arm64`` container on an ``amd64`` host), you can use the ``--platform`` or
+``--arch`` options.
+
+The ``--arch`` option accepts a CPU architecture only. For example, to pull an
+Ubuntu image for a 64-bit ARM system:
+
+.. code::
+
+   $ singularity pull --arch arm64 library://ubuntu
+
+The ``--platform`` option accepts an OCI platform string. This has two or three
+parts, separated by forward slashes (``/``):
+
+- An OS value. Only ``linux`` is supported by {Singularity}.
+- A CPU architecture value, e.g. ``arm64``.
+- An optional CPU variant, e.g. ``v8``.
+
+Note that the library does not support CPU variants. Any CPU variant provided
+will be ignored.
+
+To pull an Ubuntu image for a 64-bit ARM system from the library, using the
+``--platform`` option:
+
+.. code::
+
+   $ singularity pull --platform linux/arm64 library://ubuntu
+
 **************************
 Verify/Sign your Container
 **************************
