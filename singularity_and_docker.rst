@@ -448,6 +448,8 @@ retrieve a container that does not have the same architecture as your host (e.g.
 an ``arm64`` container on an ``amd64`` host), you can use the ``--platform`` or
 ``--arch`` options.
 
+.. _oci_platform:
+
 ``--platform`` option
 =====================
 
@@ -476,6 +478,8 @@ To pull a 32-bit image for a v7 ARM CPU:
 .. code::
 
    $ singularity pull --platform linux/arm/v7 docker://ubuntu
+
+.. _oci_arch:
 
 ``--arch`` option
 =================

@@ -289,6 +289,8 @@ error if a non-OCI-SIF is pulled:
    INFO:    Cleaning up.
    FATAL:   While pulling library image: error fetching image: while creating OCI-SIF: while checking OCI image: json: cannot unmarshal string into Go struct field ConfigFile.rootfs of type v1.RootFS
 
+.. _library_platform_arch:
+
 Specifying a platform / architecture
 ====================================
 

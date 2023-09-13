@@ -46,6 +46,8 @@ OCI compatibility is discussed in three areas of this guide:
    {Singularity} SIF containers with a command line that matches other OCI
    runtimes.
 
+.. _oci_mode:
+
 ********************
 OCI Mode (``--oci``)
 ********************
@@ -150,6 +152,8 @@ Running containers in this manner greatly improves compatibility between
 As the last line of output shows, the user inside the container run by
 ``singularity run --oci`` is ``testuser`` (the user added as part of the
 Dockerfile) rather than ``joeuser`` (the user on the host).
+
+.. _oci_compat:
 
 Default Behaviour & ``--no-compat``
 ===================================
@@ -693,6 +697,3 @@ lifecycle, via a command line compatible with other low-level OCI runtimes.
 These commands are primarily of interest to tooling that might use {Singularity}
 as a container runtime, rather than end users. End users will general use the
 OCI-mode (``--oci``) with ``run / shell / exec``.
-
-.. _oci_mode:
-
