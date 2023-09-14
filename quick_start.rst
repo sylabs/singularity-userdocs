@@ -32,6 +32,11 @@ Linux installation options, are discussed in the `installation section of
 the admin guide
 <https://sylabs.io/guides/{adminversion}/admin-guide/installation.html>`__.
 
+If you have an existing version of {Singularity} installed from source, which
+you wish to upgrade or remove / uninstall, see the `installation section of the
+admin guide
+<https://sylabs.io/guides/{adminversion}/admin-guide/installation.html>`__.
+
 Prerequisites
 =============
 
