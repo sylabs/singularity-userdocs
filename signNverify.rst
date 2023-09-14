@@ -21,7 +21,7 @@ containers. Since 3.11, signing and verifying containers with X.509 key material
 
 PGP Public keys for verification can be distributed manually, or can be upload
 to and automatically retrieved from `Singularity Container Services
-<https://cloud.sylabs.io/>`__ or a `Singularity Enterprise
+<https://cloud.sylabs.io/>`__ (SCS) or a `Singularity Enterprise
 <https://sylabs.io/singularity-enterprise/>`__ installation. Optionally, an HKP
 keyserver can also be configured.
 
@@ -48,27 +48,17 @@ for more information).
 Verifying containers from the Container Library
 ***********************************************
 
-The ``verify`` command will allow you to verify that a SIF container image has
-been signed using a PGP key. To use this feature with images that you pull from
-the container library, you must first generate an access token to the Sylabs
-Cloud. If you don't already have a valid access token, follow these steps:
+The ``verify`` command will check that a SIF container image has been signed
+using a PGP key, and is unchanged since it was signed.
 
-   #. Go to: https://cloud.sylabs.io/
-   #. Click "Sign In" and follow the sign in steps.
-   #. Click on your login id (same and updated button as the Sign in
-      one).
-   #. Select "Access Tokens" from the drop down menu.
-   #. Enter a name for your new access token, such as "test token"
-   #. Click the "Create a New Access Token" button.
-   #. Click "Copy token to Clipboard" from the "New API Token" page.
-   #. Run ``singularity remote login`` and paste the access token at the
-      prompt.
-
-Now you can verify containers that you pull from the library, ensuring they are
-bit-for-bit reproductions of the original image, when it was signed by the
-private key holder.
+If you are using a container image that was pulled from the SCS container
+library, then it is likely that it was signed with a PGP key that has been
+submitted to the SCS keystore. {Singularity} is able to automatically retrieve
+the public key to perform verification.
 
 .. code::
+
+   $ singularity pull library://alpine:latest
 
    $ singularity verify alpine_latest.sif
 
@@ -84,6 +74,11 @@ private key holder.
 In this example you can see that **Sylabs Admin** has signed the
 container.
 
+.. note::
+
+   ``singularity verify`` will only run against a local SIF file. You must
+   ``pull`` an image from a ``library://`` source before you can verify it.
+
 .. _sign_your_own_containers:
 
 ***************************
@@ -93,7 +88,20 @@ Signing your own containers
 Generating and managing PGP keys
 ================================
 
-To sign your own containers you first need to generate one or more keys.
+To sign your own containers you first need to generate one or more keys. In
+order to submit them to the SCS keystore, you will also need to login to SCS
+with a token:
+
+   #. Go to: https://cloud.sylabs.io/
+   #. Click "Sign In" and follow the sign in steps.
+   #. Click on your login id (same and updated button as the Sign in
+      one).
+   #. Select "Access Tokens" from the drop down menu.
+   #. Enter a name for your new access token, such as "test token"
+   #. Click the "Create a New Access Token" button.
+   #. Click "Copy token to Clipboard" from the "New API Token" page.
+   #. Run ``singularity remote login`` and paste the access token at the
+      prompt.
 
 If you attempt to sign a container before you have generated any keys,
 {Singularity} will guide you through the interactive process of creating
@@ -273,6 +281,12 @@ of objects. Each object has an ``ID``, and belongs to a ``GROUP``.
    1    |1       |NONE    |32768-32800               |Def.FILE
    2    |1       |NONE    |36864-36961               |JSON.Generic
    3    |1       |NONE    |40960-25890816            |FS (Squashfs/*System/amd64)
+
+.. note:: 
+
+   The ``singularity sif`` commands will only run against a local SIF file. You
+   must ``pull`` an image from a ``library://`` source before you can examine
+   it.
 
 I can choose to sign and verify a specific object with the ``--sif-id``
 option to ``sign`` and ``verify``.
