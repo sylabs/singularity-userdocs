@@ -84,8 +84,8 @@ CPU Limits
 ==========
 
 ``--cpus`` sets the number of CPUs, or fractional CPUs, that the container can
-use.  The minimum is ``0.01`` or one tenth of a physical CPU. The maximum is the
-number of CPU cores on your system.
+use.  The minimum is ``0.01`` or one hundredth of a physical CPU. The maximum is
+the number of CPU cores on your system.
 
 .. code::
 
