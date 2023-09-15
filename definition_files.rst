@@ -388,12 +388,18 @@ This section is where you can download files from the internet with
 tools like ``git`` and ``wget``, install new software and libraries,
 write configuration files, create new directories, etc.
 
+The commands in the ``%post`` section run in a clean environment. Environment
+variables from the host are not passed into the build. To pass values into a
+build you should use the :ref:`templating / build-args support <sec:templating>`
+introduced in {Singularity} 4.0.
+
 Consider the ``%post`` section from the example definition file above:
 
 .. code:: singularity
 
    %post
        apt-get update && apt-get install -y netcat
+   
        NOW=`date`
        echo "export NOW=\"${NOW}\"" >> $SINGULARITY_ENVIRONMENT
 
@@ -401,13 +407,19 @@ This ``%post`` scriptlet uses the Ubuntu package manager ``apt`` to
 update the container and install the program ``netcat`` (that will be
 used in the ``%startscript`` section below).
 
-The script also sets an environment variable at build time. Note that
-the value of this variable cannot be anticipated, and therefore cannot
-be set earlier in the ``%environment`` section. For situations like
-this, the ``$SINGULARITY_ENVIRONMENT`` variable is provided. Assigning a
-value to this variable will cause it to be written to a file called
-``/.singularity.d/env/91-environment.sh`` that will be sourced by the
-container at runtime.
+The scriptlet also sets an environment variable called ``NOW`` to the current
+date and time. It then writes an ``export`` statement for ``NOW`` into the file
+that is pointed to by ``$SINGULARITY_ENVIRONMENT``. This demonstrates how to set
+container environment variables (available when the container is run), that are
+not known when the definition file is written. Because the value of ``$NOW`` is
+only known when the ``date`` command in the ``%post`` scriptlet is run, it
+cannot be added to the ``%environment`` section.
+
+Directing output into ``$SINGULARITY_ENVIRONMENT`` will cause it to be written
+to a shell script file called ``/.singularity.d/env/91-environment.sh`` that
+will be sourced by the container at runtime. The ``export NAME=VALUE`` syntax is
+needed to make the environment variable available to all processes that are
+started in the container.
 
 .. note::
 

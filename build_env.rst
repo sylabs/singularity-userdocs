@@ -271,6 +271,15 @@ meaning that no intermediate decrypted data is ever written to disk. See
 Environment Variables
 *********************
 
+You can set environment variables on the host to influence the behaviour of a
+build. Note that environment variables are not passed into the build itself, and
+cannot be accessed in the ``%post`` section of a definition file. To pass values
+into a build, use the :ref:`templating / build-args support <sec:templating>`
+introduced in {Singularity} 4.0.
+
+Environment variables that control a build are generally associated with an
+equivalent CLI option. The order of precendence is:
+
 #. If a flag is represented by both a CLI option and an environment variable,
    and both are set, the CLI option will take precedence. This is true for all
    environment variables with the exception of ``SINGULARITY_BIND`` and
