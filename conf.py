@@ -52,7 +52,7 @@ copyright = u'2017-2023, Sylabs Inc & Project Contributors'
 # built documents.
 #
 # The short X.Y version.
-version = 'main'
+version = '4.0'
 # We have not had separate docs per release version for some time, so set
 # release = version here.
 release = version
