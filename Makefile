@@ -61,7 +61,7 @@ singularity_source/builddir/singularity:
 
 cli/singularity.rst: singularity_source/builddir/singularity
 	cd singularity_source &&\
-	go run ./cmd/docs rst --dir ../cli
+	go run -tags containers_image_openpgp,exclude_graphdriver_btrfs,exclude_graphdriver_devicemapper,sylog,singularity_engine,fakeroot_engine,apparmor,selinux,seccomp ./cmd/docs rst --dir ../cli
 
 endif
 
