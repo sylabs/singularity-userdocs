@@ -179,7 +179,7 @@ username:
 
    $ singularity registry login --username myuser docker://docker.io
    Password / Token:
-   INFO:    Token stored in /home/myuser/.singularity/remote.yaml
+   INFO:    Token stored in /home/myuser/.singularity/docker-config.json
 
 The Password / Token you enter must be a Docker Hub CLI access token,
 which you should generate in the 'Security' section of your account
@@ -195,6 +195,10 @@ To logout of a registry, so that your credentials are forgotten, use
 
    $ singularity registry logout docker://docker.io
    INFO:    Logout succeeded
+
+For more information on ``singularity registry`` and its subcommands, including
+the ``--authfile`` flag for storing and using credentials in user-specified
+files, see :ref:`the documentation of the registry command <registry>` itself.
 
 Docker CLI Authentication
 -------------------------
@@ -1257,7 +1261,7 @@ creating Docker / OCI containers that will also be run using
    ignored by Singularity. Install and configure software inside the
    container so that it can be run by any user.
 
-   2. **Don't install software under /root or in another user's home
+   1. **Don't install software under /root or in another user's home
       directory**
 
    Because a Docker container builds and runs as the ``root`` user by
@@ -1272,7 +1276,7 @@ creating Docker / OCI containers that will also be run using
    Install software into system-wide locations in the container, such as
    under ``/usr`` or ``/opt`` to avoid these issues.
 
-   3. **Support a read-only filesystem**
+   1. **Support a read-only filesystem**
 
    Because of the immutable nature of the SIF format, a container run
    with {Singularity} is read-only by default.
@@ -1285,14 +1289,14 @@ creating Docker / OCI containers that will also be run using
    You can test read-only execution with Docker using ``docker run
    --read-only --tmpfs /run --tmpfs /tmp sylabsio/lolcow``.
 
-   4. **Be careful writing to /tmp**
+   1. **Be careful writing to /tmp**
 
    {Singularity} mounts the *host* ``/tmp`` into the container, by
    default. This means you must be be careful when writing sensitive
    information to ``/tmp``, and should ensure your container cleans up
    files it writes there.
 
-   5. **Consider library caches / ldconfig**
+   1. **Consider library caches / ldconfig**
 
    If your ``Dockerfile`` adds libraries and / or manipulates the ld
    search path in the container (``ld.so.conf`` / ``ld.so.conf.d``), you
