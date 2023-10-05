@@ -178,3 +178,24 @@ errors:
    WARNING: There is no existing login to registry "docker.io".
    INFO:    Logout succeeded
 
+SINGULARITY_AUTHFILE
+====================
+
+In lieu of using the ``--authfile`` command-line flag, the same functionality
+may be accessed by setting the ``SINGULARITY_AUTHFILE`` environment variable,
+both for the ``registry login`` / ``registry logout`` commands and for the `pull
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_pull.html>`__
+/ `push
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_push.html>`__
+/ `build
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_build.html>`__
+/ `exec
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_exec.html>`__
+/ `shell
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`__
+/ `run
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__
+/ `instance start
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__
+set of commands.
+

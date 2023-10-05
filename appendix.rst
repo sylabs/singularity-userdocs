@@ -42,6 +42,10 @@ below with their respective functionality.
    (e.g. ``arm64``) of an image to pull from a ``library://`` or OCI source.
    Defaults to the host architecture.
 
+#. **SINGULARITY_AUTHFILE**: Specify a non-standard location for storing /
+   reading login credentials for OCI/Docker registries. See the
+   :ref:`authfile documentation <sec:authfile>`.
+
 ``B``
 =====
 
