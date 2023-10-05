@@ -227,6 +227,8 @@ credentials, use the ``--docker-login`` flag:
    Enter Docker Username: myuser
    Enter Docker Password:
 
+.. _sec:docker_envvars:
+
 Environment Variables
 ---------------------
 

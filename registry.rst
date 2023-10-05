@@ -156,6 +156,15 @@ The same flag is also supported when using these commands in :ref:`OCI mode
    INFO:    Cleaning up.
    Singularity>
 
+.. note::
+
+   If ``SINGULARITY_DOCKER_{USERNAME,PASSWORD}`` or
+   ``DOCKER_{USERNAME,PASSWORD}`` environment variables are set, they will take
+   precedence over anything specified with the ``--authfile`` flag (or anything
+   specified with the ``SINGULARITY_AUTHFILE`` variable, discussed below). See
+   the :ref:`documentation of docker-related environment variables
+   <sec:docker_envvars>` for details.
+
 Finally, note that logging in when the relevant credentials already exist, and
 logging out when the relevant credentials are already absent, are not considered
 errors:
