@@ -156,6 +156,15 @@ The same flag is also supported when using these commands in :ref:`OCI mode
    INFO:    Cleaning up.
    Singularity>
 
+.. note::
+
+   If ``SINGULARITY_DOCKER_{USERNAME,PASSWORD}`` or
+   ``DOCKER_{USERNAME,PASSWORD}`` environment variables are set, they will take
+   precedence over anything specified with the ``--authfile`` flag (or anything
+   specified with the ``SINGULARITY_AUTHFILE`` variable, discussed below). See
+   the :ref:`documentation of docker-related environment variables
+   <sec:docker_envvars>` for details.
+
 Finally, note that logging in when the relevant credentials already exist, and
 logging out when the relevant credentials are already absent, are not considered
 errors:
@@ -177,4 +186,25 @@ errors:
    $ singularity registry logout --authfile ./myauthfile docker://docker.io
    WARNING: There is no existing login to registry "docker.io".
    INFO:    Logout succeeded
+
+SINGULARITY_AUTHFILE
+====================
+
+In lieu of using the ``--authfile`` command-line flag, the same functionality
+may be accessed by setting the ``SINGULARITY_AUTHFILE`` environment variable,
+both for the ``registry login`` / ``registry logout`` commands and for the `pull
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_pull.html>`__
+/ `push
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_push.html>`__
+/ `build
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_build.html>`__
+/ `exec
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_exec.html>`__
+/ `shell
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`__
+/ `run
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__
+/ `instance start
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__
+set of commands.
 
