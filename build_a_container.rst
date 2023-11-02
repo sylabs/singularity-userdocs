@@ -270,6 +270,200 @@ containers. The containers are decrypted at runtime entirely in kernel space,
 meaning that no intermediate decrypted data is ever written to disk. See
 :ref:`encrypted containers <encryption>` for more details.
 
+*************************
+Building from Dockerfiles
+*************************
+
+Starting with version 4.1, {Singularity} can build OCI-SIF images directly from
+`Dockerfiles
+<https://docs.docker.com/develop/develop-images/dockerfile_best-practices/>`__,
+creating images that can be run using {Singularity}'s :ref:`OCI mode
+<oci_runtime>`.
+
+.. code:: console
+
+   $ cat ./Dockerfile
+   FROM debian
+   CMD cat /etc/os-release
+
+   $ singularity build --oci ./debian.oci.sif ./Dockerfile
+   INFO:    Did not find usable running buildkitd daemon; spawning our own.
+   INFO:    cfg.Root for buildkitd: /home/omer/.local/share/buildkit
+   INFO:    Using crun runtime for buildkitd daemon.
+   INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-0179484509442521.sock
+   [+] Building 4.3s (5/5)
+   [+] Building 4.4s (5/5) FINISHED
+   => [internal] load build definition from Dockerfile               0.0s
+   => => transferring dockerfile: 131B                               0.0s
+   => [internal] load metadata for docker.io/library/debian:latest   1.2s
+   => [internal] load .dockerignore                                  0.0s
+   => => transferring context: 2B                                    0.0s
+   => [1/1] FROM docker.io/library/debian:latest@sha256:fab22df3737  2.9s
+   => => resolve docker.io/library/debian:latest@sha256:fab22df3737  0.0s
+   => => sha256:8457fd5474e70835e4482983a5662355d 49.58MB / 49.58MB  2.8s
+   => exporting to docker image format                               3.1s
+   => => exporting layers                                            0.0s
+   => => exporting manifest sha256:9fec77672dfa11e5eb28e3fe9377cd6c  0.0s
+   => => exporting config sha256:4243e816256d45bb137ff40bafe396da5f  0.0s
+   => => sending tarball                                             0.2s
+   Getting image source signatures
+   Copying blob 8457fd5474e7 done   |
+   Copying config 46c53efffd done   |
+   Writing manifest to image destination
+   INFO:    Converting OCI image to OCI-SIF format
+   INFO:    Squashing image to single layer
+   INFO:    Writing OCI-SIF image
+   INFO:    Cleaning up.
+   INFO:    Build complete: ./debian.oci.sif
+
+   $ singularity run --oci ./debian.oci.sif
+   PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+   NAME="Debian GNU/Linux"
+   VERSION_ID="12"
+   VERSION="12 (bookworm)"
+   VERSION_CODENAME=bookworm
+   ID=debian
+   HOME_URL="https://www.debian.org/"
+   SUPPORT_URL="https://www.debian.org/support"
+   BUG_REPORT_URL="https://bugs.debian.org/"
+
+The resulting containers can be used with all the :ref:`action commands
+<cowimage>` (`exec
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_exec.html>`__
+/ `shell
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`__
+/ `run
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__)
+in the expected way.
+
+.. code:: console
+
+   $ singularity exec --oci ./debian.oci.sif uname -a
+   Linux nueve 5.14.0-284.30.1.el9_2.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 25 09:13:12 EDT 2023 x86_64 GNU/Linux
+
+   $ singularity shell --oci ./debian.oci.sif uname
+   Singularity> uname -a
+   Linux nueve 5.14.0-284.30.1.el9_2.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 25 09:13:12 EDT 2023 x86_64 GNU/Linux
+   Singularity>
+
+.. note::
+
+   If the `exec
+   <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_exec.html>`__
+   or `shell
+   <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_shell.html>`__
+   commands are used, the ``CMD`` / ``ENTRYPOINT`` directives in the Dockerfile
+   will be ignored.
+
+The resulting containers also accept command-line arguments, as well as input
+that is piped through ``stdin``. The following example demonstrates both:
+
+.. code:: console
+
+   $ cat ./Dockerfile
+   FROM debian
+
+   SHELL ["/bin/bash", "-c"]
+
+   RUN apt-get update
+   RUN apt-get install -y cowsay lolcat
+
+   RUN echo $'#! /bin/bash \n\
+   echo from cmdline: $@ | /usr/games/cowsay | /usr/games/lolcat \n\
+   sed "s/^/from stdin: /g" | /usr/games/cowsay | /usr/games/lolcat' > /myscript.sh
+
+   RUN chmod +x /myscript.sh
+
+   ENTRYPOINT ["/myscript.sh"]
+
+   $ singularity build --oci ./lolcow.oci.sif ./Dockerfile
+   INFO:    Did not find usable running buildkitd daemon; spawning our own.
+   INFO:    cfg.Root for buildkitd: /home/omer/.local/share/buildkit
+   INFO:    Using crun runtime for buildkitd daemon.
+   INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-8961170237105250.sock
+   [+] Building 15.1s (9/9)
+   [+] Building 15.2s (9/9) FINISHED
+   => [internal] load build definition from Dockerfile               0.0s
+   => => transferring dockerfile: 549B                               0.0s
+   => [internal] load metadata for docker.io/library/debian:latest   0.5s
+   => [internal] load .dockerignore                                  0.0s
+   => => transferring context: 2B                                    0.0s
+   => [1/5] FROM docker.io/library/debian:latest@sha256:fab22df3737  1.0s
+   => => resolve docker.io/library/debian:latest@sha256:fab22df3737  0.0s
+   => => extracting sha256:8457fd5474e70835e4482983a5662355d892d5f6  1.0s
+   => [2/5] RUN apt-get update                                       2.2s
+   => [3/5] RUN apt-get install -y cowsay lolcat                     7.9s
+   => [4/5] RUN echo $'#! /bin/bash \necho from cmdline: $@ | /usr/  0.1s
+   => [5/5] RUN chmod +x /myscript.sh                                0.1s
+   => exporting to docker image format                               3.3s
+   => => exporting layers                                            2.7s
+   => => exporting manifest sha256:fc7222347c207c35165ccd2fee562af9  0.0s
+   => => exporting config sha256:74c5da659e8504e4be283ad6d82774194e  0.0s
+   => => sending tarball                                             0.5s
+   Getting image source signatures
+   Copying blob 8457fd5474e7 done   |
+   Copying blob 4769fe2f22da done   |
+   Copying blob 173d009c20af done   |
+   Copying blob 7ec86debbe9b done   |
+   Copying blob 491c7ee403c2 done   |
+   Copying config 74b69e878e done   |
+   Writing manifest to image destination
+   INFO:    Converting OCI image to OCI-SIF format
+   INFO:    Squashing image to single layer
+   INFO:    Writing OCI-SIF image
+   INFO:    Cleaning up.
+   INFO:    Build complete: ./lolcow.oci.sif
+
+   $ echo "world" | singularity run --oci ./lolcow.oci.sif hello
+   _____________________
+   < from cmdline: hello >
+   ---------------------
+         \   ^__^
+            \  (oo)\_______
+               (__)\       )\/\
+                  ||----w |
+                  ||     ||
+   ___________________
+   < from stdin: world >
+   -------------------
+         \   ^__^
+            \  (oo)\_______
+               (__)\       )\/\
+                  ||----w |
+                  ||     ||
+
+{Singularity} uses `buildkit <https://docs.docker.com/build/buildkit/>`__ to
+build an OCI image from a Dockerfile. It checks if there is a ``buildkitd``
+daemon that is already running on the system (and whose permissions allow access
+by the current user), and if so, that daemon is used for the build process. If a
+usable ``buildkitd`` daemon is not found, {Singularity} will launch an
+emphemeral ``buildkitd`` daemon of its own, inside a :ref:`user namespace
+<setuid_and_userns>`, that will be used for the build process and torn down when
+the build is complete.
+
+.. note::
+
+   Launching the ephemeral ``buildkitd`` daemon requires a system with
+   :ref:`user namespace support <setuid_and_userns>` as well as ``crun`` /
+   ``runc`` installed. These are independently required for using
+   {Singularity}'s :ref:`OCI mode <oci_sysreq>`. See the `Admin Guide
+   <https://sylabs.io/guides/{adminversion}/admin-guide/>`__ for more
+   information on these system requirements.
+
+Additional features
+===================
+
+Build from Dockerfiles supports many of the same command-line options as regular
+(non-OCI-SIF) ``build``, including:
+
+* ``--build-arg KEY=VAL`` / ``--build-arg-file <path>``: pass value for
+  Dockerfile variables at build time (see `Dockerfile ARG documentation
+  <https://docs.docker.com/engine/reference/builder/#arg>`__).
+
+* ``--docker-login`` / Docker credential-related environment variables /
+  ``--authfile``: see the documentation on :ref:`authenticating with Docker/OCI
+  registries <docker_auth>` and on the :ref:`authfile flag <sec:authfile>`.
+
 *************
 Build options
 *************

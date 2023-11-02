@@ -160,6 +160,8 @@ SIF, and then always run from the SIF file, rather than using
 Alternatively, if you have signed up for a Docker Hub account, make sure
 that you authenticate before using ``docker://`` container URIs.
 
+.. _docker_auth:
+
 Authentication / Private Containers
 ===================================
 
@@ -214,6 +216,8 @@ login.
    {Singularity} can only read credentials stored directly in
    ``~/.docker/config.json``. It cannot read credentials from external
    Docker credential helpers.
+
+.. _sec:docker_login:
 
 Interactive Login
 -----------------
@@ -640,7 +644,7 @@ ways:
    ``--authfile <path>`` flag to the ``build`` command. Note, however, that this
    will store the relevant credentials unencrypted in the specified file, so
    appropriate care must be taken concerning the location, ownership, and
-   permissions of this file. See the :ref:`documentation of the --authfile flag
+   permissions of this file. See the :ref:`documentation of the authfile flag
    <sec:authfile>` for more information.
 
 If you are running the build under your account via the ``--fakeroot``

@@ -10,9 +10,8 @@ images. Some registries require credentials to access certain images or even the
 registry itself. Previously, the only method in {Singularity} to supply
 credentials to registries was to supply credentials for each command or set
 environment variables to contain the credentials for a single registry. See
-:ref:`Authentication via Interactive Login
-<sec:authentication_via_docker_login>` and :ref:`Authentication via Environment
-Variables <sec:authentication_via_environment_variables>`.
+:ref:`Authentication via Interactive Login <sec:docker_login>` and
+:ref:`Authentication via Environment Variables <sec:docker_envvars>`.
 
 Starting with {Singularity} 4.0, users can supply credentials
 on a per-registry basis with the ``registry`` command.

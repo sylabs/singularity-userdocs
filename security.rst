@@ -57,6 +57,8 @@ and processes apply. In a default installation, {Singularity} uses a
 setuid starter binary to perform only the specific tasks needed to setup
 the container.
 
+.. _setuid_and_userns:
+
 ************************
 Setuid & User Namespaces
 ************************
