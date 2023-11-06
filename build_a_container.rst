@@ -436,10 +436,12 @@ that is piped through ``stdin``. The following example demonstrates both:
 build an OCI image from a Dockerfile. It checks if there is a ``buildkitd``
 daemon that is already running on the system (and whose permissions allow access
 by the current user), and if so, that daemon is used for the build process. If a
-usable ``buildkitd`` daemon is not found, {Singularity} will launch an
-emphemeral ``buildkitd`` daemon of its own, inside a :ref:`user namespace
-<setuid_and_userns>`, that will be used for the build process and torn down when
-the build is complete.
+usable ``buildkitd`` daemon is not found, {Singularity} will launch an ephemeral
+build daemon of its own, inside a :ref:`user namespace <setuid_and_userns>`,
+that will be used for the build process and torn down when the build is
+complete. This ephemeral build daemon is based on `moby/buildkit
+<httpshttps://github.com/moby/buildkit/>`__, but is embedded within
+{Singularity} and runs as part of the same process.
 
 .. note::
 
