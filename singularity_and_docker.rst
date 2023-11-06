@@ -501,6 +501,8 @@ Ubuntu image for a 64-bit ARM system:
 
    $ singularity pull --arch arm64 docker://ubuntu
 
+.. _qemu:
+
 CPU emulation
 =============
 

@@ -464,6 +464,50 @@ Build from Dockerfiles supports many of the same command-line options as regular
   ``--authfile``: see the documentation on :ref:`authenticating with Docker/OCI
   registries <docker_auth>` and on the :ref:`authfile flag <sec:authfile>`.
 
+* ``--arch``: build a container for a different CPU architecture than that of
+  the running host.
+  
+As an example, if you are running on an ``amd64`` machine, you can run the
+following to build a container image for the 64-bit ARM architecure:
+
+.. code:: console
+
+   $ singularity build --arch arm64 --oci ./alpine.oci.sif ./Dockerfile.alpine
+   INFO:    Did not find usable running buildkitd daemon; spawning our own.
+   INFO:    cfg.Root for buildkitd: /home/omer/.local/share/buildkit
+   INFO:    Using "crun" runtime for buildkitd daemon.
+   INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-4747966236261602.sock
+   [+] Building 0.6s (1/2)
+   [+] Building 0.7s (5/5) FINISHED
+   => [internal] load build definition from Dockerfile.alpine     0.0s
+   => => transferring dockerfile: 142B                               0.0s
+   => [internal] load metadata for docker.io/library/alpine:latest   0.6s
+   => [internal] load .dockerignore                                  0.0s
+   => => transferring context: 2B                                    0.0s
+   => CACHED [1/1] FROM docker.io/library/alpine:latest@sha256:eece  0.0s
+   => => resolve docker.io/library/alpine:latest@sha256:eece025e432  0.0s
+   => exporting to docker image format                               0.0s
+   => => exporting layers                                            0.0s
+   => => exporting manifest sha256:b799c38cef1756bcc55b0684617fda7d  0.0s
+   => => exporting config sha256:5118299610d621e305a9153753a52e2f9e  0.0s
+   => => sending tarball                                             0.0s
+   Getting image source signatures
+   Copying blob 579b34f0a95b done   |
+   Copying config 5a13726077 done   |
+   Writing manifest to image destination
+   INFO:    Converting OCI image to OCI-SIF format
+   INFO:    Squashing image to single layer
+   INFO:    Writing OCI-SIF image
+   INFO:    Cleaning up.
+   INFO:    Build complete: ./alpine.oci.sif
+
+.. note::
+
+   In order to use Dockerfile directives like ``RUN`` in a cross-architecture
+   build, you will have to have ``qemu-static`` / ``binfmt_misc`` emulation
+   installed. See the discussion of :ref:`CPU emulation <qemu>` for more
+   information.
+
 *************
 Build options
 *************
