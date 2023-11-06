@@ -69,6 +69,8 @@ Users are encouraged to employ OCI-mode when their primary use-case for
 registries. Behavior will more closely match that described for Docker than with
 {Singularity}'s native runtime.
 
+.. _oci_sysreq:
+
 System Requirements
 ===================
 
@@ -167,7 +169,7 @@ registry in question, anonymous authentication will be used instead.
 
 However, the ``run / shell / exec`` and ``pull`` commands can also use
 credentials stored in a different file of the user's choosing, by specifying the
-``--authfile <path>`` flag. See the :ref:`documentation of the --authfile flag
+``--authfile <path>`` flag. See the :ref:`documentation of the authfile flag
 <sec:authfile>` for details on how to create and use custom credential files.
 
 .. _oci_compat:

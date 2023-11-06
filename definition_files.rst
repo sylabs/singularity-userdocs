@@ -106,9 +106,9 @@ Other bootstrap agents
    Scientific Linux)
 -  :ref:`debootstrap <build-debootstrap>` (apt-based systems such as
    Debian and Ubuntu)
--  :ref:`oci <cli-oci-bootstrap-agent>` (bundle compliant with OCI Image
+-  :ref:`oci <docker-daemon>` (bundle compliant with OCI Image
    Specification)
--  :ref:`oci-archive <cli-oci-archive-bootstrap-agent>` (tar files
+-  :ref:`oci-archive <docker-archive>` (tar files
    obeying the OCI Image Layout Specification)
 -  :ref:`docker-daemon <docker-daemon>` (images managed by the
    locally running docker daemon)
