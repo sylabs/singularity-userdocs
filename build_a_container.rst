@@ -288,7 +288,7 @@ creating images that can be run using {Singularity}'s :ref:`OCI mode
 
    $ singularity build --oci ./debian.oci.sif ./Dockerfile
    INFO:    Did not find usable running buildkitd daemon; spawning our own.
-   INFO:    cfg.Root for buildkitd: /home/omer/.local/share/buildkit
+   INFO:    cfg.Root for buildkitd: /home/myuser/.local/share/buildkit
    INFO:    Using crun runtime for buildkitd daemon.
    INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-0179484509442521.sock
    [+] Building 4.3s (5/5)
@@ -378,7 +378,7 @@ that is piped through ``stdin``. The following example demonstrates both:
 
    $ singularity build --oci ./lolcow.oci.sif ./Dockerfile
    INFO:    Did not find usable running buildkitd daemon; spawning our own.
-   INFO:    cfg.Root for buildkitd: /home/omer/.local/share/buildkit
+   INFO:    cfg.Root for buildkitd: /home/myuser/.local/share/buildkit
    INFO:    Using crun runtime for buildkitd daemon.
    INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-8961170237105250.sock
    [+] Building 15.1s (9/9)
@@ -445,12 +445,71 @@ complete. This ephemeral build daemon is based on `moby/buildkit
 
 .. note::
 
-   Launching the ephemeral ``buildkitd`` daemon requires a system with
+   Launching the ephemeral build daemon requires a system with
    :ref:`user namespace support <setuid_and_userns>` as well as ``crun`` /
    ``runc`` installed. These are independently required for using
    {Singularity}'s :ref:`OCI mode <oci_sysreq>`. See the `Admin Guide
    <https://sylabs.io/guides/{adminversion}/admin-guide/>`__ for more
    information on these system requirements.
+
+The `build context <https://docs.docker.com/build/building/context/>`__ for
+Dockerfile builds using {Singularity} is always the current working directory.
+Therefore, if you want to have the build context set to a different directory
+than the one your Dockerfile is in, all you have to do is run {Singularity}
+*from the desired context dir*, and provide a relative or absolute path to the
+Dockerfile:
+
+.. code:: console
+
+   $ pwd
+   /home/myuser/tmp/my_context_dir
+
+   $ ls
+   some_file
+
+   $ cat some_file
+   Some text.
+
+   $ cat ../Dockerfile
+   From alpine
+   ADD some_file /
+   CMD cat /some_file
+
+   $ singularity build --oci ./container.oci.sif ../Dockerfile
+   INFO:    Did not find usable running buildkitd daemon; spawning our own.
+   INFO:    cfg.Root for buildkitd: /home/myuser/.local/share/buildkit
+   INFO:    Using "crun" runtime for buildkitd daemon.
+   INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-8519770128063388.sock
+   [+] Building 1.3s (6/7)
+   [+] Building 1.4s (7/7) FINISHED
+   => [internal] load build definition from Dockerfile               0.0s
+   => => transferring dockerfile: 143B                               0.0s
+   => [internal] load metadata for docker.io/library/alpine:latest   1.3s
+   => [internal] load .dockerignore                                  0.0s
+   => => transferring context: 2B                                    0.0s
+   => [internal] load build context                                  0.0s
+   => => transferring context: 88B                                   0.0s
+   => [1/2] FROM docker.io/library/alpine:latest@sha256:eece025e432  0.0s
+   => => resolve docker.io/library/alpine:latest@sha256:eece025e432  0.0s
+   => CACHED [2/2] ADD some_file /                                   0.0s
+   => exporting to docker image format                               0.0s
+   => => exporting layers                                            0.0s
+   => => exporting manifest sha256:78c2cbf8ea2441c7a3d75f80bd0660ef  0.0s
+   => => exporting config sha256:58e9a24e9242901475f317e201185cbf10  0.0s
+   => => sending tarball                                             0.0s
+   Getting image source signatures
+   Copying blob 96526aa774ef done   |
+   Copying blob 15061a177792 done   |
+   Copying config 3d12fd8035 done   |
+   Writing manifest to image destination
+   INFO:    Converting OCI image to OCI-SIF format
+   INFO:    Squashing image to single layer
+   INFO:    Writing OCI-SIF image
+   INFO:    Cleaning up.
+   INFO:    Build complete: ./container.oci.sif
+
+   $ singularity run --oci ./container.oci.sif
+   Some text.
 
 Additional features
 ===================
@@ -476,7 +535,7 @@ following to build a container image for the 64-bit ARM architecure:
 
    $ singularity build --arch arm64 --oci ./alpine.oci.sif ./Dockerfile.alpine
    INFO:    Did not find usable running buildkitd daemon; spawning our own.
-   INFO:    cfg.Root for buildkitd: /home/omer/.local/share/buildkit
+   INFO:    cfg.Root for buildkitd: /home/myuser/.local/share/buildkit
    INFO:    Using "crun" runtime for buildkitd daemon.
    INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-4747966236261602.sock
    [+] Building 0.6s (1/2)
