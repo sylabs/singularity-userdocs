@@ -472,6 +472,161 @@ files:
                                   definition JSON files. If omitted,
                                   default will be: /etc/cdi,/var/run/cdi
 
+.. _oci_scif:
+
+****************
+SCIF in OCI mode
+****************
+
+`SCIF <https://sci-f.github.io/>`__ is a standard for encapsulating multiple
+apps into a container. Support for SCIF in the native runtime is discussed
+:ref:`here <apps>`; but the behavior of SCIF in OCI-mode is different, and is in
+line with how SCIF is used in other OCI container runtimes, such as Docker, as
+discussed & demonstrated in `this SCIF tutorial
+<https://sci-f.github.io/tutorial-preview-install>`__.
+
+In brief, SCIF in OCI containers relies on the container having the `scif
+executable <https://pypi.org/project/scif/>`__ as its CMD / ENTRYPOINT, as shown
+for example in this Dockerfile:
+
+.. code:: console
+
+  $ cat Dockerfile.scif
+  FROM continuumio/miniconda3
+  RUN pip install scif
+  ADD my_recipe /
+  RUN scif install /my_recipe
+  CMD ["scif"]
+
+.. note::
+
+  Starting with version 4.1, {Singularity} includes support for building OCI-SIF
+  images directly from Dockerfiles, and so a Dockerfile like the one above can
+  be compiled directly into an OCI-SIF image. (In this particular case, the
+  ``my_recipe`` file would have to be present in the current directory and be a
+  well-formed SCIF recipe.) See :ref:`here <dockerfile>` for details on building
+  OCI-SIF images from Dockerfiles, and see the `SCIF documentation
+  <https://sci-f.github.io/tutorial-preview-install>`__ for more information on
+  SCIF recipes.
+
+The main difference between SCIF support in native- and OCI-modes is the
+location of the SCIF "recipe"  (``%appinstall``, ``%appenv``, ``%apprun``,
+``%apphelp`` and ``%applabels`` sections). In native mode, the SCIF recipe is
+:ref:`part of the {Singularity} definition file <apps>`. In OCI mode, on the
+other hand, the SCIF recipe is typically included in a separate file, and
+processed using the ``scif install <recipefile>`` command inside the container,
+to be executed *after* the ``scif`` executable has been installed (in this case,
+using ``pip``).
+
+Including the SCIF recipe as a separate file is not the only option, however.
+The SCIF recipe file can be constructed on-the-fly as part of the OCI container
+build, as well, as in the following example:
+
+.. code::
+
+  $ cat Dockerfile.scif2
+  FROM continuumio/miniconda3
+
+  RUN pip install scif
+
+  RUN echo $'\n\
+  %apprun hello-world-one\n\
+  echo "'Hello world!'"\n\
+  \n\
+  %apprun hello-world-two\n\
+  echo "'Hello, again!'"\n\
+  ' > /my_recipe
+
+  RUN scif install /my_recipe
+
+  CMD ["scif"]
+
+Once you have built a SCIF-compliant OCI-SIF image, you can use {Singularity}'s
+``--app`` option to interact with individual SCIF apps in the container using
+the ``run / shell / exec`` commands:
+
+.. code::
+
+  $ cat Dockerfile.scif
+  FROM continuumio/miniconda3
+  RUN pip install scif
+  ADD my_recipe /
+  RUN scif install /my_recipe
+  CMD ["scif"]
+
+  $ cat my_recipe
+  %appenv hello-world-echo
+      THEBESTAPP=$SCIF_APPNAME
+      export THEBESTAPP
+  %apprun hello-world-echo
+      echo "The best app is $THEBESTAPP"
+
+  %appinstall hello-world-script
+      echo "echo 'Hello World!'" >> bin/hello-world.sh
+      chmod u+x bin/hello-world.sh
+  %appenv hello-world-script
+      THEBESTAPP=$SCIF_APPNAME
+      export THEBESTAPP
+  %apprun hello-world-script
+      /bin/bash hello-world.sh
+
+  $ singularity build --oci scif.oci.sif Dockerfile.scif
+  INFO:    Did not find usable running buildkitd daemon; spawning our own.
+  INFO:    cfg.Root for buildkitd: /home/myuser/.local/share/buildkit
+  INFO:    Using "crun" runtime for buildkitd daemon.
+  INFO:    running buildkitd server on /run/user/1000/buildkit/buildkitd-8508905943414043.sock
+  [+] Building 1.8s (8/9)
+  [+] Building 1.9s (9/9) FINISHED
+  => [internal] load build definition from Dockerfile.scif          0.0s
+  => => transferring dockerfile: 206B                               0.0s
+  => [internal] load metadata for docker.io/continuumio/miniconda3  0.5s
+  => [internal] load .dockerignore                                  0.0s
+  => => transferring context: 2B                                    0.0s
+  => [1/4] FROM docker.io/continuumio/miniconda3:latest@sha256:db9  0.0s
+  => => resolve docker.io/continuumio/miniconda3:latest@sha256:db9  0.0s
+  => [internal] load build context                                  0.0s
+  => => transferring context: 89B                                   0.0s
+  => CACHED [2/4] RUN pip install scif                              0.0s
+  => CACHED [3/4] ADD my_recipe /                                   0.0s
+  => CACHED [4/4] RUN scif install /my_recipe                       0.0s
+  => exporting to docker image format                               1.2s
+  => => exporting layers                                            0.0s
+  => => exporting manifest sha256:5fa6d77d3e0f9190088d57782bbe52dc  0.0s
+  => => exporting config sha256:a9ffa234dd97432b0bc74fa3ee7fa46bfd  0.0s
+  => => sending tarball                                             1.2s
+  Getting image source signatures
+  Copying blob e67fdae35593 done   |
+  Copying blob 62aa66a9c405 done   |
+  Copying blob 129bc9a4304f done   |
+  Copying blob 9eeb7d589f05 done   |
+  Copying blob d4ef55d3a44b done   |
+  Copying blob 81edcff80a6f done   |
+  Copying config 2f162fba3f done   |
+  Writing manifest to image destination
+  INFO:    Converting OCI image to OCI-SIF format
+  INFO:    Squashing image to single layer
+  INFO:    Writing OCI-SIF image
+  INFO:    Cleaning up.
+  INFO:    Build complete: scif.oci.sif
+
+  $ singularity run --oci --app hello-world-script scif.oci.sif
+  [hello-world-script] executing /bin/bash /scif/apps/hello-world-script/scif/runscript
+  Hello World!  
+
+  $ singularity exec --oci --app hello-world-script scif.oci.sif env | grep APPDATA
+  SCIF_APPDATA=/scif/data/hello-world-script
+  SCIF_APPDATA_hello_world_script=/scif/data/hello-world-script
+  SCIF_APPDATA_hello_world_echo=/scif/data/hello-world-echo
+
+  $ singularity shell --oci --app hello-world-script scif.oci.sif
+  [hello-world-script] executing /bin/bash
+  myuser@myhost:/scif/apps/hello-world-script$ echo $SCIF_APPNAME
+  hello-world-script
+  myuser@myhost:/scif/apps/hello-world-script$
+
+See the `SCIF homepage <https://sci-f.github.io/>`__ for more information and
+links to further documentation on SCIF itself.
+
 .. _oci_command:
 
 *****************

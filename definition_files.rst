@@ -1191,6 +1191,13 @@ containers.
 {Singularity} implements SCIF, and you can read more about how to use it
 below.
 
+.. note::
+
+   The OCI mode introduced in version 4 of {Singularity} also includes support
+   for SCIF, but in a way that is in line with the behavior of SCIF in other OCI
+   container runtimes (e.g. Docker). See the :ref:`documentation on SCIF in
+   OCI-mode <oci_scif>` for more information.
+
 SCIF is not specific to {Singularity}. To learn more, take a look at the
 project's site at https://sci-f.github.io/, which includes extended
 tutorials, a detailed specification of the SCIF standard, and other
