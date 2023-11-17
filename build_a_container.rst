@@ -270,6 +270,8 @@ containers. The containers are decrypted at runtime entirely in kernel space,
 meaning that no intermediate decrypted data is ever written to disk. See
 :ref:`encrypted containers <encryption>` for more details.
 
+.. _dockerfile:
+
 *************************
 Building from Dockerfiles
 *************************
@@ -339,11 +341,11 @@ in the expected way.
 .. code:: console
 
    $ singularity exec --oci ./debian.oci.sif uname -a
-   Linux nueve 5.14.0-284.30.1.el9_2.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 25 09:13:12 EDT 2023 x86_64 GNU/Linux
+   Linux myhost 5.14.0-284.30.1.el9_2.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 25 09:13:12 EDT 2023 x86_64 GNU/Linux
 
    $ singularity shell --oci ./debian.oci.sif uname
    Singularity> uname -a
-   Linux nueve 5.14.0-284.30.1.el9_2.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 25 09:13:12 EDT 2023 x86_64 GNU/Linux
+   Linux myhost 5.14.0-284.30.1.el9_2.x86_64 #1 SMP PREEMPT_DYNAMIC Fri Aug 25 09:13:12 EDT 2023 x86_64 GNU/Linux
    Singularity>
 
 .. note::
