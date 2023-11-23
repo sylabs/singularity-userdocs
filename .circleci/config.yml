@@ -7,15 +7,15 @@ orbs:
 parameters:
   go-version:
     type: string
-    default: '1.18.4'
+    default: '1.21.4'
 
 executors:
   node:
     docker:
-      - image: node:17
+      - image: node:20-slim
   python:
     docker:
-      - image: python:3.9-bullseye
+      - image: python:3.12-bullseye
   ubuntu-machine:
     machine:
      image: ubuntu-2004:202107-02
