@@ -110,26 +110,21 @@ In this mode *all* operations run as the user who starts the
 ``singularity`` program. However, there are some disadvantages to this
 approach:
 
--  SIF and other single-file container images cannot be mounted
-   directly. The container image must be extracted to a directory on
-   disk to run. This impacts the speed of execution. As a result,
-   workloads accessing large numbers of small files (as is the case with
-   python application startup, for example) do not benefit from the
-   reduced metadata load on the filesystem an image file provides.
+-  SIF and other single-file container images cannot be mounted using kernel
+   mounts. {Singularity} will attempt to mount them in user space, using FUSE.
+   If this is not possible, the container image must be extracted to a directory
+   on disk to run. This impacts the speed of execution. As a result, workloads
+   accessing large numbers of small files (as is the case with python
+   application startup, for example) do not benefit from the reduced metadata
+   load on the filesystem an image file provides. To force extraction to disk,
+   instead of FUSE mount, use the ``--tmp-sandbox`` flag. To ensure containers
+   are not extracted to disk, even when FUSE mounts fail,  use the
+   ``--no-tmp-sandbox`` flag.
 
-   {Singularity} 3.10 introduces experimental functionality to avoid
-   this image-extraction by mounting the SIF container using
-   ``squashfuse``, if available on your system. You can enable this with
-   the ``--sif-fuse`` flag, or by setting ``sif fuse`` in
-   ``singularity.conf``.
-
--  Replacing direct kernel mounts with a FUSE approach is likely to
-   cause a significant reduction in performance.
-
--  The effectiveness of signing and verifying container images is
-   reduced as, when extracted to a directory, modification of files is
-   possible and verification of the image's original signature cannot be
-   performed.
+-  The effectiveness of signing and verifying container images is reduced. With
+   both FUSE mounts, and sandbox directories, the content of the container can
+   easily be modified at runtime and verification against the image's original
+   signature cannot be performed.
 
 -  Encryption is not supported. {Singularity} leverages kernel LUKS2
    mounts to run encrypted containers without writing a decrypted
