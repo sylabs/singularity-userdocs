@@ -32,7 +32,7 @@ commands:
           command: <<# parameters.sudo >>sudo <</ parameters.sudo >>apt-get -q update
       - run:
           name: Install singularity dependencies
-          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>apt-get -q install -y build-essential squashfs-tools libseccomp-dev libssl-dev uuid-dev cryptsetup-bin libgpgme-dev
+          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>DEBIAN_FRONTEND=noninteractive apt-get -q install -y build-essential squashfs-tools libseccomp-dev libssl-dev uuid-dev cryptsetup-bin libgpgme-dev
   install-latex-apt:
     parameters:
         sudo:
@@ -41,7 +41,7 @@ commands:
     steps:
       - run:
           name: Install LaTeX environment
-          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>apt-get -q install -y texlive-latex-extra latexmk
+          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>DEBIAN_FRONTEND=noninteractive apt-get -q install -y texlive-latex-extra latexmk
   install-deps-python:
     parameters:
       sudo:
