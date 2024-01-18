@@ -211,10 +211,10 @@ emulate {Singularity}'s traditional native runtime behaviour:
 Feature set
 ===========
 
-With the release of {Singularity} 4.0, the functionality available in OCI mode -
-that is, when running {Singularity} ``shell`` / ``exec`` / ``run`` commands with
-the ``--oci`` flag - is approaching feature-parity with the native {Singularity}
-runtime, with some important exceptions noted below.
+As of {Singularity} 4.1, the functionality available in OCI mode - that is, when
+running {Singularity} ``shell`` / ``exec`` / ``run`` commands with the ``--oci``
+flag - is approaching feature-parity with the native {Singularity} runtime, with
+some important exceptions noted below.
 
 .. note::
 
@@ -358,9 +358,9 @@ ways in which the encapsulated container differs from its source:
   consisting of these blobs, rather than an ORAS entry / artifact.
 - The container's OCI image manifest and config are preserved, and directly
   inserted into the OCI-SIF.
-- The container's root filesystem is squashed to a single layer, in squashfs
-  format, but using an approach that better preserves metadata than for native
-  SIF images.
+- By default, the container's root filesystem is squashed to a single layer, in
+  squashfs format, but using an approach that better preserves metadata than for
+  native SIF images.
 - The container root filesystem is not modified by the addition of
   Singularity-specific files and directories.
 
@@ -404,6 +404,69 @@ specific JSON metadata.
 The final ``OCI.RootIndex`` is for internal use, and indexes the content of the
 OCI-SIF.
 
+Multi-layer OCI-SIF Images
+==========================
+
+By default, when you ``pull`` a container to an OCI-SIF or ``run / shell /exec``
+directly against a ``docker`` or ``oci`` URI, the OCI-SIF image that is created will
+contain a single squashed layer. This follows the behaviour of native (non-OCI)
+SIF images, and means that only a single filesystem needs to be mounted from the
+OCI-SIF image in order to run the container. However, some information is lost
+versus the original OCI image. It is not possible to recover the original OCI
+layers from a single-layer OCI-SIF.
+
+Beginning with {Singularity} 4.1, it is possible to create a multi-layer
+OCI-SIF, which does not squash multiple layers from an original OCI image down
+into a single layer in the OCI-SIF. Each layer in the original OCI image is
+inserted into the OCI-SIF separately. At runtime, each layer is mounted and an
+overlay approach is used to assemble the container root filesystem.
+
+Future versions of {Singularity}, and other tools in the SIF ecosystem, will use
+multi-layer OCI-SIF images to support lossless conversion to/from OCI-SIF. For
+example, it will become possible to pull an image to an OCI-SIF, and later push
+it back to an OCI registy in standard OCI format (with .tar.gz layers), so that
+it can be run by Docker and other OCI runtimes.
+
+To create multi-layer OCI-SIF images use the ``--keep-layers`` flag:
+
+.. code:: 
+
+  $ singularity pull --oci --keep-layers docker://golang:latest
+  61.2MiB / 61.2MiB [==================================] 100 % 2.1 MiB/s 0s
+  22.9MiB / 22.9MiB [==================================] 100 % 2.1 MiB/s 0s
+  88.1MiB / 88.1MiB [==================================] 100 % 2.1 MiB/s 0s
+  47.3MiB / 47.3MiB [==================================] 100 % 2.1 MiB/s 0s
+  64.0MiB / 64.0MiB [==================================] 100 % 2.1 MiB/s 0s
+  INFO:    Converting OCI image to OCI-SIF format
+  INFO:    Writing OCI-SIF image
+  INFO:    Cleaning up.
+
+The resulting OCI-SIF contains one ``OCI.Blob`` descriptor for each layer, in
+addition to the image manifest and image config:
+
+.. code::
+
+  $ singularity sif list golang_latest.oci.sif 
+  ------------------------------------------------------------------------------
+  ID   |GROUP   |LINK    |SIF POSITION (start-end)  |TYPE
+  ------------------------------------------------------------------------------
+  1    |1       |NONE    |32176-47709616            |OCI.Blob
+  2    |1       |NONE    |47709616-66842032         |OCI.Blob
+  3    |1       |NONE    |66842032-124661168        |OCI.Blob
+  4    |1       |NONE    |124661168-215170480       |OCI.Blob
+  5    |1       |NONE    |215170480-281431472       |OCI.Blob
+  6    |1       |NONE    |281431472-281435568       |OCI.Blob
+  7    |1       |NONE    |281435568-281436740       |OCI.Blob
+  8    |1       |NONE    |281436740-281437972       |OCI.Blob
+  9    |1       |NONE    |281437972-281438223       |OCI.RootIndex
+
+
+.. note::
+
+  Multi-layer OCI-SIF images are supported by {Singularity} 4.1 and later. Than
+  cannot be executed using {Singularity} 4.0.
+
+
 Future Development
 ==================
 
@@ -412,9 +475,7 @@ missing features vs native mode, and improve the utility of the OCI-SIF format.
 Development items include:
 
 - Support for overlays embedded in OCI-SIF files.
-- Multi-layer OCI-SIF images, allowing full preservation of the structure of an
-  OCI image embedded in an OCI-SIF. This will permit faithful 2-way translation
-  to/from OCI-SIF.
+- Export / push from OCI-SIF to standard OCI format with `.tar.gz` layers.
 
 .. _sec:cdi:
 
