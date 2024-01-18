@@ -7,7 +7,7 @@ orbs:
 parameters:
   go-version:
     type: string
-    default: '1.21.4'
+    default: '1.21.6'
 
 executors:
   node:
@@ -18,7 +18,7 @@ executors:
       - image: python:3.12-bullseye
   ubuntu-machine:
     machine:
-     image: ubuntu-2004:202107-02
+     image: ubuntu-2204:2023.10.1
 
 commands:
   install-deps-apt:
