@@ -404,6 +404,8 @@ specific JSON metadata.
 The final ``OCI.RootIndex`` is for internal use, and indexes the content of the
 OCI-SIF.
 
+.. _sec:multi_layer_oci_sif:
+
 Multi-layer OCI-SIF Images
 ==========================
 
