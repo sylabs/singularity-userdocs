@@ -352,8 +352,8 @@ below with their respective functionality.
 
 #. **SINGULARITY_NO_TMP_SANDBOX**: Set to true to disable fall-back approach of
    extracting a container to a temporary sandbox when SIF / OCI-SIF mounts
-   cannot be used. Default is false. Also configurable via ``tmp sandbox`` in
-   ``singularity.conf``.
+   cannot be used. Default is false. Temporary sandboxes may also be disabled
+   permanently by setting ``tmp sandbox = no`` in ``singularity.conf``.
 
 ``O``
 =====
@@ -428,9 +428,9 @@ below with their respective functionality.
 #. **SINGULARITY_SHELL**: The path to the program to be used as an
    interactive shell.
 
-#. **SINGULARITY_SIF_FUSE**: (experimental) Set to true to attempt to
+#. **SINGULARITY_SIF_FUSE**: (deprecated) Set to true to attempt to
    mount SIF images with ``squashfuse`` in unprivileged user namespace
-   workflows.
+   workflows. This is now the default behaviour from {Singularity} 4.1.
 
 #. **SINGULARITY_SIGNAL**: Specifies the signal to send to an instance with
    ``singularity instance stop``.
@@ -443,6 +443,10 @@ below with their respective functionality.
 
 ``T``
 =====
+
+#. **SINGULARITY_TMP_SANDBOX**: Set to true to force fall-back approach of
+   extracting a container to a temporary sandbox, even direct when SIF / OCI-SIF
+   mounts could be used. Default is false.
 
 #. **SINGULARITY_TEST**: Specifies the test script for the image.
 
