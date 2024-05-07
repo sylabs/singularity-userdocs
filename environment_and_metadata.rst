@@ -277,7 +277,7 @@ environment variables as ``NAME=VALUE`` pairs, e.g.:
 Similar to the ``--env`` option, multiple files can be specified
 using commas, e.g. ``--env-file file1,file2``, or using the flag multiple times,
 e.g. ``--env-file file1 --env-file file2``.
-If more than one file is used, the variables of the same name are overriden
+If more than one file is used, the variables of the same name are overridden
 with later files taking priority, e.g.:
 
 .. code::
