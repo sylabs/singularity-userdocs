@@ -263,7 +263,7 @@ variables include special characters.
 ``--env-file`` option
 =====================
 
-The ``--env-file`` option lets you provide a file that contains
+The ``--env-file`` option lets you provide one or more files that contains
 environment variables as ``NAME=VALUE`` pairs, e.g.:
 
 .. code::
@@ -273,6 +273,24 @@ environment variables as ``NAME=VALUE`` pairs, e.g.:
 
    $ singularity run --env-file myenvs env.sif
    Hello from a file
+
+Similar to the ``--env`` option, multiple files can be specified
+using commas, e.g. ``--env-file file1,file2``, or using the flag multiple times,
+e.g. ``--env-file file1 --env-file file2``.
+If more than one file is used, the variables of the same name are overriden
+with later files taking priority, e.g.:
+
+.. code::
+
+   $ cat myenvs1
+   MYVAR="Hello from file 1"
+
+   $ cat myenvs2
+   MYVAR="Hello from file 2"
+
+   $ singularity run --env-file myenvs1,myenvs2 env.sif
+   WARNING: Environment variable MYVAR overwritten: using new value from file myenvs2
+   Hello from file 2
 
 ``SINGULARITYENV_`` prefix
 ==========================
