@@ -219,7 +219,7 @@ flag:
 
    $ singularity build --fakeroot lolcow.sif lolcow.def
 
-Unprivilged ``proot`` builds
+Unprivileged ``proot`` builds
 ============================
 
 {Singularity} 3.11 introduces the ability to run some definition file builds
