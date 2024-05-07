@@ -289,7 +289,6 @@ with later files taking priority, e.g.:
    MYVAR="Hello from file 2"
 
    $ singularity run --env-file myenvs1,myenvs2 env.sif
-   WARNING: Environment variable MYVAR overwritten: using new value from file myenvs2
    Hello from file 2
 
 ``SINGULARITYENV_`` prefix
