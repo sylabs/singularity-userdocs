@@ -263,7 +263,7 @@ variables include special characters.
 ``--env-file`` option
 =====================
 
-The ``--env-file`` option lets you provide one or more files that contains
+The ``--env-file`` option lets you provide one or more files that contain
 environment variables as ``NAME=VALUE`` pairs, e.g.:
 
 .. code::
