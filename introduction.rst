@@ -53,7 +53,7 @@ most people are most familiar with. It is where applications, libraries
 and system services run.
 
 Traditionally you use an operating system that has a fixed combination
-of kernel and user space. If you have access to a machine running CentOS
+of kernel and user space. If you have access to a machine running RHEL
 then you cannot install software that was packaged for Ubuntu on it,
 because the user space of these distributions is not compatible. It can
 also be very difficult to install multiple versions of the same
@@ -63,7 +63,7 @@ workflows over time.
 Containers change the user space into a swappable component. This means
 that the entire user space portion of a Linux operating system,
 including programs, custom configurations, and environment can be
-independent of whether your system is running CentOS, Fedora etc.,
+independent of whether your system is running RHEL, Fedora etc.,
 underneath. A {Singularity} container packages up whatever you need into
 a single, verifiable file.
 

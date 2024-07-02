@@ -76,9 +76,9 @@ On versions 8 or later of RHEL / Alma Linux / Rocky Linux, as well as on Fedora:
 .. code::
 
    # Install basic tools for compiling
-   sudo yum groupinstall -y 'Development Tools'
+   sudo dnf groupinstall -y 'Development Tools'
    # Install RPM packages for dependencies
-   sudo yum install -y \
+   sudo dnf install -y \
       autoconf \
       automake \
       crun \
@@ -88,27 +88,6 @@ On versions 8 or later of RHEL / Alma Linux / Rocky Linux, as well as on Fedora:
       glib2-devel \
       libseccomp-devel \
       libtool \
-      squashfs-tools \
-      wget \
-      zlib-devel
-
-On version 7 of RHEL / CentOS:
-
-.. code::
-
-   # Install basic tools for compiling
-   sudo yum groupinstall -y 'Development Tools'
-   # Install RPM packages for dependencies
-   sudo yum install -y \
-      autoconf \
-      automake \
-      cryptsetup \
-      fuse3-devel \
-      git \
-      glib2-devel \
-      libseccomp-devel \
-      libtool \
-      runc \
       squashfs-tools \
       wget \
       zlib-devel
@@ -165,32 +144,20 @@ On Fedora, the ``squashfs-tools`` package, included in the :ref:`Install system
 dependencies <sec:sysdeps>` step above, includes `sqfstar`. No further action is
 necessary.
 
-RHEL / Alma Linux / Rocky Linux / CentOS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RHEL / Alma Linux / Rocky Linux
+"""""""""""""""""""""""""""""""
 
-On RHEL and derivatives, a COPR is available at:
-https://copr.fedorainfracloud.org/coprs/dctrud/squashfs-tools-ng/
+On RHEL and derivatives, the ``squashfs-tools-ng`` package is now available in
+the EPEL repositories.
 
-This COPR provides ``squashfs-tools-ng``, which will not replace any standard EL or
-EPEL packages. To use it:
-
-EL 8 / 9
-""""""""
+Follow the `EPEL Quickstart <https://docs.fedoraproject.org/en-US/epel/#_quickstart>`__
+for you distribution to enable the EPEL repository. Install ``squashfs-tools-ng`` with
+``dnf``.
 
 .. code::
 
-  sudo dnf install dnf-plugins-core
-  sudo dnf copr enable dctrud/squashfs-tools-ng 
-  sudo dnf install squashfs-tools-ng
+   sudo dnf install squashfs-tools-ng
 
-EL 7
-""""
-
-.. code::
-
-  sudo yum install yum-plugin-copr 
-  sudo yum copr enable dctrud/squashfs-tools-ng 
-  sudo yum install squashfs-tools-ng
 
 SLES / openSUSE Leap
 ^^^^^^^^^^^^^^^^^^^^

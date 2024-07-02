@@ -340,13 +340,11 @@ correctly with {Singularity}. Older versions do not support the way in
 which the {Singularity} runtime passes a pre-mounted file descriptor
 into the container.
 
-If you are using an older distribution that provides FUSE commands such
-as ``sshfs`` based on FUSE 2 then you can install FUSE 3 versions of the
-commands you need inside your container. EL7 distributions can install a
-compatible version of FUSE 3 from the EPEL repository. EL8 distributions
-ship FUSE 3.2.1 as a base package. Unfortunately this is an older version
-which does not fully support the way in which {Singularity} prepares FUSE
-mounts.
+If you are using an older distribution that provides FUSE commands such as
+``sshfs`` based on FUSE 2 then you can install FUSE 3 versions of the commands
+you need inside your container. EL8 distributions ship FUSE 3.2.1 as a base
+package. Unfortunately this is an older version which does not fully support the
+way in which {Singularity} prepares FUSE mounts.
 
 FUSE mount definitions
 ======================
