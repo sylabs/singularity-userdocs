@@ -189,6 +189,55 @@ show the image configuration. This is not possible for non-OCI-SIF images:
    $ skopeo inspect docker://registry.sylabs.io/library/default/alpine:latest
    FATA[0001] unsupported image-specific operation on artifact with type "application/vnd.sylabs.sif.config.v1+json"
 
+.. _sec:layer-format:
+
+OCI Layer Format / Runtime Compatibility
+========================================
+
+When {Singularity} creates OCI-SIF images, the image layers inside the OCI-SIF
+file are always stored in SquashFS format, after conversion if necessary. The
+SquashFS layer format allows the container to be run with direct mounts from the
+OCI-SIF file. The standard OCI tar layer format requires that layers are
+extracted to disk before they are run.
+
+By default, an OCI-SIF is pushed to the container library, or an alternative OCI
+registry, 'as-is'. This means that the image in the registry will be made up
+from the SquashFS layers present in the OCI-SIF file. This is convenient when
+working only with {Singularity} as pushing / pulling containers does not involve
+format conversion, which can be time consuming and resource intensive on large
+containers. However, other OCI runtimes do not support pulling or running
+container images that have SquashFS layers.
+
+To push an image to the container library, or an alternative OCI registry, with
+layers in the standard OCI tar format, the ``--layer-format tar`` flag introduced
+in {Singularity} 4.2 should be used. The resulting image can then be directly
+pulled and executed by other OCI runtimes:
+
+.. code::
+
+   # Push the OCI-SIF to the SCS library in OCI tar layer format.
+   $ singularity push -U --layer-format=tar \
+      python_latest.oci.sif \
+      library://example/test/oci-python:latest
+   WARNING: Skipping container verification
+   INFO:    Pushing an OCI-SIF to the library OCI registry. Use `--oci` to pull this image.
+   406.9MiB / 406.9MiB [===============================================================================] 100 % 6.6 MiB/s 0s
+
+   # Authenticate docker against the SCS library registry
+   $ singularity remote get-login-password | \
+       docker login -u example --password-stdin registry.sylabs.io
+
+   # Run the image from the registry, using Docker
+   $ docker run -it --rm registry.sylabs.io/example/test/oci-python:latest
+   Unable to find image 'registry.sylabs.io/example/test/oci-python:latest' locally
+   latest: Pulling from example/test/oci-python
+   60de1352ab1b: Pull complete 
+   Digest: sha256:679194c0d918a5d1992176011332253fc75737e8fbc52677f9839ec031e166ea
+   Status: Downloaded newer image for registry.sylabs.io/example/test/oci-python:latest
+   Python 3.12.5 (main, Aug 13 2024, 02:19:05) [GCC 12.2.0] on linux
+   Type "help", "copyright", "credits" or "license" for more information.
+   >>> 
+
 .. _pull:
 
 *******************

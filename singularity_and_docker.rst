@@ -1476,3 +1476,35 @@ Section          Description                 Section          Description
                  | container.                                 | key-value pair.
 
 ================ =========================== ================ =============================
+
+********************************************
+Running {Singularity} Containers With Docker
+********************************************
+
+Beginning with {Singularity} 4.2, it is possible to push OCI-SIF containers,
+created in OCI-Mode, to a registry in a manner that is compatible with other OCI
+runtimes.
+
+To push an image from an OCI-SIF to an OCI registry for consumption with another
+runtime, use the ``--layer-format tar`` flag. This pushes the image layers to
+the registry in OCI tar format, rather than {Singularity}'s default SquashFS
+format.
+
+.. code::
+
+   # Push to Docker Hub in OCI tar format
+   $ singularity push --layer-format=tar \
+      python_latest.oci.sif \
+      docker://docker.io/dctrud/oci-example:latest
+
+   # Run with Docker
+   $ docker run -it --rm dctrud/oci-example:latest
+   Unable to find image 'dctrud/oci-example:latest' locally
+   latest: Pulling from dctrud/oci-example
+   Digest: sha256:679194c0d918a5d1992176011332253fc75737e8fbc52677f9839ec031e166ea
+   Status: Downloaded newer image for dctrud/oci-example:latest
+   Python 3.12.5 (main, Aug 13 2024, 02:19:05) [GCC 12.2.0] on linux
+   Type "help", "copyright", "credits" or "license" for more information.
+   >>> 
+
+For more information, see :ref:`sec:layer-format`.

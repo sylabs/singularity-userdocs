@@ -12,6 +12,15 @@ If you are upgrading from a 3.x version of {Singularity} we recommend also
 reviewing the `"What's New" section for 4.0
 <https://docs.sylabs.io/guides/4.0/user-guide/new.html>`__.
 
+********
+OCI-mode
+********
+
+- A new ``--layer-format tar`` flag for ``singularity push`` allows layers in an
+  OCI-SIF image to be pushed to ``library://`` and ``docker://`` registries with
+  layers in the standard OCI tar format. Images pushed with ``--layer-format``
+  tar can be pulled and run by other OCI runtimes. See :ref:`sec:layer-format`
+
 *******
 Runtime
 *******
@@ -22,3 +31,4 @@ Runtime
   allowed ``netns paths directive`` in ``singularity.conf``, if they are also
   listed in ``allow net users`` / ``allow net groups``. Not currently supported
   with ``--fakeroot``, or in ``--oci`` mode. See :ref:`sec:netns-path`.
+
