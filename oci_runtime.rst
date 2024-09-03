@@ -242,6 +242,8 @@ The following features are supported in ``--oci`` mode:
   * Multiple simultaneous overlays are supported (though all but one must be
     mounted as read-only).
 
+* ``--writable`` to write to an :ref:`embedded overlay <overlay-oci-sif>`.
+
 * ``--cwd`` (synonym: ``--pwd``) to set a custom starting working-directory for
   the container.
 
@@ -468,16 +470,6 @@ addition to the image manifest and image config:
   Multi-layer OCI-SIF images are supported by {Singularity} 4.1 and later. Than
   cannot be executed using {Singularity} 4.0.
 
-
-Future Development
-==================
-
-Subsequent 4.x releases of {Singularity} will aim to improve OCI-mode to address
-missing features vs native mode, and improve the utility of the OCI-SIF format.
-Development items include:
-
-- Support for overlays embedded in OCI-SIF files.
-- Export / push from OCI-SIF to standard OCI format with `.tar.gz` layers.
 
 .. _sec:cdi:
 
