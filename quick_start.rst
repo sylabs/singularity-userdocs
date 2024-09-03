@@ -58,7 +58,9 @@ On Debian-based systems, including Ubuntu:
       autoconf \
       automake \
       cryptsetup \
+      fuse2fs \
       git \
+      fuse \
       libfuse-dev \
       libglib2.0-dev \
       libseccomp-dev \
@@ -83,6 +85,8 @@ On versions 8 or later of RHEL / Alma Linux / Rocky Linux, as well as on Fedora:
       automake \
       crun \
       cryptsetup \
+      fuse \
+      fuse3 \
       fuse3-devel \
       git \
       glib2-devel \
@@ -101,6 +105,8 @@ On SLES / openSUSE Leap:
     autoconf \
     automake \
     cryptsetup \
+    fuse2fs \
+    fuse3 \
     fuse3-devel \
     gcc \
     gcc-c++ \
@@ -207,7 +213,7 @@ replace specific values as needed:
 
 .. code::
 
-   $ export VERSION=1.21.0 OS=linux ARCH=amd64 && \
+   $ export VERSION={GoVersion} OS=linux ARCH=amd64 && \
      wget https://dl.google.com/go/go$VERSION.$OS-$ARCH.tar.gz && \
      sudo tar -C /usr/local -xzvf go$VERSION.$OS-$ARCH.tar.gz && \
      rm go$VERSION.$OS-$ARCH.tar.gz

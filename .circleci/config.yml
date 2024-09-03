@@ -7,7 +7,7 @@ orbs:
 parameters:
   go-version:
     type: string
-    default: '1.21.6'
+    default: '1.22.6'
 
 executors:
   node:
@@ -18,7 +18,7 @@ executors:
       - image: python:3.12-bullseye
   ubuntu-machine:
     machine:
-     image: ubuntu-2204:2023.10.1
+     image: ubuntu-2404:2024.05.1
 
 commands:
   install-deps-apt:
@@ -44,6 +44,7 @@ commands:
               libseccomp-dev \
               libtool \
               pkg-config \
+              python3-venv \
               squashfs-tools \
               uidmap \
               zlib1g-dev
@@ -57,14 +58,16 @@ commands:
           name: Install LaTeX environment
           command: <<# parameters.sudo >>sudo <</ parameters.sudo >>DEBIAN_FRONTEND=noninteractive apt-get -q install -y texlive-latex-extra latexmk
   install-deps-python:
-    parameters:
-      sudo:
-        type: boolean
-        default: true
     steps:
       - run:
+          name: Create venv
+          command: python3 -m venv sphinx-venv
+      - run:
           name: Install python dependencies
-          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>pip install 'sphinx<6' sphinx-rtd-theme rstcheck pygments m2r2
+          command: |
+            source sphinx-venv/bin/activate
+            pip install setuptools 'sphinx<6' sphinx-rtd-theme rstcheck pygments m2r2
+
   init-submodules:
     steps:
       - run:
@@ -87,11 +90,11 @@ jobs:
     executor: python
     steps:
       - checkout
-      - install-deps-python:
-         sudo: false
+      - install-deps-python
       - run:
           name: Lint rst
           command: |
+            source sphinx-venv/bin/activate
             rstcheck --ignore-languages c,c++ --report-level warning *.rst
 
   make_docs:
@@ -107,6 +110,7 @@ jobs:
       - run:
           name: make html
           command: |
+            source sphinx-venv/bin/activate
             make html
       - store_artifacts:
           path: _build/html
@@ -114,6 +118,7 @@ jobs:
       - run:
           name: make pdf
           command: |
+            source sphinx-venv/bin/activate
             make latexpdf
       - store_artifacts:
           path: _build/latex
@@ -121,6 +126,7 @@ jobs:
       - run:
           name: make epub
           command: |
+            source sphinx-venv/bin/activate
             make epub
       - store_artifacts:
           path: _build/epub
@@ -139,14 +145,17 @@ jobs:
       - run:
           name: make pdf
           command: |
+            source sphinx-venv/bin/activate
             make latexpdf
       - run:
           name: make html
           command: |
+            source sphinx-venv/bin/activate
             make html
       - run:
           name: make epub
           command: |
+            source sphinx-venv/bin/activate
             make epub
       - aws-cli/setup
       - run:
