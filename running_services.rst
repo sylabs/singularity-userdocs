@@ -66,7 +66,24 @@ as ``alpine_latest.sif``.
 Starting Instances
 ==================
 
-To start an instance, you should follow this procedure :
+There are two ways to start an instance, using either ``singularity instance
+start``, or ``singularity instance run``. These commands differ in what script
+is executed in the container that is created.
+
+``singularity instance start`` is the standard way to start an instance. A
+container will be created, and the ``%startscript`` in the container's
+:ref:`definition file <definition-files>` will be executed. The use of the
+``%startscript`` allows container images to have different behaviour compared to
+when they are run interactively via ``singularity run``, which will execute the
+``%runscript``. If there is no ``%startscript`` defined, then ``instance start``
+will create a container that is idle.
+
+From {Singularity} 4.2 an instance can be started that executes the
+``%runscript``, using ``singularity instance run``. This is useful where you
+wish to run a container as an instance, but it was not built anticipating this
+scenario. ``instance run`` takes the same arguments and flags as ``instance start``.
+
+The syntax of the ``instance start`` command is as follows:
 
 .. code::
 
@@ -123,14 +140,10 @@ You can filter the instance list by supplying a pattern:
    INSTANCE NAME    PID      IP              IMAGE
    instance2        22443                    /home/dave/instances/alpine_latest.s
 
-When an instance is started, it will begin to run the ``%startscript`` from the
-container's :ref:`definition file <definition-files>` in the background. If
-there is no ``%startscript`` the container will stay idle in the background.
-
 Interacting With Instances
 ==========================
 
-Although an instance runs its ``%startscript`` (if there is one) in the
+Although an instance executes its ``%startscript`` or ``%runscript`` in the
 background, you can also interact with it in the foreground, by referring to it
 with an ``instance://<name>`` URI, where ``<name>`` is replaced with the
 instance name.

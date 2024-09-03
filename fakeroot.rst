@@ -121,6 +121,7 @@ commands:
    -  ``exec``
    -  ``run``
    -  ``instance start``
+   -  ``instance run``
    -  ``build``
 
 Build

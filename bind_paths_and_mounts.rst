@@ -102,17 +102,17 @@ Unless the system administrator has `disabled user control of binds
 <https://singularity-admindoc.readthedocs.io/en/latest/the_singularity_config_file.html#user-bind-control-boolean-default-yes>`_,
 you will be able to request your own bind paths within your container.
 
-The {Singularity} action commands (``run``, ``exec``, ``shell``, and
-``instance start``) will accept the ``--bind/-B`` command-line option to
-specify bind paths, and will also honor the ``$SINGULARITY_BIND`` (or
-``$SINGULARITY_BINDPATH``) environment variable. The argument for this
-option is a comma-delimited string of bind path specifications in the
-format ``src[:dest[:opts]]``, where ``src`` and ``dest`` are paths
-outside and inside of the container respectively. If ``dest`` is not
-given, it is set equal to ``src``. Mount options (``opts``) may be
-specified as ``ro`` (read-only) or ``rw`` (read/write, which is the
-default). The ``--bind/-B`` option can be specified multiple times, or a
-comma-delimited string of bind path specifications can be used.
+The {Singularity} action commands (``run``, ``exec``, ``shell``, ``instance
+start`` and ``instance run``) will accept the ``--bind/-B`` command-line
+option to specify bind paths, and will also honor the ``$SINGULARITY_BIND`` (or
+``$SINGULARITY_BINDPATH``) environment variable. The argument for this option is
+a comma-delimited string of bind path specifications in the format
+``src[:dest[:opts]]``, where ``src`` and ``dest`` are paths outside and inside
+of the container respectively. If ``dest`` is not given, it is set equal to
+``src``. Mount options (``opts``) may be specified as ``ro`` (read-only) or
+``rw`` (read/write, which is the default). The ``--bind/-B`` option can be
+specified multiple times, or a comma-delimited string of bind path
+specifications can be used.
 
 {Singularity} 3.9 adds an additional ``--mount`` flag, which provides a
 longer-form method of specifying binds in ``--mount

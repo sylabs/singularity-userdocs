@@ -39,6 +39,7 @@ You can use persistent overlays with the following commands:
 -  ``exec``
 -  ``shell``
 -  ``instance start``
+-  ``instance run``
 
 *****
 Usage
