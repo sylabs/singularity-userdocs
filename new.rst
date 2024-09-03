@@ -31,4 +31,7 @@ Runtime
   allowed ``netns paths directive`` in ``singularity.conf``, if they are also
   listed in ``allow net users`` / ``allow net groups``. Not currently supported
   with ``--fakeroot``, or in ``--oci`` mode. See :ref:`sec:netns-path`.
+- Instances can now be started via the new subcommand ``singularity instance
+  run``, which will cause the instance to execute its ``%runscript`` rather than
+  the ``%startscript``.
 

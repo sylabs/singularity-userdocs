@@ -73,6 +73,8 @@ hostname used, whenever one of the following commands is used with a
 `run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__,
 `instance start
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__,
+`instance run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__
 
 .. note::
@@ -127,6 +129,8 @@ commands discussed above (`pull
 `run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__,
 `instance start
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__,
+`instance run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__),
 by passing them the same ``--authfile <path>`` flag:
 
@@ -204,6 +208,8 @@ both for the ``registry login`` / ``registry logout`` commands and for the `pull
 / `run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_run.html>`__
 / `instance start
+<https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__
+/ `instance run
 <https://www.sylabs.io/guides/{version}/user-guide/cli/singularity_instance.html>`__
 set of commands.
 

@@ -665,13 +665,13 @@ the port indicated by the ``$LISTEN_PORT`` variable (set in the
 %runscript
 ==========
 
-The contents of the ``%runscript`` section are written to a dedicated
-file within the container that is executed when the container image is
-run (either via the ``singularity run`` command or by :ref:`executing
-the container directly <runcontainer>` as a command). When the container
-is invoked, arguments following the container name are passed to the
-runscript. This means that you can (and should) process arguments within
-your runscript.
+The contents of the ``%runscript`` section are written to a dedicated file
+within the container that is executed when the container image is run (either
+via the ``singularity run`` command or by :ref:`executing the container directly
+<runcontainer>` as a command, or when an instance is started with ``singularity
+instance run``). When the container is invoked, arguments following the
+container name are passed to the runscript. This means that you can (and should)
+process arguments within your runscript.
 
 Consider the ``%runscript`` section from the example definition file
 above:
