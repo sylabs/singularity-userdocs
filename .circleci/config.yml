@@ -44,6 +44,7 @@ commands:
               libseccomp-dev \
               libtool \
               pkg-config \
+              python3-venv \
               squashfs-tools \
               uidmap \
               zlib1g-dev
@@ -57,17 +58,16 @@ commands:
           name: Install LaTeX environment
           command: <<# parameters.sudo >>sudo <</ parameters.sudo >>DEBIAN_FRONTEND=noninteractive apt-get -q install -y texlive-latex-extra latexmk
   install-deps-python:
-    parameters:
-      sudo:
-        type: boolean
-        default: true
     steps:
       - run:
           name: Create venv
-          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>python3 -m venv sphinx-venv
+          command: python3 -m venv sphinx-venv
       - run:
           name: Install python dependencies
-          command: <<# parameters.sudo >>sudo <</ parameters.sudo >>sphinx-venv/bin/pip install 'sphinx<6' sphinx-rtd-theme rstcheck pygments m2r2
+          command: |
+            source sphinx-venv/bin/activate
+            pip install setuptools 'sphinx<6' sphinx-rtd-theme rstcheck pygments m2r2
+
   init-submodules:
     steps:
       - run:
@@ -90,8 +90,7 @@ jobs:
     executor: python
     steps:
       - checkout
-      - install-deps-python:
-         sudo: false
+      - install-deps-python
       - run:
           name: Lint rst
           command: |
