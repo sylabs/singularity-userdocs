@@ -6,11 +6,11 @@ Network virtualization
 
 .. _sec:networking:
 
-{Singularity} provides full integration with `cni
-<https://github.com/containernetworking/cni>`_ , to make network
-virtualization easy. The following options can be used with the the
-action commands (``exec``, ``run``, and ``shell``) to create and
-configure a virtualized network for a container.
+{Singularity}'s native mode provides full integration with `CNI
+<https://github.com/containernetworking/cni>`_ , and the ability to join an
+existing network namespace, to make network virtualization easy. The following
+options can be used with the the action commands (``exec``, ``run``, and
+``shell``) to create and configure a virtualized network for a container.
 
 .. note::
 
@@ -18,7 +18,7 @@ configure a virtualized network for a container.
    default. Unrestricted ability to configure networking for containers
    would allow users to affect networking on the host, or in a cluster.
 
-   {Singularity} 3.8 allows the administrator to permit a list of
+   {Singularity} allows the administrator to permit a list of
    unprivileged users and/or groups to use specified network
    configurations. This is accomplished through settings in
    ``singularity.conf``. See the administrator guide for details.
@@ -55,6 +55,52 @@ hostname within the container.
 
    $ sudo singularity exec --hostname hal-9000 my_container.sif hostname
    hal-9000
+
+.. _sec:netns-path:
+
+****************
+``--netns-path``
+****************
+
+*New in {Singularity} 4.2*
+
+Passing the ``--netns-path`` flag with a path to an existing network namespace
+will cause the container to join that namespace.
+
+For example, a network namespace can be created with the ``ip`` command on the
+host, and then a container started that will run within this namespace:
+
+.. example::
+
+   # Create an example named network namespace
+   $ sudo ip netns add my-net
+
+   # Add a dummy network interface to the network namespace
+   $ sudo ip netns exec my-net ip link add dummy0 type dummy
+
+   # Run a container in the network namespace
+   $ sudo singularity run --netns-path /run/netns/my-net library://alpine
+   INFO:    Using cached image
+   Singularity> ip a
+   1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN qlen 1000
+      link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+   2: dummy0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN qlen 1000
+      link/ether 92:5c:ab:ab:d3:d0 brd ff:ff:ff:ff:ff:ff
+   Singularity>
+
+Note that the ``ip a`` command run inside the container shows the ``dummy0``
+interface we added to the ``my-net`` network namespace.
+
+The root user can join any network namespace with ``--netns-path``.
+
+A non-root user can only join a network namespace if the following are true:
+
+* The path of the network namespace is listed in the ``allow netns paths``
+  directive in ``singularity.conf``, which is typically managed by the system
+  administrator.
+* The user is listed in the ``allow net users`` directive in ``singularity.conf``,
+  or the user is a member of a group listed in the ``allow net groups`` directive
+  in ``singularity.conf``.
 
 *********
 ``--net``
