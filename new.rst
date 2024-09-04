@@ -20,6 +20,7 @@ OCI-mode
   OCI-SIF image to be pushed to ``library://`` and ``docker://`` registries with
   layers in the standard OCI tar format. Images pushed with ``--layer-format``
   tar can be pulled and run by other OCI runtimes. See :ref:`sec:layer-format`.
+
 - Persistent overlays embedded in OCI-SIF files. See :ref:`overlay-oci-sif`.
 
   - A writable overlay can be added to an OCI-SIF file with the ``singularity
@@ -33,6 +34,17 @@ OCI-mode
   - A new ``singularity overlay seal`` command converts a writable overlay inside
     an OCI-SIF image into a read-only squashfs layer. This seals changes made to
     the image via the overlay, so that they are permanent.
+
+- OCI-SIF data containers provide a way to package reference data into an
+  OCI-SIF file that can be distributed alongside application containers. See
+  :ref:`sec:data-containers`.
+
+    - A new ``singularity data package`` command allows files and directories to
+      be packaged into an OCI-SIF data container.
+    - A new ``--data <data container>:<dest>`` flag for OCI-Mode allows the
+      contents of a data container to be made available at ``<dest>`` inside an
+      application container.
+
 
 *******
 Runtime
