@@ -470,6 +470,14 @@ addition to the image manifest and image config:
   Multi-layer OCI-SIF images are supported by {Singularity} 4.1 and later. Than
   cannot be executed using {Singularity} 4.0.
 
+Data Containers
+===============
+
+The OCI-SIF format also supports, from {Singularity} 4.2, the creation of
+:ref:`<sec:data-containers>`, which can be used to distribute reference data
+alongside applications containers, in a convenient single file that may be
+shared via standard OCI registries. See the :ref:`<sec:data-containers>` section
+for more information. 
 
 .. _sec:cdi:
 

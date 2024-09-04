@@ -89,6 +89,7 @@ networking and security configuration.
 
    Bind Paths and Mounts <bind_paths_and_mounts>
    Persistent Overlays <persistent_overlays>
+   Data Containers <data_containers>
    Instances - Running Services <running_services>
    Environment and Metadata <environment_and_metadata>
    Plugins <plugins>
