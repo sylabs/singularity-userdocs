@@ -96,6 +96,7 @@ networking and security configuration.
    Security Options <security_options>
    Network Options <networking>
    Limiting Container Resources <cgroups>
+   Nested Containers <nested>
 
 *************
 Compatibility
