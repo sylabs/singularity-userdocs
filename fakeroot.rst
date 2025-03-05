@@ -13,11 +13,6 @@ unprivileged user to run a container as a **"fake root"** user by
 leveraging `user namespace UID/GID mapping
 <http://man7.org/linux/man-pages/man7/user_namespaces.7.html>`_.
 
-.. note::
-
-   This feature requires a Linux kernel >= 3.8, but the recommended
-   version is >= 3.18
-
 A **"fake root"** user has almost the same administrative rights as root
 but only **inside the container** and the **requested namespaces**,
 which means that this user:
@@ -94,16 +89,16 @@ the host network.
 Requirements / Configuration
 ****************************
 
-Fakeroot depends on user mappings set in ``/etc/subuid`` and group
-mappings in ``/etc/subgid``, so your username needs to be listed in
-those files with a valid mapping (see the admin-guide for details), if
-you can't edit the files ask an administrator.
+Fakeroot depends on subid mappings, which must be configured for each user to
+allow them to access a number of subuid and subgids. The mappings are either set
+directly in local ``/etc/subuid`` and ``/etc/subgid`` configuration files, or
+provided by an external service (such as an LDAP directory) and read via
+libsubid, on supported systems. See the admin-guide for more detail.
 
-In {Singularity} ``3.5`` a ``singularity config fakeroot`` command has
-been added to allow configuration of the ``/etc/subuid`` and
-``/etc/subgid`` mappings from the {Singularity} command line. You must
-be a root user or run with ``sudo`` to use ``config fakeroot``, as the
-mapping files are security sensitive. See the admin-guide for more
+The ``singularity config fakeroot`` command  allows configuration of the
+``/etc/subuid`` and ``/etc/subgid`` mappings from the {Singularity} command
+line. You must be a root user or run with ``sudo`` to use ``config fakeroot``,
+as the mapping files are security sensitive. See the admin-guide for more
 details.
 
 *****
