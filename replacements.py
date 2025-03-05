@@ -20,7 +20,7 @@ variable_replacements = {
     # replace to SingularityPRO so that it is clearer where docs
     # diverge a bit from CE<->PRO due to long-term backports etc.
     "{Singularity}": "SingularityCE",
-    "{GoVersion}": "1.22.6",
+    "{GoVersion}": "1.24.1",
 }
 
 

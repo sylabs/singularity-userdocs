@@ -62,7 +62,6 @@ On Debian-based systems, including Ubuntu:
       git \
       fuse \
       libfuse-dev \
-      libglib2.0-dev \
       libseccomp-dev \
       libtool \
       pkg-config \
@@ -73,53 +72,42 @@ On Debian-based systems, including Ubuntu:
       wget \
       zlib1g-dev
 
-On versions 8 or later of RHEL / Alma Linux / Rocky Linux, as well as on Fedora:
+On Ubuntu 24.04 and above install additional libsubid headers:
 
-.. code::
+```sh
+sudo apt-get install -y libsubid-dev
+```
 
-   # Install basic tools for compiling
-   sudo dnf groupinstall -y 'Development Tools'
-   # Install RPM packages for dependencies
-   sudo dnf install -y \
-      autoconf \
-      automake \
-      crun \
-      cryptsetup \
-      fuse \
-      fuse3 \
-      fuse3-devel \
-      git \
-      glib2-devel \
-      libseccomp-devel \
-      libtool \
-      squashfs-tools \
-      wget \
-      zlib-devel
+On RHEL / Alma Linux / Rocky Linux, CentOS Stream, you will need to enable the
+CRB (9+) or powertools repository (8). This is not necessary on Fedora.
 
-On SLES / openSUSE Leap:
+```sh
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --enable crb || dnf config-manager --enable powertools
+```
 
-.. code::
+You can now install the build dependencies:
 
-   # Install RPM packages for dependencies
-   sudo zypper in \
+```sh
+# Install basic tools for compiling
+sudo dnf groupinstall -y 'Development Tools'
+# Install RPM packages for dependencies
+sudo dnf --enablerepo=devel install -y \
     autoconf \
     automake \
+    crun \
     cryptsetup \
-    fuse2fs \
+    fuse \
     fuse3 \
     fuse3-devel \
-    gcc \
-    gcc-c++ \
     git \
-    glib2-devel \
     libseccomp-devel \
     libtool \
-    make \
-    pkg-config \
-    runc \
-    squashfs \
+    shadow-utils-subid-devel \
+    squashfs-tools \
     wget \
     zlib-devel
+```
 
 Install sqfstar / tar2sqfs for OCI-mode
 ---------------------------------------
@@ -163,14 +151,6 @@ for you distribution to enable the EPEL repository. Install ``squashfs-tools-ng`
 .. code::
 
    sudo dnf install squashfs-tools-ng
-
-
-SLES / openSUSE Leap
-^^^^^^^^^^^^^^^^^^^^
-
-On SLES/openSUSE, follow the instructions at the `filesystems
-project <https://software.opensuse.org//download.html?project=filesystems&package=squashfs>`_
-to obtain a more recent ``squashfs`` package, which provides ``sqfstar``.
 
 Next steps
 ----------
