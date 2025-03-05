@@ -73,6 +73,17 @@ them into {Singularity} containers.
 
    $ sudo singularity build lolcow.sif docker://sylabsio/lolcow
 
+*************************************************
+Building from an existing local Docker container
+*************************************************
+
+You can also use ``build`` to create a {Singularity} container
+from a local Docker image.
+
+.. code::
+
+   $ sudo singularity build lolcow.sif docker-daemon://lolcow:latest
+
 .. _create_a_writable_container:
 
 *******************************************
