@@ -506,7 +506,7 @@ When using {Singularity}'s OCI-Mode, container images are pulled or built as
 OCI-SIF images. An OCI-SIF file holds an OCI image using standard OCI structures
 such as an image manifest, config, and layers.
 
-Although you can use native {Singuarity} SIF signatures (as above) to sign and
+Although you can use native {Singularity} SIF signatures (as above) to sign and
 verify an OCI-SIF file, they are not supported by other tools common in OCI
 workflows. Native SIF signatures sign the content and metadata of the (OCI-)SIF
 file itself, rather than the container inside the file. If you push an OCI-SIF
@@ -516,7 +516,7 @@ lost.
 
 The `sigstore project <https://www.sigstore.dev/>`_ has defined standards for
 signing and verifying software artefacts, and these have been widely adopted.
-The `cosign <https://github.com/sigstore/cosign>` tool uses sigstore to sign and
+The `cosign <https://github.com/sigstore/cosign>`_ tool uses sigstore to sign and
 verify OCI container images.
 
 Beginning with version 4.3, {Singularity} supports signing OCI-SIF container
@@ -635,7 +635,7 @@ If no signatures are valid with the provided public key, the command will return
 
 .. code::
 
-    $ singularity verify --cosign --key test.pub alpine_latest.oci.sif 
+   $ singularity verify --cosign --key test.pub alpine_latest.oci.sif 
    INFO:    Verifying image with sigstore/cosign signature, using key material from 'test.pub'
    INFO:    Verifying digests for 6 OCI Blobs
    INFO:    Image digest: sha256:1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b
@@ -660,7 +660,7 @@ An image that has been pushed to a registry can be verified using the upstream
 
 .. code::
 
-$ cosign verify --insecure-ignore-tlog --key singularity-cosign.pub example/demo:signed | jq
+   $ cosign verify --insecure-ignore-tlog --key singularity-cosign.pub example/demo:signed | jq
    WARNING: Skipping tlog verification is an insecure practice that lacks of transparency and auditability verification for the signature.
 
    Verification for index.docker.io/example/demo:signed --
@@ -708,7 +708,7 @@ flag on the ``pull`` command to transfer signatures alongside the image itself:
 Limitations
 ===========
 
-As mentioned above, {Singuarity} does not support recording signatures in a
+As mentioned above, {Singularity} does not support recording signatures in a
 public transparency log. This is a default expectation of the ``cosign`` tool at
 v2 and above. The ``--private-infrastructure`` or ``--insecure-ignore-tlog``
 flags must be passed to ``cosign verify`` to verify an image signed by
