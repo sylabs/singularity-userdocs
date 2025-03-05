@@ -7,7 +7,7 @@ orbs:
 parameters:
   go-version:
     type: string
-    default: '1.22.6'
+    default: '1.24.1'
 
 executors:
   node:
@@ -40,8 +40,8 @@ commands:
               fuse2fs \
               git \
               libfuse-dev \
-              libglib2.0-dev \
               libseccomp-dev \
+              libsubid-dev \
               libtool \
               pkg-config \
               python3-venv \

@@ -19,7 +19,7 @@ Getting Started & Background Information
 .. toctree::
    :maxdepth: 2
 
-   What's New in {Singularity} 4.2 <new>
+   What's New in {Singularity} 4.3 <new>
 
    Introduction to {Singularity} <introduction>
    Quick Start <quick_start>

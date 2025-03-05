@@ -6,6 +6,15 @@ Signing and Verifying Containers
 
 .. _sec:signnverify:
 
+{Singularity} supports two methods for signing and verifying container images:
+
+- A native signature format, that can be applied to SIF and OCI-SIF images.
+- Cosign-compatible signatures against an image inside an OCI-SIF file.
+
+*********************
+Native SIF Signatures
+*********************
+
 {Singularity}'s SIF images can be signed, and subsequently verified, so that a
 user can be confident that an image they have obtained is a bit-for-bit
 reproduction of the original container as the author intended it. The signature,
@@ -44,9 +53,8 @@ for more information).
 
 .. _verify_container_from_library:
 
-***********************************************
 Verifying containers from the Container Library
-***********************************************
+===============================================
 
 The ``verify`` command will check that a SIF container image has been signed
 using a PGP key, and is unchanged since it was signed.
@@ -81,12 +89,12 @@ container.
 
 .. _sign_your_own_containers:
 
-***************************
+
 Signing your own containers
-***************************
+===========================
 
 Generating and managing PGP keys
-================================
+--------------------------------
 
 To sign your own containers you first need to generate one or more keys. In
 order to submit them to the SCS keystore, you will also need to login to SCS
@@ -174,7 +182,7 @@ signing).
 .. _searching_for_keys:
 
 Searching for keys
-==================
+------------------
 
 {Singularity} allows you to search the keystore for public keys. You can
 search for names, emails, and fingerprints (key IDs). When searching for
@@ -196,7 +204,7 @@ example:
    $ singularity key search @gmail.com
 
 Signing and validating your own containers
-==========================================
+------------------------------------------
 
 Now that you have a key generated, you can use it to sign images like
 so:
@@ -259,7 +267,7 @@ offline with ``singularity key pull``
    1 key(s) added to keyring of trust /home/dave/.singularity/sypgp/pgp-public
 
 Advanced Signing - SIF IDs and Groups
-=====================================
+-------------------------------------
 
 As well as the default behaviour, which signs all objects, fine-grained
 control of signing is possible.
@@ -369,9 +377,9 @@ specifying ``--group-id`` can also verify the container:
    3   |1       |NONE    |FS
    Container verified: my_container.sif
 
-***********************************
+
 PEM Key / X.509 Certificate Support
-***********************************
+===================================
 
 Beginning with version 3.11, {Singularity} supports signing SIF container images
 using a PEM format private key, and verifying with a PEM format public key, or
@@ -380,7 +388,7 @@ Signing Envelope <https://github.com/secure-systems-lab/dsse>`__ (DSSE)
 standard.
 
 Signing with a PEM key
-======================
+----------------------
 
 To sign a container using a private key in PEM format, provide the key material
 to the ``sign`` command using the ``--key`` flag:
@@ -423,7 +431,7 @@ Note that the error message shows that the container image has a DSSE signature
 present.
 
 Verifying with a PEM key
-========================
+------------------------
 
 To verify a container using a PEM public key directly, provide the key material
 to the ``verify`` command using the ``key`` flag:
@@ -442,7 +450,7 @@ to the ``verify`` command using the ``key`` flag:
    INFO:    Verified signature(s) from image 'lolcow.sif'
 
 Verifying with an X.509 certificate
-===================================
+-----------------------------------
 
 To verify a container that was signed with a PEM private key, using an X.509
 certificate, pass the certificate to the ``verify`` command using the
@@ -464,7 +472,7 @@ intermediate and valid root certificates with the
    verify container images.
 
 OSCP Certificate Revocation Checks
-==================================
+----------------------------------
 
 When verifying a container using X.509 certificates, {Singularity} can perform
 online revocation checks using the Online Certificate Status Protocol (OCSP). To
@@ -489,3 +497,229 @@ error:
 
    INFO:    Validate: cert:leaf  issuer:intermediate
    FATAL:   Failed to verify container: OCSP verification has failed
+
+************************************
+Cosign Compatible OCI-SIF Signatures
+************************************
+
+When using {Singularity}'s OCI-Mode, container images are pulled or built as
+OCI-SIF images. An OCI-SIF file holds an OCI image using standard OCI structures
+such as an image manifest, config, and layers.
+
+Although you can use native {Singularity} SIF signatures (as above) to sign and
+verify an OCI-SIF file, they are not supported by other tools common in OCI
+workflows. Native SIF signatures sign the content and metadata of the (OCI-)SIF
+file itself, rather than the container inside the file. If you push an OCI-SIF
+image to an OCI registry (except via ``oras://``) then the image within the SIF
+is transferred, rather than the complete SIF file. Any native SIF signature is
+lost.
+
+The `sigstore project <https://www.sigstore.dev/>`_ has defined standards for
+signing and verifying software artefacts, and these have been widely adopted.
+The `cosign <https://github.com/sigstore/cosign>`_ tool uses sigstore to sign and
+verify OCI container images.
+
+Beginning with version 4.3, {Singularity} supports signing OCI-SIF container
+images with a cosign compatible signature. This signature will apply to the
+image inside the OCI-SIF file, and can be pushed/pulled to/from an OCI registry
+alongside the image itself.
+
+Generating a Cosign Keypair
+===========================
+
+Cosign signatures are generated using a private key, and verified using a public
+key. The private key is an ECDSA key, instead of the PGP keys used by native SIF
+signatures.
+
+To generate a cosign keypair use the ``key generate-cosign-key-pair``
+subcommand. You will be prompted to supply a password that is used to encrypt
+the private key, preventing its use if it is obtained by an attacker.
+
+.. code::
+
+   # Creates singularity-cosign.key & singularity-cosign.pub
+   $ singularity key generate-cosign-key-pair
+   INFO:    Creating cosign key-pair singularity-cosign.key/.pub
+   Enter password for private key: 
+   Enter again: 
+
+   $ singularity key generate-cosign-key-pair --output-key-prefix test
+   INFO:    Creating cosign key-pair test.key/.pub
+   Enter password for private key: 
+   Enter again: 
+
+Signing an OCI-SIF Container Image
+==================================
+
+To sign a container image inside an OCI-SIF file, use the ``--cosign`` flag for
+the ``sign`` command, and provide the path to your private key using the
+``--key`` flag. You will be prompted for the password for the private key.
+
+.. code::
+
+   $ singularity sign --cosign --key singularity-cosign.key alpine_latest.oci.sif 
+   INFO:    Sigstore/cosign compatible signature, using key material from 'singularity-cosign.key'
+   Enter password for private key: 
+
+A cosign signature is created as a non-executable OCI container image structure.
+This is added to the OCI-SIF file, and associated with the executable container
+image that it signs.
+
+If we examine the ``RootIndex`` of the OCI-SIF file, we can see that there is
+now a second manifest listed, with a ``ref.name`` indicating it is a cosign
+signature for the image that was signed:
+
+.. code::
+
+   $ singularity sif dump 7 alpine_latest.oci.sif  | jq
+   {
+   "schemaVersion": 2,
+   "mediaType": "application/vnd.oci.image.index.v1+json",
+   "manifests": [
+      {
+         "mediaType": "application/vnd.oci.image.manifest.v1+json",
+         "size": 901,
+         "digest": "sha256:1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b"
+      },
+      {
+         "mediaType": "application/vnd.oci.image.manifest.v1+json",
+         "size": 558,
+         "digest": "sha256:3ffa7ff55df0e6e7a9f5fce3a127195c3632c6bab2207617b78c1dbecd8896b5",
+         "annotations": {
+         "org.opencontainers.image.ref.name": "_cosign:sha256-1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b.sig"
+         }
+      }
+   ]
+   }
+
+Verifying an OCI-SIF Container Image
+====================================
+
+To verify a signed image in an OCI-SIF container, use the ``--cosign`` flag for
+the ``verify`` command, and provide the path to your public key using the
+``--key`` flag.
+
+{Singularity} will first verify that every OCI blob matches the digest recorded
+in the OCI-SIF file. It will then check all cosign signatures present in the
+OCI-SIF, and indicate how many are valid with the provided public key. The
+output of the command is the JSON format signature payload for each valid
+signature.
+
+.. code::
+
+   $ singularity verify --cosign --key singularity-cosign.pub alpine_latest.oci.sif  | jq
+   INFO:    Verifying image with sigstore/cosign signature, using key material from 'singularity-cosign.pub'
+   INFO:    Verifying digests for 6 OCI Blobs
+   INFO:    Image digest: sha256:1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b
+   INFO:    Image has 1 associated signatures
+   INFO:    Image has 1 signatures that are valid with provided key material
+   [
+   {
+      "critical": {
+         "identity": {
+         "docker-reference": ""
+         },
+         "image": {
+         "docker-manifest-digest": "sha256:1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b"
+         },
+         "type": "cosign container image signature"
+      },
+      "optional": {
+         "creator": "Singularity-Ce/4.3.0 (Linux amd64) Go/1.24.0",
+         "timestamp": 1741182667
+      }
+   }
+   ]
+
+If no signatures are valid with the provided public key, the command will return an error.
+
+.. code::
+
+   $ singularity verify --cosign --key test.pub alpine_latest.oci.sif 
+   INFO:    Verifying image with sigstore/cosign signature, using key material from 'test.pub'
+   INFO:    Verifying digests for 6 OCI Blobs
+   INFO:    Image digest: sha256:1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b
+   INFO:    Image has 1 associated signatures
+   INFO:    Image has 0 signatures that are valid with provided key material
+   FATAL:   no valid signatures found
+
+Pushing & Pulling Signed Images
+===============================
+
+When pushing a signed OCI-SIF image to an OCI registry use the ``--with-cosign``
+flag on the ``push`` command to transfer signatures alongside the image itself:
+
+.. code::
+
+   $ singularity push --with-cosign alpine_latest.oci.sif docker://example/demo:signed
+   INFO:    Writing cosign signatures: index.docker.io/example/demo:sha256-1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b.sig
+   INFO:    Upload complete
+
+An image that has been pushed to a registry can be verified using the upstream
+``cosign`` tool:
+
+.. code::
+
+   $ cosign verify --insecure-ignore-tlog --key singularity-cosign.pub example/demo:signed | jq
+   WARNING: Skipping tlog verification is an insecure practice that lacks of transparency and auditability verification for the signature.
+
+   Verification for index.docker.io/example/demo:signed --
+   The following checks were performed on each of these signatures:
+   - The cosign claims were validated
+   - The signatures were verified against the specified public key
+   [
+   {
+      "critical": {
+         "identity": {
+         "docker-reference": ""
+         },
+         "image": {
+         "docker-manifest-digest": "sha256:1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b"
+         },
+         "type": "cosign container image signature"
+      },
+      "optional": {
+         "creator": "Singularity-Ce/4.3.0 (Linux amd64) Go/1.24.0",
+         "timestamp": 1741182667
+      }
+   }
+   ]
+   
+.. note::
+
+   {Singularity} does not currently support recording the signing of an image in
+   a transparency log. Verifying a container with cosign 2.0 and above requires
+   the ``--insecure-ignore-tlog`` or ``--private-infrastructure`` flag to be
+   specified, as the cosign tool now expects a transparency log entry to be
+   present for all images, by default.
+
+When pulling a signed OCI-SIF image to an OCI registry use the ``--with-cosign``
+flag on the ``pull`` command to transfer signatures alongside the image itself:
+
+.. code::
+
+   $ singularity pull --oci --with-cosign docker://dctrud/test:signed
+   INFO:    cosign signature functionality does not support SIF caching, pulling directly to: test_signed.oci.sif
+   3.4MiB / 3.4MiB [=====================================================================] 100 % 15.1 KiB/s 0s
+   INFO:    Writing cosign signatures: _cosign:sha256-1d47bc37b15dd8ebf4d84b3be55f92aaa4da3ef6a8195393e0e1ce338c56879b.sig
+   INFO:    Cleaning up.
+
+
+Limitations
+===========
+
+As mentioned above, {Singularity} does not support recording signatures in a
+public transparency log. This is a default expectation of the ``cosign`` tool at
+v2 and above. The ``--private-infrastructure`` or ``--insecure-ignore-tlog``
+flags must be passed to ``cosign verify`` to verify an image signed by
+{Singularity}.
+
+{Singularity} only supports ECDSA keypairs for image signing and verification.
+Other key material sources (e.g. KMS) supported by the ``cosign`` tool are not
+currently available in {Singularity}.
+
+When an image is pushed/pulled to/from an OCI registry, signatures can only be
+transferred if the image is not mutated in any way. An OCI image with tar-format
+layers cannot be pulled ``--with-cosign`` into an OCI-SIF with squashfs format
+layers. The signature on the original image would not be valid as this image
+manifest will change when the layers are converted.
