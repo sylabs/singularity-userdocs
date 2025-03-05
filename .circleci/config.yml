@@ -40,8 +40,8 @@ commands:
               fuse2fs \
               git \
               libfuse-dev \
-              libglib2.0-dev \
               libseccomp-dev \
+              libsubid-dev \
               libtool \
               pkg-config \
               python3-venv \
