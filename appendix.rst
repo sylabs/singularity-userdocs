@@ -103,6 +103,9 @@ below with their respective functionality.
    (comma separated string) to bind to the ``/.singularity.d/libs``
    directory.
 
+#. **SINGULARITY_COSIGN**: Set to true to sign or verify OCI-SIF images using
+   cosign-compatible signatures.
+
 #. **SINGULARITY_CPU_SHARES**: Specify a relative share of CPU time
    available to the container. Default is -1 (disabled).
 
@@ -805,8 +808,8 @@ the new image during bootstrap.
 
 .. _build-yum:
 
-``yum`` bootstrap agent
-=======================
+``yum`` / ``dnf`` bootstrap agent
+=================================
 
 .. _sec:build-yum:
 
@@ -816,8 +819,9 @@ container from a mirror URI.
 Overview
 --------
 
-Use the ``yum`` module to specify a base for a CentOS-like container.
-You must also specify the URI for the mirror you would like to use.
+Use the ``yum`` module (also aliased to ``dnf``) to specify a base for an
+Enterprise Linux container. You must also specify the URI for the mirror you
+would like to use.
 
 Keywords
 --------
