@@ -467,6 +467,8 @@ link below, which details the properties you can set using
 
 https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
 
+.. _sec:cgroup_namespace:
+
 ****************
 Cgroup Namespace
 ****************

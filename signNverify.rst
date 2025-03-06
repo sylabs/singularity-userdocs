@@ -498,6 +498,8 @@ error:
    INFO:    Validate: cert:leaf  issuer:intermediate
    FATAL:   Failed to verify container: OCSP verification has failed
 
+.. _sec:cosign:
+
 ************************************
 Cosign Compatible OCI-SIF Signatures
 ************************************
