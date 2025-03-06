@@ -466,3 +466,47 @@ link below, which details the properties you can set using
 ``systemd-run``.
 
 https://www.freedesktop.org/software/systemd/man/systemd.resource-control.html
+
+****************
+Cgroup Namespace
+****************
+
+Cgroups can be viewed and manipulated through a cgroup virtual filesystem,
+typically mounted at ``/sys/fs/cgroups`` on a Linux host. The kernel also
+supports the creation of cgroup namespaces, where the current cgroup outside of
+the namespace becomes the root of the cgroup hierarchy inside the namespace.
+This means that a container run in a cgroup namespace will see its own cgroup as
+the root of the cgroup hierarchy when mounted at ``/sys/fs/cgroups``. The
+container cannot see any higher level cgroups from the host.
+
+In native mode, current versions of {Singularity} will create a container cgroup
+if a resource limit is specified, but never create a cgroup namespace, and by
+default the cgroup virtual filesystem is not mounted:
+
+.. code::
+
+   $ singularity run --cpus 2 alpine_latest.sif 
+   Singularity> cat /proc/self/cgroup
+   0::/user.slice/user-1000.slice/user@1000.service/user.slice/singularity-41318.scope
+   Singularity> ls -lah /sys/fs/cgroup
+   total 0      
+   dr-xr-xr-x    2 root     root           0 Mar  5 13:42 .
+   drwxr-xr-x    9 root     root           0 Mar  5 13:42 ..
+
+In ``--oci`` mode, from version 4.3, {Singularity} will create a container
+cgroup, cgroup namespace, and mount ``/sys/fs/cgroup`` whenever possible:
+
+.. code::
+
+   $ singularity run --oci --cpus 2 alpine_latest.oci.sif
+   $ cat /proc/self/cgroup
+   0::/
+   $ cat /sys/fs/cgroup/cpu.max
+   200000 100000
+
+This allows software running inside the container to interrogate any cgroup
+limits that have been applied.
+
+The ``/sys/fs/cgroup`` mount is read-only by default. It will be read-write if
+the ``--keep-privs`` flag is used. This allows the container cgroup to be
+manipulated from inside the container, necessary for nesting OCI-mode.
