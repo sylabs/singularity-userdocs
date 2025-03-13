@@ -45,14 +45,14 @@ master_doc = 'index'
 # General information about the project.
 project = u'SingularityCE User Guide'
 author = u'SingularityCE Project Contributors'
-copyright = u'2017-2024, Sylabs Inc & Project Contributors'
+copyright = u'2017-2025, Sylabs Inc & Project Contributors'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = 'main'
+version = '4.3'
 # We have not had separate docs per release version for some time, so set
 # release = version here.
 release = version
