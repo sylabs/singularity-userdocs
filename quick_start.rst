@@ -74,40 +74,40 @@ On Debian-based systems, including Ubuntu:
 
 On Ubuntu 24.04 and above install additional libsubid headers:
 
-```sh
-sudo apt-get install -y libsubid-dev
-```
+.. code::
+
+   sudo apt-get install -y libsubid-dev
 
 On RHEL / Alma Linux / Rocky Linux, CentOS Stream, you will need to enable the
 CRB (9+) or powertools repository (8). This is not necessary on Fedora.
 
-```sh
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --enable crb || dnf config-manager --enable powertools
-```
+.. code::
+
+   sudo dnf install -y dnf-plugins-core
+   sudo dnf config-manager --enable crb || dnf config-manager --enable powertools
 
 You can now install the build dependencies:
 
-```sh
-# Install basic tools for compiling
-sudo dnf groupinstall -y 'Development Tools'
-# Install RPM packages for dependencies
-sudo dnf --enablerepo=devel install -y \
-    autoconf \
-    automake \
-    crun \
-    cryptsetup \
-    fuse \
-    fuse3 \
-    fuse3-devel \
-    git \
-    libseccomp-devel \
-    libtool \
-    shadow-utils-subid-devel \
-    squashfs-tools \
-    wget \
-    zlib-devel
-```
+.. code::
+
+   # Install basic tools for compiling
+   sudo dnf groupinstall -y 'Development Tools'
+   # Install RPM packages for dependencies
+   sudo dnf --enablerepo=devel install -y \
+      autoconf \
+      automake \
+      crun \
+      cryptsetup \
+      fuse \
+      fuse3 \
+      fuse3-devel \
+      git \
+      libseccomp-devel \
+      libtool \
+      shadow-utils-subid-devel \
+      squashfs-tools \
+      wget \
+      zlib-devel
 
 Install sqfstar / tar2sqfs for OCI-mode
 ---------------------------------------
