@@ -344,7 +344,7 @@ Some simple examples:
 
 -  ``experiment???`` will match all files that have a name beginning
    with ``experiment`` and followed by any three characters. It will
-   match ``experiment001``,``experiment002``, and ``experimentABC``, but
+   match ``experiment001``, ``experiment002``, and ``experimentABC``, but
    not ``experimentA``.
 
 -  ``document[0-9]`` will match ``document1``, but not ``documentA`` or
